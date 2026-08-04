@@ -25,6 +25,6 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - infra-common service.md 未找到 forum-reply-robot 的直接映射行。
-- 未发现允许来源中的公开生产部署信息，因此 deploy 为空。
+- 允许来源未提供本服务主仓的直接部署记录。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

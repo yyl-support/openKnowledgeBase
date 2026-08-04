@@ -11,7 +11,7 @@ updated_at: 2026-08-04
 
 ## infrastructure
 
-- om-dataarts 写PostgreSQL，APIMagic只读PostgreSQL，前端为datastat-manage-website，配置由om-deployment提供。
+- 公开来源描述数据采集、数据读取和看板能力，具体实现组件未在允许来源中完整核验。
 
 ## components
 
