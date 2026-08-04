@@ -24,7 +24,8 @@ updated_at: 2026-08-04
 
 ## facts_insufficient
 
-- 未能从允许来源核验组件清单，因此未列入 components 表。
+- 未能从允许来源核验完整组件清单，因此未作补充。
+
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - 本地注册只提供服务 ID、名称和源码仓，release 部分为注释模板，未形成可用部署事实。
 - infra-common service.md 未找到 pod-exporter-monitoring 或 pod_exporter_monitoring 的直接服务映射行。

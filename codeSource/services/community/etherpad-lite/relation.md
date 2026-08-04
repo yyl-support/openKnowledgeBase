@@ -16,8 +16,8 @@ updated_at: 2026-08-04
 
 ## evolution
 
-- 2026-07-17 [8334bf8](https://github.com/opensourceways/etherpad-lite/commit/8334bf8) 演进记录：!114 fix(apig): 补齐 api-docs 字段并修复 spec；补齐 API 文档。。
-- 2026-07-17 [964e7d8](https://github.com/opensourceways/etherpad-lite/commit/964e7d8) 演进记录：补齐 API 文档字段；对应 APIG 文档变更。。
+- 2026-07-17 [8334bf8](https://github.com/opensourceways/etherpad-lite/commit/8334bf8) 演进记录：!114 fix(apig): 补齐 api-docs 字段并修复 spec；补齐 API 文档。
+- 2026-07-17 [964e7d8](https://github.com/opensourceways/etherpad-lite/commit/964e7d8) 演进记录：补齐 API 文档字段；对应 APIG 文档变更。
 
 ## deploy
 
@@ -25,7 +25,8 @@ updated_at: 2026-08-04
 
 ## facts_insufficient
 
-- 未能从允许来源核验组件清单，因此未列入 components 表。
+- 未能从允许来源核验完整组件清单，因此未作补充。
+
 - 最近公开 commit 未达 10 条。
 - 未确认外部依赖连接细节。
 

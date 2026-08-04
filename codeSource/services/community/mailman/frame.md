@@ -17,8 +17,6 @@ Mailman mono-repo，包含邮件处理核心、Web 管理界面和 MTA 邮件投
 
 ## components
 
-未能从允许来源核验组件清单。
-
 ## 源码
 
 - 服务注册 tools_repo：[mailman](https://github.com/opensourceways/mailman)

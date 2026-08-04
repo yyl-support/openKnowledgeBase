@@ -16,8 +16,6 @@ updated_at: 2026-08-04
 
 ## components
 
-未能从允许来源核验组件清单。
-
 ## 源码
 
 - 服务注册 tools_repo：[calculator-umbrella](https://github.com/opensourceways/calculator-umbrella)

@@ -7,12 +7,11 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-AI 模型训练推理协作微服务平台，包含 API、Notebook、消息、注册配置中的内部组件、gRPC 协议库、SDK 和 Kubernetes Operator。
+AI 模型训练推理协作微服务平台，包含 API、Notebook、消息服务、协议库、SDK 和 Kubernetes Operator。
 
 ## infrastructure
 - 服务注册文件统一 service id 为 xihe，源码 umbrella 仓为 opensourceways/xihe-all。
 - 注册文件将 xihe-all 描述为 Git submodule 聚合 umbrella 仓，列出 7 个 dev 子仓。
-- 注册配置记录部分组件存在镜像，但公开版本不展示未公开部署细节。
 
 ## components
 

@@ -24,7 +24,8 @@ updated_at: 2026-08-04
 
 ## facts_insufficient
 
-- 未能从允许来源核验组件清单，因此未列入 components 表。
+- 未能从允许来源核验完整组件清单，因此未作补充。
+
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - 本地注册称 robot 子仓是 submodule，但未提供可公开核验的子仓名称。
 - infra-common service.md 未找到 community-robots 或 robot 的直接映射行。

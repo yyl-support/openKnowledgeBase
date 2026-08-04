@@ -15,8 +15,6 @@ openEuler User Repository（EUR）软件包构建、补丁和缺陷管理服务�
 
 ## components
 
-未能从允许来源核验组件清单。
-
 ## 源码
 
 - 服务注册 tools_repo：[eur-build-all](https://github.com/opensourceways/eur-build-all)

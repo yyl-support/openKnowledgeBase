@@ -16,14 +16,16 @@ updated_at: 2026-08-04
 
 ## evolution
 
-- 2026-05-31 [cfe30a8](https://github.com/opensourceways/cla-all/commit/cfe30a8) 演进记录：chore: 接入 3 个 submodule + 初始化 CLAUDE.md；接入三个 CLA 子仓并初始化协作说明。。
-- 2026-05-31 [c88910b](https://github.com/opensourceways/cla-all/commit/c88910b) 演进记录：Initial commit；仓库初始化。。
+- 2026-05-31 [cfe30a8](https://github.com/opensourceways/cla-all/commit/cfe30a8) 演进记录：chore: 接入 3 个 submodule + 初始化 CLAUDE.md；接入三个 CLA 子仓并初始化协作说明。
+- 2026-05-31 [c88910b](https://github.com/opensourceways/cla-all/commit/c88910b) 演进记录：Initial commit；仓库初始化。
 
 ## deploy
 
 - service.md 未核验到主仓直接部署记录。
 
 ## facts_insufficient
+
+- 未能从允许来源核验完整组件清单，因此未作补充。
 
 - 当前来源未提供具体事实缺口。
 

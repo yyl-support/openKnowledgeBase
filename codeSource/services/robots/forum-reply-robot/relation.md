@@ -24,6 +24,8 @@ updated_at: 2026-08-04
 
 ## facts_insufficient
 
+- 未能从允许来源核验完整组件清单，因此未作补充。
+
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - infra-common service.md 未找到 forum-reply-robot 的直接映射行。
 - 未发现允许来源中的公开生产部署信息，因此 deploy 为空。

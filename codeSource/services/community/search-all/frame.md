@@ -15,8 +15,6 @@ EasySearch 索引、文档搜索、文档输入和 RM-CHECK 服务。
 
 ## components
 
-未能从允许来源核验组件清单。
-
 ## 源码
 
 - 服务注册 tools_repo：[search-all](https://github.com/opensourceways/search-all)

@@ -24,7 +24,8 @@ updated_at: 2026-08-04
 
 ## facts_insufficient
 
-- 未能从允许来源核验组件清单，因此未列入 components 表。
+- 未能从允许来源核验完整组件清单，因此未作补充。
+
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - infra-common service.md 中未找到与 https://github.com/opensourceways/message-bus-all 匹配的源码构建仓部署记录；其中存在消息中心相关独立子仓记录，但不能据此替代主仓匹配。
 

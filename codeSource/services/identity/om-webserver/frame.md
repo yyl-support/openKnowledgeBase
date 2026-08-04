@@ -11,7 +11,6 @@ OM-Webserver 是提供账号管理能力的独立服务，README 记录 Spring B
 
 ## infrastructure
 - 仓库目录包含 src、pom.xml、Dockerfile、.mvn 和 Maven/Java 工程配置。
-- 本地 service 注册标明源码分支为 master；其 release 段明确是模板占位且未在 service.md 注册。
 
 ## components
 
