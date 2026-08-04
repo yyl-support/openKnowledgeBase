@@ -65,7 +65,7 @@
 
 ## 部署知识来源
 
-`infra-common/service.md` 是部署映射的事实来源。已生成服务文档中的 `deploy`/`related_deployments` 内容按公开边界过滤，只保留适合公开发布的部署事实；本组织概览不复制内部部署路径、集群、namespace、Vault 或其他受限配置细节。
+`infra-common/service.md` 是部署映射的事实来源。已生成服务文档中的 `deploy`/`related_deployments` 内容按公开边界过滤，只保留适合公开发布的部署事实；本组织概览不复制内部部署配置、敏感配置路径、集群与网络细节或其他受限配置细节。
 
 ## 覆盖边界
 
