@@ -17,13 +17,11 @@ OM-Webserver 是提供账号管理能力的独立服务，README 记录 Spring B
 
 | name | role |
 | --- | --- |
-| om-webserver | 账号管理后端 |
 | Redis | 缓存或数据依赖 |
 | OBS | 对象存储依赖 |
 
 ## 源码
 
-- 注册主仓：[om-webserver](https://github.com/opensourceways/om-webserver)
-- 无已核验子仓记录。
+- 服务注册 tools_repo：[om-webserver](https://github.com/opensourceways/om-webserver)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

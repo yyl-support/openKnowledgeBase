@@ -32,6 +32,35 @@
 
 `codeSource/services/` 包含 24 个已生成的服务级文档。
 
+## 服务分类表
+
+| category | service_id | project_label | tools_repo | source_file |
+| --- | --- | --- | --- | --- |
+| ci | ascend-ci-project | project:ascend-ci-project | https://github.com/opensourceways/ascend-ci-project | ascend-ci-project.yaml |
+| data | bigfiles-lfs-all | project:bigfiles-lfs-all | https://github.com/opensourceways/bigfiles-lfs-all | bigfiles-lfs-all.yaml |
+| ci | calculator | project:calculator-umbrella | https://github.com/opensourceways/calculator-umbrella | calculator.yaml |
+| security | certification-all | project:certification-all | https://github.com/opensourceways/certification-all | certification-all.yaml |
+| ci | ci-all | project:ci-all | https://github.com/opensourceways/ci-all | ci-all.yaml |
+| identity | cla-all | project:cla-all | https://github.com/opensourceways/cla-all | cla-all.yaml |
+| community | etherpad-lite | project:etherpad-lite | https://github.com/opensourceways/etherpad-lite | etherpad-lite.yaml |
+| package | eur-build-all | project:eur-build-all | https://github.com/opensourceways/eur-build-all | eur-build-all.yaml |
+| robots | forum-reply-robot | project:forum-reply-robot | https://github.com/opensourceways/forum-reply-robot | forum-reply-robot.yaml |
+| community | hotopic-all | project:hotopic-all | https://github.com/opensourceways/hotopic-all | hotopic-all.yaml |
+| community | mailman | project:mailman | https://github.com/opensourceways/mailman | mailman.yaml |
+| community | meeting-server | project:meeting-server | https://github.com/opensourceways/meeting-server | meeting-server.yaml |
+| community | message-bus-all | project:message-bus-all | https://github.com/opensourceways/message-bus-all | message-bus-all.yaml |
+| data | om-datacenter | project:om-datacenter | https://github.com/opensourceways/om-datacenter | om-datacenter.yaml |
+| identity | om-webserver | project:om-webserver | https://github.com/opensourceways/om-webserver | om-webserver.yaml |
+| identity | oneid-all | project:oneid-all | https://github.com/opensourceways/oneid-server | oneid-all.yaml |
+| data | oss-map | project:oss-map | https://github.com/opensourceways/oss-map | oss-map.yaml |
+| security | patch-manager | project:patch-manager | https://github.com/opensourceways/patch-manager | patch-manager.yaml |
+| community | pod-exporter-monitoring | project:pod_exporter_monitoring | https://github.com/opensourceways/pod_exporter_monitoring | pod-exporter-monitoring.yaml |
+| robots | robot | project:community-robots | https://github.com/opensourceways/community-robots | robot.yaml |
+| community | search-all | project:search-all | https://github.com/opensourceways/search-all | search-all.yaml |
+| security | security-cve-all | project:security-cve-all | https://github.com/opensourceways/security-cve-all | security-cve-all.yaml |
+| package | software-package-all | project:software-package-all | https://github.com/opensourceways/software-package-all | software-package-all.yaml |
+| data | xihe | project:xihe-all | https://github.com/opensourceways/xihe-all | xihe-all.yaml |
+
 ## 生成状态
 
 服务地图已形成 24 个服务注册项的文档入口；后续补充内容必须保留来源引用并经过公开发布边界审核。

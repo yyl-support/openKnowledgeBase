@@ -12,22 +12,25 @@ updated_at: 2026-08-04
 
 ## registry_info
 
-- 未记录可公开的服务注册入口。
+- 未记录可公开的 registry YAML 入口。
 
 ## evolution
 
-- 2026-08-04 [a2c271f](https://github.com/opensourceways/oss-map/commit/a2c271f) Merge pull request #312: 私密邮箱关联 GitHub login：修复人员关联与事务提交。
-- 2026-08-04 [1dce8f0](https://github.com/opensourceways/oss-map/commit/1dce8f0) 支持私密邮箱关联 github login：修复人员合并。
-- 2026-08-03 [7cd9849](https://github.com/opensourceways/oss-map/commit/7cd9849) Merge pull request #311：合并变更。
-- 2026-08-03 [603f1bd](https://github.com/opensourceways/oss-map/commit/603f1bd) 修复采集 repo 问题：修复仓库采集。
-- 2026-08-03 [fe05659](https://github.com/opensourceways/oss-map/commit/fe05659) fix(maintainers): 组织成员 Option B：primary 场景取唯一活跃关系。
+- 2026-08-04 [a2c271f](https://github.com/opensourceways/oss-map/commit/a2c271f) 演进记录：Merge pull request #312: 私密邮箱关联 GitHub login；修复人员关联与事务提交。。
+- 2026-08-04 [1dce8f0](https://github.com/opensourceways/oss-map/commit/1dce8f0) 演进记录：支持私密邮箱关联 github login；修复人员合并。。
+- 2026-08-03 [7cd9849](https://github.com/opensourceways/oss-map/commit/7cd9849) 演进记录：Merge pull request #311；合并变更。。
+- 2026-08-03 [603f1bd](https://github.com/opensourceways/oss-map/commit/603f1bd) 演进记录：修复采集 repo 问题；修复仓库采集。。
+- 2026-08-03 [fe05659](https://github.com/opensourceways/oss-map/commit/fe05659) 演进记录：fix(maintainers): 组织成员 Option B；primary 场景取唯一活跃关系。。
 
 ## deploy
 
-- 环境为 test；源码仓为 [oss-map](https://github.com/opensourceways/oss-map)；部署方式为 ArgoCD；来源：infra-common service.md。
+| 环境 | 公开域名 | 镜像/源码仓 | 部署方式 | 来源 |
+| --- | --- | --- | --- | --- |
+| test | 未记录 | [oss-map](https://github.com/opensourceways/oss-map) | ArgoCD | infra-common service.md |
 
 ## facts_insufficient
 
+- 未能从允许来源核验组件清单，因此未列入 components 表。
 - 最近公开 commit 未达 10 条。
 - 未确认生产部署记录。
 

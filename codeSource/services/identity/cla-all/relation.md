@@ -12,16 +12,16 @@ updated_at: 2026-08-04
 
 ## registry_info
 
-- 服务注册信息：公开入口 [clasign.osinfra.cn](https://clasign.osinfra.cn)（来源：backlog service yaml）。
+- 服务注册信息：公开入口 [clasign.osinfra.cn](https://clasign.osinfra.cn)；来源：backlog service yaml。
 
 ## evolution
 
-- 2026-05-31 [cfe30a8](https://github.com/opensourceways/cla-all/commit/cfe30a8) chore: 接入 3 个 submodule + 初始化 CLAUDE.md：接入三个 CLA 子仓并初始化协作说明。
-- 2026-05-31 [c88910b](https://github.com/opensourceways/cla-all/commit/c88910b) Initial commit：仓库初始化。
+- 2026-05-31 [cfe30a8](https://github.com/opensourceways/cla-all/commit/cfe30a8) 演进记录：chore: 接入 3 个 submodule + 初始化 CLAUDE.md；接入三个 CLA 子仓并初始化协作说明。。
+- 2026-05-31 [c88910b](https://github.com/opensourceways/cla-all/commit/c88910b) 演进记录：Initial commit；仓库初始化。。
 
 ## deploy
 
-- 未从 infra-common service.md 核验到部署记录。
+- service.md 未核验到主仓直接部署记录。
 
 ## facts_insufficient
 

@@ -17,16 +17,10 @@ updated_at: 2026-08-04
 
 ## components
 
-| name | role |
-| --- | --- |
-| backend | 注册配置组件，职责未核验 |
-| frontend | 注册配置组件，职责未核验 |
-| data-collector | 注册配置组件，职责未核验 |
-| PostgreSQL | 注册配置组件，职责未核验 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[oss-map](https://github.com/opensourceways/oss-map)
-- 无已核验子仓记录。
+- 服务注册 tools_repo：[oss-map](https://github.com/opensourceways/oss-map)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

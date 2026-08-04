@@ -15,16 +15,10 @@ EasySearch 索引、文档搜索、文档输入和 RM-CHECK 服务。
 
 ## components
 
-| name | role |
-| --- | --- |
-| EasySearch 索引 | 注册配置组件，职责未核验 |
-| 文档搜索 | 注册配置组件，职责未核验 |
-| 文档输入 | 注册配置组件，职责未核验 |
-| RM-CHECK | 注册配置组件，职责未核验 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[search-all](https://github.com/opensourceways/search-all)
-- 无已核验子仓记录。
+- 服务注册 tools_repo：[search-all](https://github.com/opensourceways/search-all)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

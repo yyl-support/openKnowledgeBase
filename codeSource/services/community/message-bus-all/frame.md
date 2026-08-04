@@ -15,18 +15,10 @@ updated_at: 2026-08-04
 
 ## components
 
-| name | role |
-| --- | --- |
-| collect | 注册配置组件，职责未核验 |
-| manager | 注册配置组件，职责未核验 |
-| push | 注册配置组件，职责未核验 |
-| transfer | 注册配置组件，职责未核验 |
-| GitHub 钩子 | 注册配置组件，职责未核验 |
-| 事件分发 | 注册配置组件，职责未核验 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[message-bus-all](https://github.com/opensourceways/message-bus-all)
-- 无已核验子仓记录。
+- 服务注册 tools_repo：[message-bus-all](https://github.com/opensourceways/message-bus-all)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

@@ -12,20 +12,22 @@ updated_at: 2026-08-04
 
 ## registry_info
 
-- 未记录可公开的服务注册入口。
+- 未记录可公开的 registry YAML 入口。
+- 关联仓部署记录：mailman-web 和 dovecot；来源：infra-common service.md。该记录不作为主仓直接部署结论。
 
 ## evolution
 
-- 2026-07-17 [4228c59](https://github.com/opensourceways/mailman/commit/4228c59) !131 supplement OpenAPI annotations for APIG registry compliance：补充 OpenAPI 注解。
-- 2026-07-17 [022c3bc](https://github.com/opensourceways/mailman/commit/022c3bc) 补充 OpenAPI annotations：对应 API 文档变更。
+- 2026-07-17 [4228c59](https://github.com/opensourceways/mailman/commit/4228c59) 演进记录：!131 supplement OpenAPI annotations for APIG registry compliance；补充 OpenAPI 注解。。
+- 2026-07-17 [022c3bc](https://github.com/opensourceways/mailman/commit/022c3bc) 演进记录：补充 OpenAPI annotations；对应 API 文档变更。。
 
 ## deploy
 
-- 环境为 prod；源码仓为 [mailman-web](https://github.com/opensourceways/mailman-web)；部署方式为 kustomize；来源：infra-common service.md。
-- 环境为 prod；源码仓为 [dovecot](https://github.com/opensourceways/dovecot)；部署方式为 kustomize；来源：infra-common service.md。
+- service.md 未核验到主仓直接部署记录。
 
 ## facts_insufficient
 
+- 未能从允许来源核验组件清单，因此未列入 components 表。
+- service.md 未核验到主仓直接部署记录；已核验部署属于关联仓。
 - 最近公开 commit 未达 10 条。
 - 未确认 mailman-core 和 mailman-exim 独立部署。
 

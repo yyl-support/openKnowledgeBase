@@ -14,11 +14,10 @@ updated_at: 2026-08-04
 
 ## components
 
-未列出未核验组件。
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[community-robots](https://github.com/opensourceways/community-robots)
-- 无已核验子仓记录。
+- 服务注册 tools_repo：[community-robots](https://github.com/opensourceways/community-robots)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

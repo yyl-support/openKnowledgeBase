@@ -17,17 +17,10 @@ updated_at: 2026-08-04
 
 ## components
 
-| name | role |
-| --- | --- |
-| hot-topic-website-backend | 注册配置组件，职责未核验 |
-| hotopic-data-clean | 注册配置组件，职责未核验 |
-| hotopic-mining | 注册配置组件，职责未核验 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[hotopic-all](https://github.com/opensourceways/hotopic-all)
-- 注册配置名称（未核验独立源码仓）：hot-topic-website-backend
-- 注册配置名称（未核验独立源码仓）：hotopic-data-clean
-- 注册配置名称（未核验独立源码仓）：hotopic-mining
+- 服务注册 tools_repo：[hotopic-all](https://github.com/opensourceways/hotopic-all)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

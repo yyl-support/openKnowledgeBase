@@ -15,29 +15,23 @@ updated_at: 2026-08-04
 
 ## components
 
-| name | role |
-| --- | --- |
-| 网关 | 注册配置组件，职责未核验 |
-| server | 注册配置组件，职责未核验 |
-| website | 注册配置组件，职责未核验 |
-| 自动修复 | 注册配置组件，职责未核验 |
-| 自动升级 | 注册配置组件，职责未核验 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[software-package-all](https://github.com/opensourceways/software-package-all)
-- 已核验源码仓：[autoupgrade](https://github.com/opensourceways/autoupgrade)
-- 已核验源码仓：[autoupgrade-conda](https://github.com/opensourceways/autoupgrade-conda)
-- 已核验源码仓：[easysoftware-server-deployment](https://github.com/opensourceways/easysoftware-server-deployment)
-- 已核验源码仓：[easysoftware-website-deployment](https://github.com/opensourceways/easysoftware-website-deployment)
-- 已核验源码仓：[easysoftware-website-openatom-deployment](https://github.com/opensourceways/easysoftware-website-openatom-deployment)
-- 已核验源码仓：[input](https://github.com/opensourceways/input)
-- 已核验源码仓：[input-archnum](https://github.com/opensourceways/input-archnum)
-- 已核验源码仓：[input-epkg](https://github.com/opensourceways/input-epkg)
-- 已核验源码仓：[input-externalos](https://github.com/opensourceways/input-externalos)
-- 已核验源码仓：[input-field-domain](https://github.com/opensourceways/input-field-domain)
-- 已核验源码仓：[input-oepkg](https://github.com/opensourceways/input-oepkg)
-- 已核验源码仓：[input-rpm](https://github.com/opensourceways/input-rpm)
-- 已核验源码仓：[input-srcrepo](https://github.com/opensourceways/input-srcrepo)
+- 服务注册 tools_repo：[software-package-all](https://github.com/opensourceways/software-package-all)
+- 已核验子仓：[autoupgrade](https://github.com/opensourceways/autoupgrade)
+- 已核验子仓：[autoupgrade-conda](https://github.com/opensourceways/autoupgrade-conda)
+- 已核验子仓：[easysoftware-server-deployment](https://github.com/opensourceways/easysoftware-server-deployment)
+- 已核验子仓：[easysoftware-website-deployment](https://github.com/opensourceways/easysoftware-website-deployment)
+- 已核验子仓：[easysoftware-website-openatom-deployment](https://github.com/opensourceways/easysoftware-website-openatom-deployment)
+- 已核验子仓：[input](https://github.com/opensourceways/input)
+- 已核验子仓：[input-archnum](https://github.com/opensourceways/input-archnum)
+- 已核验子仓：[input-epkg](https://github.com/opensourceways/input-epkg)
+- 已核验子仓：[input-externalos](https://github.com/opensourceways/input-externalos)
+- 已核验子仓：[input-field-domain](https://github.com/opensourceways/input-field-domain)
+- 已核验子仓：[input-oepkg](https://github.com/opensourceways/input-oepkg)
+- 已核验子仓：[input-rpm](https://github.com/opensourceways/input-rpm)
+- 已核验子仓：[input-srcrepo](https://github.com/opensourceways/input-srcrepo)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

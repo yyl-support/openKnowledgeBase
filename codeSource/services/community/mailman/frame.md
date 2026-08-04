@@ -17,15 +17,10 @@ Mailman mono-repo，包含邮件处理核心、Web 管理界面和 MTA 邮件投
 
 ## components
 
-| name | role |
-| --- | --- |
-| mailman-core | 注册配置组件，职责未核验 |
-| mailman-web | 注册配置组件，职责未核验 |
-| mailman-exim | 注册配置组件，职责未核验 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[mailman](https://github.com/opensourceways/mailman)
-- 无已核验子仓记录。
+- 服务注册 tools_repo：[mailman](https://github.com/opensourceways/mailman)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

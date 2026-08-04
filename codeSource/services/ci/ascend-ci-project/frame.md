@@ -15,11 +15,10 @@ updated_at: 2026-08-04
 
 ## components
 
-未列出未核验组件。
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[ascend-ci-project](https://github.com/opensourceways/ascend-ci-project)
-- 无已核验子仓记录。
+- 服务注册 tools_repo：[ascend-ci-project](https://github.com/opensourceways/ascend-ci-project)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

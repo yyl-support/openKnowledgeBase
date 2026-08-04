@@ -16,19 +16,10 @@ updated_at: 2026-08-04
 
 ## components
 
-| name | role |
-| --- | --- |
-| om-dataarts | 数据采集 |
-| APIMagic | 后端JSON接口 |
-| datastat-manage-website | 管理后台 |
-| om-deployment | 社区配置 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[om-datacenter](https://github.com/opensourceways/om-datacenter)
-- 注册配置名称（未核验独立源码仓）：om-dataarts
-- 注册配置名称（未核验独立源码仓）：APIMagic
-- 注册配置名称（未核验独立源码仓）：datastat-manage-website
-- 注册配置名称（未核验独立源码仓）：om-deployment
+- 服务注册 tools_repo：[om-datacenter](https://github.com/opensourceways/om-datacenter)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

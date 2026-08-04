@@ -22,8 +22,8 @@ updated_at: 2026-08-04
 
 ## 源码
 
-- 注册主仓：[certification-all](https://github.com/opensourceways/certification-all)
-- 已核验源码仓：[certification-server](https://github.com/opensourceways/certification-server)
-- 已核验源码仓：[certification-website](https://github.com/opensourceways/certification-website)
+- 服务注册 tools_repo：[certification-all](https://github.com/opensourceways/certification-all)
+- 已核验子仓：[certification-server](https://github.com/opensourceways/certification-server)
+- 已核验子仓：[certification-website](https://github.com/opensourceways/certification-website)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

@@ -8,24 +8,25 @@ updated_at: 2026-08-04
 
 ## connection
 
-- 当前来源不足，未推断连接关系。
+- 未能从允许来源核验连接关系。
 
 ## registry_info
 
-- 未记录可公开的服务注册入口。
+- 未记录可公开的 registry YAML 入口。
 
 ## evolution
 
-- 当前来源不足，未推断演进方向。
+- GitHub API 未能核验演进记录，因此未推断演进方向。
 
 ## deploy
 
-- 未从 infra-common service.md 核验到部署记录。
+- service.md 未核验到主仓直接部署记录。
 
 ## facts_insufficient
 
+- 未能从允许来源核验组件清单，因此未列入 components 表。
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - 主仓最近10条commit或issue未能取得。
-- service.md没有匹配源码仓opensourceways/ci-all的部署记录。
+- infra-common service.md没有匹配源码仓opensourceways/ci-all的部署记录。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

@@ -16,15 +16,10 @@ GitHub 公共仓库将该服务描述为 cascading umbrella，注册信息定位
 
 ## components
 
-| name | role |
-| --- | --- |
-| BigFiles | 注册配置组件，职责未核验 |
-| lfs-website | 注册配置组件，职责未核验 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[bigfiles-lfs-all](https://github.com/opensourceways/bigfiles-lfs-all)
-- 注册配置名称（未核验独立源码仓）：BigFiles
-- 注册配置名称（未核验独立源码仓）：lfs-website
+- 服务注册 tools_repo：[bigfiles-lfs-all](https://github.com/opensourceways/bigfiles-lfs-all)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

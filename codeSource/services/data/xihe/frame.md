@@ -1,5 +1,5 @@
 ---
-tags: [community, xihe]
+tags: [data, xihe]
 service: xihe
 source: https://github.com/opensourceways/xihe-all
 source_repo: https://github.com/opensourceways/xihe-all
@@ -21,14 +21,13 @@ AI 模型训练推理协作微服务平台，包含 API、Notebook、消息、�
 | xihe-server | 主服务 API |
 | xihe-jupyter-server | Notebook 服务 |
 | xihe-message-server | 消息服务 |
-| 存在注册配置未公开组件，公开版本不展开 | 未公开组件 |
 
 ## 源码
 
-- 注册主仓：[xihe-all](https://github.com/opensourceways/xihe-all)
-- 已核验源码仓：[xihe-server](https://github.com/opensourceways/xihe-server)
-- 已核验源码仓：[xihe-jupyter-server](https://github.com/opensourceways/xihe-jupyter-server)
-- 已核验源码仓：[xihe-message-server](https://github.com/opensourceways/xihe-message-server)
-- 存在注册配置未公开组件，公开版本不展开。
+- 服务注册 tools_repo：[xihe-all](https://github.com/opensourceways/xihe-all)
+- umbrella/聚合仓：[xihe-all](https://github.com/opensourceways/xihe-all)
+- 已核验子仓：[xihe-server](https://github.com/opensourceways/xihe-server)
+- 已核验子仓：[xihe-jupyter-server](https://github.com/opensourceways/xihe-jupyter-server)
+- 已核验子仓：[xihe-message-server](https://github.com/opensourceways/xihe-message-server)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

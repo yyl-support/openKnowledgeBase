@@ -17,13 +17,10 @@ updated_at: 2026-08-04
 
 ## components
 
-| name | role |
-| --- | --- |
-| Etherpad Lite 应用 | 注册配置组件，职责未核验 |
+未能从允许来源核验组件清单。
 
 ## 源码
 
-- 注册主仓：[etherpad-lite](https://github.com/opensourceways/etherpad-lite)
-- 无已核验子仓记录。
+- 服务注册 tools_repo：[etherpad-lite](https://github.com/opensourceways/etherpad-lite)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)
