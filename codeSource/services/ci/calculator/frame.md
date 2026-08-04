@@ -24,7 +24,7 @@ updated_at: 2026-08-04
 
 - source_repo: https://github.com/opensourceways/calculator-umbrella
 - sub_repos:
-  - backend
-  - frontend
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：backend
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：frontend
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

@@ -6,12 +6,12 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-AI模型训练推理协作微服务平台，包含API、Notebook、消息、内部服务、gRPC协议库、SDK和Kubernetes Operator。
+AI 模型训练推理协作微服务平台，包含 API、Notebook、消息、注册配置中的内部组件、gRPC 协议库、SDK 和 Kubernetes Operator。
 
 ## infrastructure
-- 服务注册文件统一service id为xihe，源码umbrella仓为opensourceways/xihe-all。
-- 注册文件将xihe-all描述为git submodule聚合umbrella仓，列出7个dev子仓。
-- 有镜像的服务包括xihe-server、xihe-jupyter-server、xihe-message-server和xihe-internal-server；SDK和协议库无镜像，Operator部署方式不同。
+- 服务注册文件统一 service id 为 xihe，源码 umbrella 仓为 opensourceways/xihe-all。
+- 注册文件将 xihe-all 描述为 Git submodule 聚合 umbrella 仓，列出 7 个 dev 子仓。
+- 注册配置记录部分组件存在镜像，但公开版本不展示未公开部署细节。
 
 ## components
 
@@ -20,7 +20,7 @@ AI模型训练推理协作微服务平台，包含API、Notebook、消息、内�
 | xihe-server | 主服务API |
 | xihe-jupyter-server | Notebook服务 |
 | xihe-message-server | 消息服务 |
-| xihe-internal-server | 内部服务 |
+| 注册配置中的内部组件（名称不公开） | 未公开组件 |
 | xihe-sdk | SDK库 |
 | xihe-grpc-protocol | gRPC协议定义 |
 | code-server-operator | Kubernetes Operator |
@@ -29,12 +29,13 @@ AI模型训练推理协作微服务平台，包含API、Notebook、消息、内�
 
 - source_repo: https://github.com/opensourceways/xihe-all
 - sub_repos:
-  - name=xihe-server
-  - name=xihe-jupyter-server
-  - name=xihe-message-server
-  - name=xihe-internal-server
-  - name=xihe-sdk
-  - name=xihe-grpc-protocol
-  - name=code-server-operator
+  - 已核验源码仓：xihe-server（https://github.com/opensourceways/xihe-server）
+  - 已核验源码仓：xihe-jupyter-server（https://github.com/opensourceways/xihe-jupyter-server）
+  - 已核验源码仓：xihe-message-server（https://github.com/opensourceways/xihe-message-server）
+  - 注册配置中的内部组件（名称不公开）
+  - 注册配置名称，未核验独立源码仓：xihe-sdk
+  - 注册配置名称，未核验独立源码仓：xihe-grpc-protocol
+  - 注册配置名称，未核验独立源码仓：code-server-operator
+
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

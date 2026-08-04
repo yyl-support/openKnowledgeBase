@@ -22,8 +22,8 @@ updated_at: 2026-08-04
 
 - source_repo: https://github.com/opensourceways/meeting-server
 - sub_repos:
-  - meeting-center
-  - ascend-meeting-website
-  - cann-meeting-website
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：meeting-center
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：ascend-meeting-website
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：cann-meeting-website
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

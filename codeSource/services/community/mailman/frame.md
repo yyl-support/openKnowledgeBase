@@ -26,6 +26,6 @@ Mailman mono-repo，包含邮件处理核心、Web 管理界面和 MTA 邮件投
 
 - source_repo: https://github.com/opensourceways/mailman
 - sub_repos:
-  - 当前来源不足，未作推断
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：当前来源不足，未作推断
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

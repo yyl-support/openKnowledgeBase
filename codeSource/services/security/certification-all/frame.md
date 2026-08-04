@@ -23,7 +23,7 @@ updated_at: 2026-08-04
 
 - source_repo: https://github.com/opensourceways/certification-all
 - sub_repos:
-  - name=certification-server; repo=https://github.com/opensourceways/certification-server; role=认证服务端
-  - name=certification-website; repo=https://github.com/opensourceways/certification-website; role=认证网站
+  - 已核验源码仓：已核验源码仓：已核验源码仓：certification-server（https://github.com/opensourceways/certification-server）（https://github.com/opensourceways/certification-server）（https://github.com/opensourceways/certification-server）
+  - 已核验源码仓：已核验源码仓：已核验源码仓：certification-website（https://github.com/opensourceways/certification-website）（https://github.com/opensourceways/certification-website）（https://github.com/opensourceways/certification-website）
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

@@ -27,11 +27,11 @@ Jenkins / CodeArts CI通用工具链，注册说明包含脚本同步和日志�
 
 - source_repo: https://github.com/opensourceways/ci-all
 - sub_repos:
-  - ascend_optimization_scripts
-  - codearts-ci-config
-  - codearts-workflow-image
-  - gitcode-migrate-script
-  - jenkins-log-scanner
-  - sync-file-server
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：ascend_optimization_scripts
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：codearts-ci-config
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：codearts-workflow-image
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：gitcode-migrate-script
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：jenkins-log-scanner
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：sync-file-server
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

@@ -24,8 +24,8 @@ CLA umbrella 仓，聚合 CLA 签署后端、统计服务和 WebUI。
 
 - source_repo: https://github.com/opensourceways/cla-all
 - sub_repos:
-  - name=app-cla-server; repo=https://github.com/opensourceways/app-cla-server; role=CLA 后端
-  - name=app-cla-stat; repo=https://github.com/opensourceways/app-cla-stat; role=CLA 统计
-  - name=app-cla-webui; repo=https://github.com/opensourceways/app-cla-webui; role=CLA WebUI
+  - 已核验源码仓：已核验源码仓：已核验源码仓：app-cla-server（https://github.com/opensourceways/app-cla-server）（https://github.com/opensourceways/app-cla-server）（https://github.com/opensourceways/app-cla-server）
+  - 已核验源码仓：已核验源码仓：已核验源码仓：app-cla-stat（https://github.com/opensourceways/app-cla-stat）（https://github.com/opensourceways/app-cla-stat）（https://github.com/opensourceways/app-cla-stat）
+  - 已核验源码仓：已核验源码仓：已核验源码仓：app-cla-webui（https://github.com/opensourceways/app-cla-webui）（https://github.com/opensourceways/app-cla-webui）（https://github.com/opensourceways/app-cla-webui）
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

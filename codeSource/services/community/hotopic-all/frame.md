@@ -26,8 +26,8 @@ updated_at: 2026-08-04
 
 - source_repo: https://github.com/opensourceways/hotopic-all
 - sub_repos:
-  - hot-topic-website-backend
-  - hotopic-data-clean
-  - hotopic-mining
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：hot-topic-website-backend
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：hotopic-data-clean
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：hotopic-mining
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

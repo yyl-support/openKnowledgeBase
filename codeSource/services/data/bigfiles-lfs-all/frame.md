@@ -24,7 +24,7 @@ GitHub 公共仓库将该服务描述为 cascading umbrella，注册信息定位
 
 - source_repo: https://github.com/opensourceways/bigfiles-lfs-all
 - sub_repos:
-  - BigFiles
-  - lfs-website
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：BigFiles
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：lfs-website
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

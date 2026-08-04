@@ -26,9 +26,9 @@ updated_at: 2026-08-04
 
 - source_repo: https://github.com/opensourceways/om-datacenter
 - sub_repos:
-  - name=om-dataarts
-  - name=APIMagic
-  - name=datastat-manage-website
-  - name=om-deployment
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：om-dataarts
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：APIMagic
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：datastat-manage-website
+  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：om-deployment
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

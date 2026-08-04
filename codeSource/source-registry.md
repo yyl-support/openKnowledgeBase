@@ -33,7 +33,7 @@ backlog 是组织访问受控的外部来源。公开读者访问其 URL 时可�
 | message-bus-all | project:message-bus-all | opensourceways/message-bus-all | message-bus-all.yaml |
 | om-datacenter | project:om-datacenter | opensourceways/om-datacenter | om-datacenter.yaml |
 | om-webserver | project:om-webserver | opensourceways/om-webserver | om-webserver.yaml |
-| oneid-all | project:oneid-all | opensourceways/oneid-all | oneid-all.yaml |
+| oneid-all | project:oneid-all | opensourceways/oneid-server | oneid-all.yaml |
 | oss-map | project:oss-map | opensourceways/oss-map | oss-map.yaml |
 | patch-manager | project:patch-manager | opensourceways/patch-manager | patch-manager.yaml |
 | pod-exporter-monitoring | project:pod_exporter_monitoring | opensourceways/pod_exporter_monitoring | pod-exporter-monitoring.yaml |

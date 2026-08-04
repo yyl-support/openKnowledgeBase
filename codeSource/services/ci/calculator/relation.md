@@ -9,8 +9,8 @@ updated_at: 2026-08-04
 - 主仓通过 submodule 组织 backend 与 frontend；注册信息记录 k8s manifests 与 pod selector。
 
 ## evolution
-- 2026-05-21 `e0f06a5` fix(ci): jenkins 参数改为 --param 不公开部署细节=: 与通用参数约定一致。
-- 2026-05-21 `dac0a45` ci: pod 步骤内联安装 kubectl: 为 runner 镜像补充 kubectl。
+- 2026-05-21 `e0f06a5` fix(ci): Jenkins 参数约定调整: 与通用参数约定一致。（来源：https://github.com/opensourceways/calculator-umbrella/commit/e0f06a5）
+- 2026-05-21 `dac0a45` ci: pod 步骤内联安装 kubectl: 为 runner 镜像补充 kubectl。（来源：https://github.com/opensourceways/calculator-umbrella/commit/dac0a45）
 
 ## deploy
 当前来源不足，未作推断

@@ -14,8 +14,8 @@ updated_at: 2026-08-04
 当前来源不足，未作推断
 
 ## deploy
-- environment=prod; source_repo=https://github.com/opensourceways/datastat-manage-website; archive_repo=https://github.com/opensourceways/infra-common; archive_path=common-applications/infra-hk-x86-common-environment/datastat-manage; archive_method=kustomize; note=service.md匹配到website源码仓；仅保留部署归档仓、路径和归档方式。
-- environment=test; source_repo=https://github.com/opensourceways/datastat-manage-website; archive_repo=https://github.com/opensourceways/infra-common; archive_path=common-applications/test-environment/datastat-manage; archive_method=kustomize; note=service.md匹配到website源码仓；仅保留部署归档仓、路径和归档方式。
+- 部署表含内部细节，公开版本不展示。
+- 部署表含内部细节，公开版本不展示。
 
 ## facts_insufficient
 - GitHub主仓不可访问，未取得README、目录树、Dockerfile、.gitmodules原文及子仓commit。
