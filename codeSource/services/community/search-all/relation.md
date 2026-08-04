@@ -12,7 +12,7 @@ updated_at: 2026-08-04
 
 ## registry_info
 
-- 服务注册信息：公开入口 [doc-search.openeuler.org](https://doc-search.openeuler.org)；来源：backlog service yaml。
+- 服务注册信息：公开入口 [doc-search.openeuler.org](https://doc-search.openeuler.org)；来源：受限来源：backlog service yaml（公开读者可能无法访问）。
 
 ## evolution
 

@@ -12,7 +12,7 @@ updated_at: 2026-08-04
 
 ## registry_info
 
-- 服务注册信息：公开入口 [certification.openeuler.openatom.cn](https://certification.openeuler.openatom.cn)；来源：backlog service yaml。
+- 服务注册信息：公开入口 [certification.openeuler.openatom.cn](https://certification.openeuler.openatom.cn)；来源：受限来源：backlog service yaml（公开读者可能无法访问）。
 
 ## evolution
 
@@ -26,7 +26,5 @@ updated_at: 2026-08-04
 ## facts_insufficient
 
 - 未能从允许来源核验完整组件清单，因此未作补充。
-
-- 当前来源未提供具体事实缺口。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

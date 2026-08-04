@@ -31,7 +31,7 @@ updated_at: 2026-08-04
 
 - service.md 未核验到主仓直接部署记录；已核验部署属于关联仓。
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
-- 主仓最近10条commit或issue未能取得。
+- 主仓最近 10 条 commit 或 issue未能取得。
 - infra-common service.md未找到APIMagic或om-dataarts源码仓的直接部署行；仅匹配到datastat-manage-website。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

@@ -13,7 +13,6 @@ updated_at: 2026-08-04
 ## registry_info
 
 - 未记录可公开的 registry YAML 入口。
-- 关联仓部署记录：lfs-website 和 openeuler-bigfiles-deployment；来源：infra-common service.md。该记录不作为主仓直接部署结论。
 
 ## evolution
 
@@ -28,7 +27,8 @@ updated_at: 2026-08-04
 
 - 未能从允许来源核验完整组件清单，因此未作补充。
 
-- service.md 未核验到主仓直接部署记录；已核验部署属于关联仓。
+- 关联仓匹配到 lfs-website 和 openeuler-bigfiles-deployment；这是关联仓信息，不作为本服务主仓部署结论。
+- service.md 未核验到主仓直接部署记录。
 - 主仓仅有 2 条 commit，未形成 10 条近期演进记录。
 - infra-common service.md 未以 umbrella 仓名直接记录 BigFiles 部署行。
 - 未提供后端端口、数据库或 CDN 连接细节。

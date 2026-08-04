@@ -11,7 +11,7 @@ AI 模型训练推理协作微服务平台，包含 API、Notebook、消息服�
 
 ## infrastructure
 - 服务注册文件统一 service id 为 xihe，源码 umbrella 仓为 opensourceways/xihe-all。
-- 注册文件将 xihe-all 描述为 Git submodule 聚合 umbrella 仓，列出 7 个 dev 子仓。
+- 服务注册与公开源码说明其提供 API、Notebook、消息服务、协议库、SDK 和 Kubernetes Operator 能力。
 
 ## components
 
