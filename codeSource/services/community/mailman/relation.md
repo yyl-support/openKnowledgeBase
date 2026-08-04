@@ -13,7 +13,10 @@ updated_at: 2026-08-04
 ## registry_info
 
 - 未记录可公开的 registry YAML 入口。
-- 关联仓部署记录：mailman-web 和 dovecot；来源：infra-common service.md。该记录不作为主仓直接部署结论。
+
+## related_deployments
+
+- 关联仓部署：mailman-web 和 dovecot；来源：infra-common service.md。该记录不作为主仓直接部署结论。
 
 ## evolution
 

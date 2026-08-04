@@ -15,6 +15,8 @@ Jenkins / CodeArts CI 通用工具链，注册说明包含脚本同步和日志�
 
 ## components
 
+允许来源未能核验公开组件清单，未作补充。
+
 ## 源码
 
 - 服务注册 tools_repo：[ci-all](https://github.com/opensourceways/ci-all)

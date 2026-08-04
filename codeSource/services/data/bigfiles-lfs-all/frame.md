@@ -16,6 +16,8 @@ GitHub 公共仓库将该服务描述为 cascading umbrella，注册信息定位
 
 ## components
 
+允许来源未能核验公开组件清单，未作补充。
+
 ## 源码
 
 - 服务注册 tools_repo：[bigfiles-lfs-all](https://github.com/opensourceways/bigfiles-lfs-all)

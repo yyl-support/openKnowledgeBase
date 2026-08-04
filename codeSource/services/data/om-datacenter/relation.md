@@ -8,14 +8,17 @@ updated_at: 2026-08-04
 
 ## connection
 
-- om-dataarts写入PostgreSQL。
-- APIMagic读取PostgreSQL并输出JSON。
+- om-dataarts写入 PostgreSQL。
+- APIMagic读取 PostgreSQL并输出 JSON。
 - 服务注册文件提及datastat / kafka，但未取得代码仓库实现细节。
 
 ## registry_info
 
 - 未记录可公开的 registry YAML 入口。
-- 关联仓部署记录：datastat-manage-website；来源：infra-common service.md。该记录不作为主仓直接部署结论。
+
+## related_deployments
+
+- 关联仓部署：datastat-manage-website；来源：infra-common service.md。该记录不作为主仓直接部署结论。
 
 ## evolution
 

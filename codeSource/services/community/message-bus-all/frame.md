@@ -11,9 +11,10 @@ updated_at: 2026-08-04
 
 ## infrastructure
 - 生产入口为 https://message-center.openeuler.openatom.cn（服务注册 YAML）。
-- 注册配置声明预览环境使用专属服务标识和 ArgoCD 发布流程。
 
 ## components
+
+允许来源未能核验公开组件清单，未作补充。
 
 ## 源码
 

@@ -7,13 +7,15 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-昇腾CI资源池的ArgoCD/kustomize配置仓库，服务注册说明将其定义为纯配置类仓库，代码合入后由ArgoCD自动同步。
+昇腾 CI 资源池配置仓库，服务注册说明将其定义为纯配置类仓库。
 
 ## infrastructure
 - 实现仓库为opensourceways/ascend-ci-project，引用 main 分支。
 - 注册文件声明无需上线测试，纯配置仓库代码合入即完成。
 
 ## components
+
+允许来源未能核验公开组件清单，未作补充。
 
 ## 源码
 

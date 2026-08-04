@@ -11,9 +11,10 @@ updated_at: 2026-08-04
 
 ## infrastructure
 - 生产入口为 https://software-pkg.openeuler.org（服务注册 YAML）。
-- 发布方式登记为 ArgoCD；注册配置还记录了 EasySoftware 自动修复构建脚本字段为空，以及多个子仓未配置测试部署目标。
 
 ## components
+
+允许来源未能核验公开组件清单，未作补充。
 
 ## 源码
 

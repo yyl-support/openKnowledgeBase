@@ -7,26 +7,18 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-AI 模型训练推理协作微服务平台，包含 API、Notebook、消息服务、协议库、SDK 和 Kubernetes Operator。
+AI 模型训练推理协作服务平台。
 
 ## infrastructure
-- 服务注册文件统一 service id 为 xihe，源码 umbrella 仓为 opensourceways/xihe-all。
-- 服务注册与公开源码说明其提供 API、Notebook、消息服务、协议库、SDK 和 Kubernetes Operator 能力。
+
+- AI 模型训练推理协作服务，公开描述包含 API、Notebook、消息服务、协议库、SDK 和 Kubernetes Operator 能力。
 
 ## components
 
-| name | role |
-| --- | --- |
-| xihe-server | 主服务 API |
-| xihe-jupyter-server | Notebook 服务 |
-| xihe-message-server | 消息服务 |
+允许来源未能核验公开组件清单，未作补充。
 
 ## 源码
 
 - 服务注册 tools_repo：[xihe-all](https://github.com/opensourceways/xihe-all)
-- umbrella/聚合仓：[xihe-all](https://github.com/opensourceways/xihe-all)
-- 已核验子仓：[xihe-server](https://github.com/opensourceways/xihe-server)
-- 已核验子仓：[xihe-jupyter-server](https://github.com/opensourceways/xihe-jupyter-server)
-- 已核验子仓：[xihe-message-server](https://github.com/opensourceways/xihe-message-server)
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)
