@@ -4,6 +4,7 @@
 
 - `codeSource/` 存放外网代码事实和服务知识来源。
 - `knowledgeManagement/` 存放知识管理 CLI、架构、契约和长期规则。
+- `report/` 存放阶段验证材料和汇报稿，不作为已批准 Wiki 的发布目录。
 - `output/` 是生成文档的唯一正式输出目录。
 - 不得将生成的 Wiki、仓库全景、报告或其他正式知识文档写入 `codeSource/`、`knowledgeManagement/` 或仓库根目录。
 - `.knowledge/`、实验候选、调试响应、测试输出和日常工作记录不得提交。
