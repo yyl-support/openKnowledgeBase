@@ -17,12 +17,14 @@
 ## 目录
 
 - [`codeSource/`](codeSource/)：公开代码事实和服务知识
-- [`codeSource/org-overview.md`](codeSource/org-overview.md)：组织概览占位文档
-- [`codeSource/service-map.md`](codeSource/service-map.md)：服务地图占位文档
+- [`codeSource/org-overview.md`](codeSource/org-overview.md)：组织仓库画像与代码来源全景
+- [`codeSource/service-map.md`](codeSource/service-map.md)：24 个服务的分类与文档入口
 - [`codeSource/source-registry.md`](codeSource/source-registry.md)：本次服务注册项范围快照
 - [`codeSource/services/`](codeSource/services/)：已生成的 24 个服务级文档
 
-当前覆盖范围为 24 个服务注册项，24 个服务文档已生成，详见 [`codeSource/services/`](codeSource/services/)。每个服务注册项由 backlog 仓库外部输入 `.ai-flow/services/<id>.yaml` 定义。其中 `label: project:<id>` 是 GitHub issue 路由标签，不是另一组服务数量，二者不代表两个数量。具体服务清单以 [`codeSource/source-registry.md`](codeSource/source-registry.md) 为准。
+当前已完成 `codeSource` 文档，覆盖 24 个服务注册项、48 个服务级 Markdown 文件（每个服务一份 `frame.md` 和一份 `relation.md`），详见 [`codeSource/services/`](codeSource/services/)。组织概览、服务地图和本次来源快照分别见 [`codeSource/org-overview.md`](codeSource/org-overview.md)、[`codeSource/service-map.md`](codeSource/service-map.md) 和 [`codeSource/source-registry.md`](codeSource/source-registry.md)。每个服务注册项由 backlog 仓库外部输入 `.ai-flow/services/<id>.yaml` 定义。其中 `label: project:<id>` 是 GitHub issue 路由标签，不是另一组服务数量，二者不代表两个数量。
+
+公开安全边界：服务成品仅发布经过审核的公开事实，不发布凭据、密钥、令牌、内部部署路径、集群或 namespace 等受限细节；私有/归档统计仅来自授权元数据，不发布私有源码细节。
 
 backlog 外部来源：<https://github.com/opensourceways/backlog>，访问需要组织权限，公开读者可能收到 404，不能将其描述为公开可验证来源。本公开仓库不复制 backlog 配置。
 

@@ -4,25 +4,82 @@
 
 ## 文档目的
 
-本文件用于提供团队和组织的公开概览，作为外网知识库的高层入口。内容应遵循渐进式披露原则，只呈现已经确认并适合公开的信息。
+本文件是 `codeSource` 的组织级入口，提供 opensourceways 组织仓库元数据画像、已注册服务范围和公开发布边界。内容遵循渐进式披露原则，只呈现有明确来源、已核验且适合公开的信息。
 
-相关入口：[`service-map.md`](service-map.md)；具体服务注册项清单：[`source-registry.md`](source-registry.md)。
+本次数据快照日期为 **2026-08-04**。服务注册项的逐项范围见 [`source-registry.md`](source-registry.md)，分类与服务入口见 [`service-map.md`](service-map.md)。
 
-## 当前状态
+## 组织仓库画像
 
-- 数据快照日期：2026-08-04
-- 数据来源：服务注册项由外部 backlog 输入 `.ai-flow/services/<id>.yaml` 定义，来源为 <https://github.com/opensourceways/backlog>，访问需要组织权限，公开读者可能收到 404，不能将其描述为公开可验证来源。本公开仓库不复制 backlog 配置。具体清单以 [`source-registry.md`](source-registry.md) 为准。
-- 生成状态：当前处于生成阶段，本文件仍是占位说明，尚未形成正式组织统计快照。
-- 统计数字：除范围快照中的 24 个服务注册项外，尚未生成其他统计数字，不在此处编造。
+GitHub API 元数据快照包含 **450** 个组织仓库，其中 fork **42** 个、归档 **246** 个、私有 **397** 个。私有和归档数量来自授权 API 元数据统计，不表示本公开仓库发布了相应仓库的源码或内部细节。
 
-## 计划覆盖内容
+### 语言分布 Top 10
 
-后续版本将覆盖以下组织指标和视图：
+以下结果由 `org_repos.json` 的 `language` 字段统计；空语言值统一记为 `Unknown`，未手填推断。
 
-- 组织结构和团队边界
-- 项目和服务归属关系
-- 服务生命周期和维护状态
-- 公开可验证的职责、依赖和协作关系
-- 24 个服务注册项的全景索引。每个注册项对应一个外部 backlog 输入文件，其中 `label: project:<id>` 仅用于 GitHub issue 路由，不构成另一组数量。
+| 排名 | 语言 | 仓库数 |
+| --- | --- | ---: |
+| 1 | Go | 160 |
+| 2 | Unknown | 87 |
+| 3 | Python | 75 |
+| 4 | Java | 23 |
+| 5 | Shell | 19 |
+| 6 | Vue | 16 |
+| 7 | JavaScript | 13 |
+| 8 | HTML | 10 |
+| 9 | Dockerfile | 8 |
+| 10 | CSS | 7 |
 
-上述内容仅表示目标覆盖范围。在数据生成和审核完成前，不代表已有对应统计或服务明细。当前不编造 24 个服务注册项的具体内容。
+### 推送活跃度
+
+以 2026-08-04 为基准，按 `pushed_at` 划分为最近 6 个月（2026-02-04 及以后）、6-24 个月（2024-08-04 至 2026-02-03）和超过 24 个月（早于 2024-08-04）。
+
+| 区间 | 仓库数 |
+| --- | ---: |
+| 6 个月内 | 222 |
+| 6-24 个月 | 135 |
+| 超过 24 个月 | 93 |
+
+三档合计 450 个仓库；统计字段缺失时不补造，本次快照没有缺失的 `pushed_at` 值。
+
+## 治理事实
+
+- backlog 是受控的外部来源，公开读者访问其 URL 可能收到 404；本文件不声称公开读者可以访问 backlog。
+- 本次通过授权读取 `.ai-flow/services/*.yaml`，得到 24 个服务注册项。`source-registry.md` 是本次快照的范围清单，不复制 YAML 全文。
+- 每个服务的 `label: project:<id>` 是 GitHub issue 路由标签，不是另一组服务数量。
+
+## 代码来源全景
+
+以下七个分类与 [`service-map.md`](service-map.md) 保持一致，服务 ID 为该文件中的注册项：
+
+| 分类 | 服务 ID |
+| --- | --- |
+| identity | `cla-all`, `om-webserver`, `oneid-all` |
+| robots | `forum-reply-robot`, `robot` |
+| ci | `ascend-ci-project`, `calculator`, `ci-all` |
+| data | `bigfiles-lfs-all`, `om-datacenter`, `oss-map`, `xihe` |
+| package | `eur-build-all`, `software-package-all` |
+| security | `certification-all`, `patch-manager`, `security-cve-all` |
+| community | `etherpad-lite`, `hotopic-all`, `mailman`, `meeting-server`, `message-bus-all`, `pod-exporter-monitoring`, `search-all` |
+
+共 24 个服务注册项；服务地图提供分类、项目标签、实现仓库和服务文档入口。
+
+## 部署知识来源
+
+`infra-common/service.md` 是部署映射的事实来源。已生成服务文档中的 `deploy`/`related_deployments` 内容按公开边界过滤，只保留适合公开发布的部署事实；本组织概览不复制内部部署路径、集群、namespace、Vault 或其他受限配置细节。
+
+## 覆盖边界
+
+本轮仅覆盖 24 个注册服务，并生成 48 个服务级 Markdown 文件（每个服务一份 `frame.md` 和一份 `relation.md`）。其他组织仓库未生成服务文档。组织仓库总量及其中私有、归档仓库的统计来自授权元数据；本公开仓库不发布私有源码细节。
+
+## 数据来源与限制
+
+- GitHub API 组织仓库元数据：仓库数量、fork、归档、私有、语言和 `pushed_at`。
+- 受控 backlog 的 `.ai-flow/services/*.yaml`：服务注册项及其路由标签、实现仓库范围。
+- 各源码仓的 README、目录树、commit 和 issue：服务级公开代码事实。
+- `infra-common/service.md`：部署映射事实来源，按公开边界过滤后用于服务文档。
+
+以上来源无法核验的部分不补造；受控 backlog 的内容也不因出现在来源清单中而被描述为公开可访问。
+
+---
+
+导航：[`README.md`](../README.md) · [`service-map.md`](service-map.md) · [`source-registry.md`](source-registry.md)
