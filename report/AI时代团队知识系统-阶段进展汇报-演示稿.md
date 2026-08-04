@@ -3,7 +3,6 @@ tags:
   - project-evolution
   - 团队知识系统
   - 阶段汇报
-  - 演示稿
 status: draft
 authors:
   - human-team-sponsor
@@ -12,9 +11,7 @@ audience: management
 presentation_duration: 15-20分钟
 ---
 
-> **演示稿草案**：用于现场展示，与内容稿保持章节对应。当前仅第一部分进入评审。
-
-# AI 时代团队知识系统阶段进展汇报：演示稿
+# AI 时代团队知识系统阶段进展汇报
 
 ## 一、传统时代与 AI 时代的知识管理对比
 
