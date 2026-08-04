@@ -10,8 +10,8 @@ updated_at: 2026-08-04
 昇腾 CI 资源池配置仓库，服务注册说明将其定义为纯配置类仓库。
 
 ## infrastructure
-- 实现仓库为opensourceways/ascend-ci-project，引用 main 分支。
-- 注册文件声明无需上线测试，纯配置仓库代码合入即完成。
+
+- 允许来源未提供可公开的架构补充。
 
 ## components
 

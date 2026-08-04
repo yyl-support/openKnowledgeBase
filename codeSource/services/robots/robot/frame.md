@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 本地注册将其描述为 openEuler 社区机器人集群，覆盖 approve、lgtm、cla、welcome 等社区自动化能力。
 
 ## infrastructure
+
 - 本地注册称其为无状态 webhook server。
 
 ## components

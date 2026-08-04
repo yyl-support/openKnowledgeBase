@@ -12,7 +12,7 @@ updated_at: 2026-08-04
 
 ## registry_info
 
-- 服务注册信息：公开入口 [message-center.openeuler.openatom.cn](https://message-center.openeuler.openatom.cn)；来源：受限的 backlog service YAML（公开读者可能无法访问）。
+- 服务注册信息：公开入口 [message-center.openeuler.openatom.cn](https://message-center.openeuler.openatom.cn)；来源：受控来源：backlog service YAML。
 
 ## evolution
 

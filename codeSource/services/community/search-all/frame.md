@@ -10,7 +10,8 @@ updated_at: 2026-08-04
 EasySearch 索引、文档搜索、文档输入和 RM-CHECK 服务。
 
 ## infrastructure
-- 生产入口为 https://doc-search.openeuler.org（服务注册 YAML）。
+
+- 允许来源未提供可公开的架构补充。
 
 ## components
 

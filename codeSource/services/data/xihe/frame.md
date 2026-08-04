@@ -7,11 +7,12 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-AI 模型训练推理协作服务平台。
+
+这是一个面向 AI 模型训练与协作场景的微服务平台，公开来源不足以核验完整组件清单，因此不展开组件名称。
 
 ## infrastructure
 
-- AI 模型训练推理协作服务，公开描述包含 API、Notebook、消息服务、协议库、SDK 和 Kubernetes Operator 能力。
+- 公开来源不足以核验完整组件清单和架构结构。
 
 ## components
 

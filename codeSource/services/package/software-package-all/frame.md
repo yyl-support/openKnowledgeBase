@@ -10,7 +10,8 @@ updated_at: 2026-08-04
 软件包平台，注册描述包含网关、server、website、自动修复和自动升级。
 
 ## infrastructure
-- 生产入口为 https://software-pkg.openeuler.org（服务注册 YAML）。
+
+- 允许来源未提供可公开的架构补充。
 
 ## components
 

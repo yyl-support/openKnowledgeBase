@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 Mailman mono-repo，包含邮件处理核心、Web 管理界面和 MTA 邮件投递。
 
 ## infrastructure
+
 - 邮件列表管理
 - 邮件处理
 - Web 管理

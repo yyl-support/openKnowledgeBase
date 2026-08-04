@@ -10,10 +10,10 @@ updated_at: 2026-08-04
 基于 Etherpad 的实时协同编辑器，支持多人同时编辑、富文本和数据导出。
 
 ## infrastructure
+
 - 多人在线协同编辑
 - 富文本
 - 数据导出
-- 多社区独立部署
 
 ## components
 

@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 本地服务注册仅将其命名为集群 pod 监控，未提供更多功能事实。
 
 ## infrastructure
+
 - 允许来源未提供可公开的基础设施说明。
 
 ## components

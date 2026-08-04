@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 本地注册将其描述为监控社区论坛新帖、基于 LightRAG 知识库检索自动生成回复的服务。
 
 ## infrastructure
+
 - 允许来源未提供可公开的基础设施说明。
 
 ## components

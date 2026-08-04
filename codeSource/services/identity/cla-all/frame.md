@@ -10,7 +10,7 @@ updated_at: 2026-08-04
 CLA umbrella 仓，聚合 CLA 签署后端、统计服务和 WebUI。
 
 ## infrastructure
-- 本地 service 注册的生产入口为 https://clasign.osinfra.cn。
+
 - 仓库目录包含 .gitmodules、CLAUDE.md、三个 CLA 子仓目录。
 
 ## components

@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 本地服务注册将其描述为面向 openEuler 社区互联网客户的特性、CVE、Bugfix 补丁分类管理、状态追踪、测试用例管理和客户版本管理。
 
 ## infrastructure
+
 - 允许来源未提供可公开的基础设施说明。
 
 ## components

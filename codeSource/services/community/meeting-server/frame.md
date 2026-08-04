@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 本地服务注册将其描述为提供社区会议安排、议程、纪要和实时字幕（easywhisperx）的会议服务。
 
 ## infrastructure
+
 - 允许来源未提供可公开的基础设施说明。
 
 ## components

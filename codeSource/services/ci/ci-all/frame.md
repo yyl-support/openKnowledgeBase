@@ -10,7 +10,7 @@ updated_at: 2026-08-04
 Jenkins / CodeArts CI 通用工具链，注册说明包含脚本同步和日志扫描用途。代码仓库是cascading umbrella，具体子仓以仓库目录树为准。
 
 ## infrastructure
-- 服务注册文件将实现仓库指定为opensourceways/ci-all，引用 main 分支。
+
 - 注册文件描述其用途为Jenkins / CodeArts CI 通用工具链（脚本同步 / 日志扫描）。
 
 ## components

@@ -23,8 +23,9 @@ openEuler OneID 统一身份认证 umbrella 仓，聚合后端 API、前端 UI �
 
 ## 源码
 
+- 本文服务注册项：oneid-all。
+- 注册实现入口：oneid-server。
 - 服务注册 tools_repo：[oneid-server](https://github.com/opensourceways/oneid-server)
 - 已核验子仓：[oneid-website](https://github.com/opensourceways/oneid-website)
 - 已核验子仓：[oneid-workbench-website](https://github.com/opensourceways/oneid-workbench-website)
-
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

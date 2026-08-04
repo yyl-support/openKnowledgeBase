@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 单仓库应用，包含 FastAPI 后端、Vue 3 + Nginx 前端和数据采集器，使用 PostgreSQL。
 
 ## infrastructure
+
 - 开源项目全景地图
 - 项目组织人员数据管理
 - 数据采集

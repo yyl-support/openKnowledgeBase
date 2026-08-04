@@ -10,7 +10,8 @@ updated_at: 2026-08-04
 消息总线服务，包含 GitHub 钩子和事件分发能力，注册描述列出 collect、manager、push、transfer。
 
 ## infrastructure
-- 生产入口为 https://message-center.openeuler.openatom.cn（服务注册 YAML）。
+
+- 允许来源未提供可公开的架构补充。
 
 ## components
 

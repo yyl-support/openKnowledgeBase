@@ -10,7 +10,8 @@ updated_at: 2026-08-04
 openEuler User Repository（EUR）软件包构建、补丁和缺陷管理服务。
 
 ## infrastructure
-- 生产入口为 https://eur.openeuler.openatom.cn（服务注册 YAML）。
+
+- 允许来源未提供可公开的架构补充。
 
 ## components
 

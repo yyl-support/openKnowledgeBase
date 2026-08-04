@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 GitHub 公共仓库将该服务描述为 cascading umbrella，注册信息定位为大文件资源中心、Git LFS 以及 CDN 上传下载入口。
 
 ## infrastructure
+
 - 大文件资源中心
 - Git LFS
 - CDN 上传下载

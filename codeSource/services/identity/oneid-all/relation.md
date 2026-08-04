@@ -13,8 +13,8 @@ updated_at: 2026-08-04
 
 ## registry_info
 
-- 服务注册信息：公开入口 [id.openeuler.org](https://id.openeuler.org)；来源：受限的 backlog service YAML（公开读者可能无法访问）。
-- 关联配置仓：oneid-all；来源：受限的 backlog service YAML（公开读者可能无法访问）。
+- 服务注册信息：公开入口 [id.openeuler.org](https://id.openeuler.org)；来源：受控来源：backlog service YAML。
+- 关联 umbrella 配置仓：oneid-all；来源：受控来源：backlog service YAML。
 
 ## evolution
 
@@ -36,7 +36,5 @@ updated_at: 2026-08-04
 | prod | 未记录 | [oneid-server](https://github.com/opensourceways/oneid-server) | kustomize | infra-common service.md |
 
 ## facts_insufficient
-
-- 未能从允许来源核验完整组件清单，因此未作补充。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

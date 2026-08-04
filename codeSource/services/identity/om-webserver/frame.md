@@ -10,6 +10,7 @@ updated_at: 2026-08-04
 OM-Webserver 是提供账号管理能力的独立服务，README 记录 Spring Boot、Redis 和 OBS 技术栈，支持 Maven 构建运行或 Docker 构建运行。
 
 ## infrastructure
+
 - 仓库目录包含 src、pom.xml、Dockerfile、.mvn 和 Maven/Java 工程配置。
 
 ## components
