@@ -17,7 +17,7 @@ GitHub 公共仓库将该服务描述为 cascading umbrella，注册信息定位
 
 ## components
 
-当前来源未提供可核验的组件清单。
+当前公开来源未能为 大文件与 LFS 服务 核验完整组件清单。
 
 ## 源码
 

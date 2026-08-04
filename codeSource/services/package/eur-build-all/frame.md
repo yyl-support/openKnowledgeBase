@@ -15,7 +15,7 @@ openEuler User Repository（EUR）软件包构建、补丁和缺陷管理服务�
 
 ## components
 
-当前来源未提供可核验的组件清单。
+当前公开来源未能为 EUR 构建服务 核验完整组件清单。
 
 ## 源码
 

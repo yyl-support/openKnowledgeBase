@@ -21,7 +21,7 @@ updated_at: 2026-08-04
 ## evolution
 
 以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
-- GitHub API 未能核验演进记录，因此未推断演进方向。
+- 当前未取得 xihe 的足量公开提交或 issue 记录，未补造演进结论。
 
 ## deploy
 

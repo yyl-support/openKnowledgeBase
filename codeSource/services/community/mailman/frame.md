@@ -18,7 +18,7 @@ Mailman mono-repo，包含邮件处理核心、Web 管理界面和 MTA 邮件投
 
 ## components
 
-当前来源未提供可核验的组件清单。
+当前公开来源未能为 Mailman 服务 核验完整组件清单。
 
 ## 源码
 
