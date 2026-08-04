@@ -8,7 +8,7 @@ updated_at: 2026-08-04
 
 ## connection
 
-- 服务间使用xihe-grpc-protocol定义的gRPC。
+- 服务间存在注册配置记录的协议连接，公开版本不展开具体组件名称。
 - 持久层使用PostgreSQL和Redis。
 
 ## registry_info

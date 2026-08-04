@@ -18,12 +18,10 @@ AI 模型训练推理协作微服务平台，包含 API、Notebook、消息、�
 
 | name | role |
 | --- | --- |
-| xihe-server | 主服务API |
-| xihe-jupyter-server | Notebook服务 |
+| xihe-server | 主服务 API |
+| xihe-jupyter-server | Notebook 服务 |
 | xihe-message-server | 消息服务 |
-| xihe-sdk | SDK库 |
-| xihe-grpc-protocol | gRPC协议定义 |
-| code-server-operator | Kubernetes Operator |
+| 存在注册配置未公开组件，公开版本不展开 | 未公开组件 |
 
 ## 源码
 
@@ -32,8 +30,5 @@ AI 模型训练推理协作微服务平台，包含 API、Notebook、消息、�
 - 已核验源码仓：[xihe-jupyter-server](https://github.com/opensourceways/xihe-jupyter-server)
 - 已核验源码仓：[xihe-message-server](https://github.com/opensourceways/xihe-message-server)
 - 存在注册配置未公开组件，公开版本不展开。
-- 注册配置名称（未核验独立源码仓）：xihe-sdk
-- 注册配置名称（未核验独立源码仓）：xihe-grpc-protocol
-- 注册配置名称（未核验独立源码仓）：code-server-operator
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)
