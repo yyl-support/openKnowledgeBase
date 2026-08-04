@@ -2,7 +2,7 @@
 
 这是一个公开仓库，也是 AI 时代团队外网知识库总仓。
 
-文档导航：[`README.md`](README.md) · [`org-overview.md`](codeSource/org-overview.md) · [`org-repos-snapshot.json`](codeSource/org-repos-snapshot.json) · [`service-map.md`](codeSource/service-map.md) · [`source-registry.md`](codeSource/source-registry.md)。
+文档导航：[`README.md`](README.md) · [`org-overview.md`](codeSource/org-overview.md) · [`org-repos-snapshot.json`](codeSource/org-repos-snapshot.json) · [`service-map.md`](codeSource/service-map.md) · [`source-registry.md`](codeSource/source-registry.md) · [`knowledgeManagement/`](knowledgeManagement/) · [`output/`](output/)。
 
 ## 定位
 
@@ -22,6 +22,8 @@
 - [`codeSource/service-map.md`](codeSource/service-map.md)：24 个服务的分类与文档入口
 - [`codeSource/source-registry.md`](codeSource/source-registry.md)：本次服务注册项范围快照
 - [`codeSource/services/`](codeSource/services/)：已生成的 24 个服务级文档
+- [`knowledgeManagement/`](knowledgeManagement/)：知识管理 CLI、正式架构和输出契约
+- [`output/`](output/)：生成文档的唯一正式输出目录
 
 当前已完成 `codeSource` 文档，覆盖 24 个服务注册项、48 个服务级 Markdown 文件（每个服务一份 `frame.md` 和一份 `relation.md`），详见 [`codeSource/services/`](codeSource/services/)。组织概览、组织仓库聚合快照、服务地图和本次来源快照分别见 [`codeSource/org-overview.md`](codeSource/org-overview.md)、[`codeSource/org-repos-snapshot.json`](codeSource/org-repos-snapshot.json)、[`codeSource/service-map.md`](codeSource/service-map.md) 和 [`codeSource/source-registry.md`](codeSource/source-registry.md)。聚合快照仅保留组织级聚合数量（包括私有仓库数量），不保存仓库名称、逐仓私有属性和仓库级私有元数据或源码；原始授权 API 的仓库级数据未复制。每个服务注册项由 backlog 仓库外部输入 `.ai-flow/services/<id>.yaml` 定义。其中 `label: project:<id>` 是 GitHub issue 路由标签，不是另一组服务数量，二者不代表两个数量。
 

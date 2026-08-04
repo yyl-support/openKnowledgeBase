@@ -1,0 +1,16 @@
+{
+  "profiles": {
+    "deepseek-v4-flash": {
+      "adapter": "openai-compatible",
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-v4-flash",
+      "api_key_source": "opencode-auth",
+      "auth_provider": "deepseek",
+      "timeout_seconds": 300,
+      "max_input_chars": 200000,
+      "max_claims": 10,
+      "max_tokens": 4096,
+      "thinking": "disabled"
+    }
+  }
+}

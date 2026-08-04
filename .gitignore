@@ -1,2 +1,5 @@
 # .drafts/ 是本地分析草稿且不发布
 .drafts/
+.knowledge/
+__pycache__/
+*.pyc
