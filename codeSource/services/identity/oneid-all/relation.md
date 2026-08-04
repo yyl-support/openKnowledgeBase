@@ -19,16 +19,16 @@ updated_at: 2026-08-04
 ## evolution
 
 以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
-- 2026-06-12 [419715c](https://github.com/opensourceways/oneid-all/commit/419715c) 关联 umbrella 仓 oneid-all 的记录：分支运行时处理调整。
-- 2026-06-12 [a772625](https://github.com/opensourceways/oneid-all/commit/a772625) 关联 umbrella 仓 oneid-all 的记录：运行时分支处理调整；不再使用未解析的 issue 分支名称。
-- 2026-06-09 [92cb9cf](https://github.com/opensourceways/oneid-all/commit/92cb9cf) 关联 umbrella 仓 oneid-all 的记录：!3 feature: 设置子模块；设置子模块。
-- 2026-06-09 [0f1434f](https://github.com/opensourceways/oneid-all/commit/0f1434f) 关联 umbrella 仓 oneid-all 的记录：feature: 设置子模块；设置账号后端子模块。
-- 2026-06-05 [cd5f003](https://github.com/opensourceways/oneid-all/commit/cd5f003) 关联 umbrella 仓 oneid-all 的记录：Merge pull request #2；修复 oneid-website 仓库指向并增加个人中心仓库地址。
-- 2026-06-04 [db7da3b](https://github.com/opensourceways/oneid-all/commit/db7da3b) 关联 umbrella 仓 oneid-all 的记录：fix: oneid-website 仓库指向问题以及增加个人中心仓库地址；调整子仓库指向。
-- 2026-05-29 [9fa194c](https://github.com/opensourceways/oneid-all/commit/9fa194c) 关联 umbrella 仓 oneid-all 的记录：主机处理逻辑调整。
-- 2026-05-29 [b7edbed](https://github.com/opensourceways/oneid-all/commit/b7edbed) 关联 umbrella 仓 oneid-all 的记录：主机校验逻辑调整。
-- 2026-05-28 [8f72536](https://github.com/opensourceways/oneid-all/commit/8f72536) 关联 umbrella 仓 oneid-all 的记录：全栈协作钩子骨架调整。
-- 2026-05-28 [fc545c3](https://github.com/opensourceways/oneid-all/commit/fc545c3) 关联 umbrella 仓 oneid-all 的记录：协作脚本及配置骨架调整。
+- 2026-06-12 [419715c](https://github.com/opensourceways/oneid-all/commit/419715c) 关联的聚合仓 oneid-all 的记录：分支运行时处理调整。
+- 2026-06-12 [a772625](https://github.com/opensourceways/oneid-all/commit/a772625) 关联的聚合仓 oneid-all 的记录：运行时分支处理调整；不再使用未解析的 issue 分支名称。
+- 2026-06-09 [92cb9cf](https://github.com/opensourceways/oneid-all/commit/92cb9cf) 关联的聚合仓 oneid-all 的记录：!3 feature: 设置子模块；设置子模块。
+- 2026-06-09 [0f1434f](https://github.com/opensourceways/oneid-all/commit/0f1434f) 关联的聚合仓 oneid-all 的记录：feature: 设置子模块；设置账号后端子模块。
+- 2026-06-05 [cd5f003](https://github.com/opensourceways/oneid-all/commit/cd5f003) 关联的聚合仓 oneid-all 的记录：Merge pull request #2；修复 oneid-website 仓库指向并增加个人中心仓库地址。
+- 2026-06-04 [db7da3b](https://github.com/opensourceways/oneid-all/commit/db7da3b) 关联的聚合仓 oneid-all 的记录：fix: oneid-website 仓库指向问题以及增加个人中心仓库地址；调整子仓库指向。
+- 2026-05-29 [9fa194c](https://github.com/opensourceways/oneid-all/commit/9fa194c) 关联的聚合仓 oneid-all 的记录：主机处理逻辑调整。
+- 2026-05-29 [b7edbed](https://github.com/opensourceways/oneid-all/commit/b7edbed) 关联的聚合仓 oneid-all 的记录：主机校验逻辑调整。
+- 2026-05-28 [8f72536](https://github.com/opensourceways/oneid-all/commit/8f72536) 关联的聚合仓 oneid-all 的记录：全栈协作钩子骨架调整。
+- 2026-05-28 [fc545c3](https://github.com/opensourceways/oneid-all/commit/fc545c3) 关联的聚合仓 oneid-all 的记录：协作脚本及配置骨架调整。
 
 ## deploy
 

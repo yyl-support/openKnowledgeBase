@@ -34,6 +34,6 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - service.md 未核验到 xihe-all 主仓直接部署记录。
 - 主仓最近 10 条 commit 或 issue 未能取得。
-- infra-common service.md 仅匹配 xihe-server 和 deployment-xihe-jupyter-server，未匹配其他 umbrella 子仓的直接部署源码行。
+- infra-common service.md 仅匹配 xihe-server 和 deployment-xihe-jupyter-server，未匹配其他聚合子仓的直接部署源码行。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)
