@@ -9,7 +9,7 @@ updated_at: 2026-08-04
 ## connection
 
 - om-dataarts 写入 PostgreSQL。
-- APIMagic 读取 PostgreSQL 并输出 JSON。
+- APIMagic 读取 PostgreSQL，并输出 JSON。
 - 服务注册文件提及 datastat / Kafka，但未取得代码仓库实现细节。
 
 ## related_deployments
