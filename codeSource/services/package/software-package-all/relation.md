@@ -28,5 +28,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - infra-common service.md 未找到 software-package-all 主仓直接匹配；EasySoftware 关联子仓记录不作为本服务部署结论。
 - service 注册中记录部分 EasySoftware 构建配置为空，且多个关联组件未配置测试部署目标。
-- 当前公开来源未能为 软件包平台服务 核验完整组件清单。
+- 现有来源不足以展开软件包平台服务的组件明细。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

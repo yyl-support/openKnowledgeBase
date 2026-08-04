@@ -25,5 +25,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 - 最近公开 commit 未达 10 条。
 - infra-common service.md 未匹配 calculator-umbrella 部署记录。
 - 未确认 backend/frontend 的源码 URL 和运行时连接。
-- 当前公开来源未能为 calculator 示例服务 核验完整组件清单。
+- 现有来源不足以展开 calculator 示例服务的组件明细。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

@@ -7,7 +7,7 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-跨社区数据采集、治理和看板平台，涉及D1 / D2 开发者度量、贡献统计、datastat和kafka。umbrella 仓聚合4个dev子仓。
+跨社区数据采集、治理和看板平台，涉及 D1 / D2 开发者度量、贡献统计、datastat 和 Kafka。umbrella 仓聚合 4 个 dev 子仓。
 
 ## infrastructure
 

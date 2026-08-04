@@ -8,7 +8,7 @@ updated_at: 2026-08-04
 
 ## connection
 
-- .ai-flow/deploy/init 包含 SQL 与 MongoDB 初始化脚本，test-sync 包含同步脚本。
+- 公开资料描述 SQL 与 MongoDB 初始化及同步脚本，具体流程细节未纳入公开文档。
 
 ## evolution
 
@@ -31,5 +31,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 ## facts_insufficient
 
 - 未确认可公开保留的 infra-common service.md 部署行。
-- 当前公开来源未能为 热点话题服务 核验完整组件清单。
+- 公开资料未列出热点话题服务的可核验组件明细。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

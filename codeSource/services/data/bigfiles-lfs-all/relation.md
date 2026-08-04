@@ -33,5 +33,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 - 主仓仅有 2 条 commit，未形成 10 条近期演进记录。
 - infra-common service.md 未以 umbrella 仓名直接记录 BigFiles 部署行。
 - 未提供后端端口、数据库或 CDN 连接细节。
-- 当前公开来源未能为 大文件与 LFS 服务 核验完整组件清单。
+- 现有来源不足以展开大文件与 LFS 服务的组件明细。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

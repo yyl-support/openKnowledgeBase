@@ -27,5 +27,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
 - infra-common service.md 中未找到与 https://github.com/opensourceways/eur-build-all 匹配的源码构建仓部署记录。
-- 当前公开来源未能为 EUR 构建服务 核验完整组件清单。
+- 公开资料未给出 EUR 构建服务的组件清单。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

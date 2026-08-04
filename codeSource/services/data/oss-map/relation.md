@@ -29,5 +29,5 @@ updated_at: 2026-08-04
 
 - 最近公开 commit 未达 10 条。
 - 未确认生产部署记录。
-- 当前公开来源未能为 OSS 全景地图服务 核验完整组件清单。
+- 现有来源不足以展开 OSS 全景地图服务的组件明细。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

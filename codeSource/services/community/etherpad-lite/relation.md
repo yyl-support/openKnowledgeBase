@@ -24,5 +24,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 
 - 最近公开 commit 未达 10 条。
 - 未确认外部依赖连接细节。
-- 当前公开来源未能为 Etherpad Lite 服务 核验完整组件清单。
+- 现有来源不足以展开 Etherpad Lite 服务的组件明细。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

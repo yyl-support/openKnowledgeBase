@@ -25,5 +25,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 - 本地注册称 robot 子仓是 submodule，但未提供可公开核验的子仓名称。
 - infra-common service.md 未找到 community-robots 或 robot 的直接映射行。
 - 无法确认组件清单、连接关系和演进记录。
-- 当前公开来源未能为 社区机器人服务 核验完整组件清单。
+- 公开资料未列出社区机器人服务的可核验组件明细。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)
