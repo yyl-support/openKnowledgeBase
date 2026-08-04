@@ -26,12 +26,12 @@
 
 ## 当前覆盖范围
 
-目标覆盖范围为 24 个服务注册项。每个服务注册项由 backlog 仓库外部输入 `.ai-flow/services/<id>.yaml` 定义；当前骨架只建立文档入口和服务目录，尚未生成任何服务明细。具体清单以 [`source-registry.md`](source-registry.md) 为准。
+目标覆盖范围为 24 个服务注册项。每个服务注册项由 backlog 仓库外部输入 `.ai-flow/services/<id>.yaml` 定义；24 个服务文档已生成，详见 [`services/`](services/)。具体清单以 [`source-registry.md`](source-registry.md) 为准。
 
 分类将基于外部 backlog 的 `.ai-flow/services/*.yaml` 中的服务数据生成。外部来源为 <https://github.com/opensourceways/backlog>，访问需要组织权限，公开读者可能收到 404，不能将其描述为公开可验证来源。本公开仓库不复制 backlog 配置。`label: project:<id>` 是 GitHub issue 路由标签，与 24 个服务注册项不是两个数量。
 
-`codeSource/services/` 是预留目录，用于后续存放经过审核的服务级文档，不代表当前已有服务明细。
+`codeSource/services/` 包含 24 个已生成的服务级文档。
 
 ## 生成状态
 
-当前处于生成阶段。服务地图尚未形成正式数据快照，不代表已经完成 24 个服务注册项的分类或统计。后续生成结果必须保留来源引用并经过公开发布边界审核。
+服务地图已形成 24 个服务注册项的文档入口；后续补充内容必须保留来源引用并经过公开发布边界审核。

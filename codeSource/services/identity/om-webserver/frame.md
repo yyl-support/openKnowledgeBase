@@ -2,6 +2,7 @@
 tags: [identity, om-webserver]
 service: om-webserver
 source: https://github.com/opensourceways/om-webserver
+source_repo: https://github.com/opensourceways/om-webserver
 updated_at: 2026-08-04
 ---
 
@@ -22,8 +23,7 @@ OM-Webserver 是提供账号管理能力的独立服务，README 记录 Spring B
 
 ## 源码
 
-- source_repo: https://github.com/opensourceways/om-webserver
-- sub_repos:
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：当前来源不足，未作推断
+- 注册主仓：[om-webserver](https://github.com/opensourceways/om-webserver)
+- 无已核验子仓记录。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

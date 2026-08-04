@@ -2,6 +2,7 @@
 tags: [community, message-bus-all]
 service: message-bus-all
 source: https://github.com/opensourceways/message-bus-all
+source_repo: https://github.com/opensourceways/message-bus-all
 updated_at: 2026-08-04
 ---
 
@@ -16,17 +17,16 @@ updated_at: 2026-08-04
 
 | name | role |
 | --- | --- |
-| collect | 当前来源不足，未作推断 |
-| manager | 当前来源不足，未作推断 |
-| push | 当前来源不足，未作推断 |
-| transfer | 当前来源不足，未作推断 |
-| GitHub 钩子 | 当前来源不足，未作推断 |
-| 事件分发 | 当前来源不足，未作推断 |
+| collect | 注册配置组件，职责未核验 |
+| manager | 注册配置组件，职责未核验 |
+| push | 注册配置组件，职责未核验 |
+| transfer | 注册配置组件，职责未核验 |
+| GitHub 钩子 | 注册配置组件，职责未核验 |
+| 事件分发 | 注册配置组件，职责未核验 |
 
 ## 源码
 
-- source_repo: https://github.com/opensourceways/message-bus-all
-- sub_repos:
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：当前来源不足，未作推断
+- 注册主仓：[message-bus-all](https://github.com/opensourceways/message-bus-all)
+- 无已核验子仓记录。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

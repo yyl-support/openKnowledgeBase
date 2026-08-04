@@ -2,6 +2,7 @@
 tags: [data, oss-map]
 service: oss-map
 source: https://github.com/opensourceways/oss-map
+source_repo: https://github.com/opensourceways/oss-map
 updated_at: 2026-08-04
 ---
 
@@ -18,15 +19,14 @@ updated_at: 2026-08-04
 
 | name | role |
 | --- | --- |
-| backend | 当前来源不足，未作推断 |
-| frontend | 当前来源不足，未作推断 |
-| data-collector | 当前来源不足，未作推断 |
-| PostgreSQL | 当前来源不足，未作推断 |
+| backend | 注册配置组件，职责未核验 |
+| frontend | 注册配置组件，职责未核验 |
+| data-collector | 注册配置组件，职责未核验 |
+| PostgreSQL | 注册配置组件，职责未核验 |
 
 ## 源码
 
-- source_repo: https://github.com/opensourceways/oss-map
-- sub_repos:
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：当前来源不足，未作推断
+- 注册主仓：[oss-map](https://github.com/opensourceways/oss-map)
+- 无已核验子仓记录。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

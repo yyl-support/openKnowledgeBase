@@ -2,6 +2,7 @@
 tags: [identity, oneid-all]
 service: oneid-all
 source: https://github.com/opensourceways/oneid-server
+source_repo: https://github.com/opensourceways/oneid-server
 updated_at: 2026-08-04
 ---
 
@@ -23,11 +24,10 @@ openEuler OneID 统一身份认证 umbrella 仓，聚合后端 API、前端 UI �
 
 ## 源码
 
-- source_repo: https://github.com/opensourceways/oneid-server
-- source_role: 注册表实现入口
-- sub_repos:
-  - 已核验源码仓：oneid-website（https://github.com/opensourceways/oneid-website）
-  - 已核验源码仓：oneid-workbench-website（https://github.com/opensourceways/oneid-workbench-website）
-  - 配置中记录的组件关系：oneid-server；草稿记录曾指向 om-webserver，不作为主仓。
+- 注册主仓：[oneid-server](https://github.com/opensourceways/oneid-server)
+- 配置中的 umbrella：oneid-all（注册配置聚合入口，来源：backlog service yaml）
+- 已核验源码仓：[oneid-website](https://github.com/opensourceways/oneid-website)
+- 已核验源码仓：[oneid-workbench-website](https://github.com/opensourceways/oneid-workbench-website)
+- 配置中的组件关系：oneid-server；草稿曾记录 om-webserver 关系，不作为注册主仓。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

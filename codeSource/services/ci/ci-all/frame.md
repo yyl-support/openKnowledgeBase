@@ -2,6 +2,7 @@
 tags: [ci, ci-all]
 service: ci-all
 source: https://github.com/opensourceways/ci-all
+source_repo: https://github.com/opensourceways/ci-all
 updated_at: 2026-08-04
 ---
 
@@ -25,13 +26,12 @@ Jenkins / CodeArts CI通用工具链，注册说明包含脚本同步和日志�
 
 ## 源码
 
-- source_repo: https://github.com/opensourceways/ci-all
-- sub_repos:
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：ascend_optimization_scripts
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：codearts-ci-config
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：codearts-workflow-image
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：gitcode-migrate-script
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：jenkins-log-scanner
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：sync-file-server
+- 注册主仓：[ci-all](https://github.com/opensourceways/ci-all)
+- 注册配置名称（未核验独立源码仓）：ascend_optimization_scripts
+- 注册配置名称（未核验独立源码仓）：codearts-ci-config
+- 注册配置名称（未核验独立源码仓）：codearts-workflow-image
+- 注册配置名称（未核验独立源码仓）：gitcode-migrate-script
+- 注册配置名称（未核验独立源码仓）：jenkins-log-scanner
+- 注册配置名称（未核验独立源码仓）：sync-file-server
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

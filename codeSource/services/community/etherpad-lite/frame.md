@@ -2,6 +2,7 @@
 tags: [community, etherpad-lite]
 service: etherpad-lite
 source: https://github.com/opensourceways/etherpad-lite
+source_repo: https://github.com/opensourceways/etherpad-lite
 updated_at: 2026-08-04
 ---
 
@@ -18,12 +19,11 @@ updated_at: 2026-08-04
 
 | name | role |
 | --- | --- |
-| Etherpad Lite 应用 | 当前来源不足，未作推断 |
+| Etherpad Lite 应用 | 注册配置组件，职责未核验 |
 
 ## 源码
 
-- source_repo: https://github.com/opensourceways/etherpad-lite
-- sub_repos:
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：当前来源不足，未作推断
+- 注册主仓：[etherpad-lite](https://github.com/opensourceways/etherpad-lite)
+- 无已核验子仓记录。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

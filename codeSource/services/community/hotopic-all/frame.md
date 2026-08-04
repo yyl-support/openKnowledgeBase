@@ -2,6 +2,7 @@
 tags: [community, hotopic-all]
 service: hotopic-all
 source: https://github.com/opensourceways/hotopic-all
+source_repo: https://github.com/opensourceways/hotopic-all
 updated_at: 2026-08-04
 ---
 
@@ -18,16 +19,15 @@ updated_at: 2026-08-04
 
 | name | role |
 | --- | --- |
-| hot-topic-website-backend | 当前来源不足，未作推断 |
-| hotopic-data-clean | 当前来源不足，未作推断 |
-| hotopic-mining | 当前来源不足，未作推断 |
+| hot-topic-website-backend | 注册配置组件，职责未核验 |
+| hotopic-data-clean | 注册配置组件，职责未核验 |
+| hotopic-mining | 注册配置组件，职责未核验 |
 
 ## 源码
 
-- source_repo: https://github.com/opensourceways/hotopic-all
-- sub_repos:
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：hot-topic-website-backend
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：hotopic-data-clean
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：hotopic-mining
+- 注册主仓：[hotopic-all](https://github.com/opensourceways/hotopic-all)
+- 注册配置名称（未核验独立源码仓）：hot-topic-website-backend
+- 注册配置名称（未核验独立源码仓）：hotopic-data-clean
+- 注册配置名称（未核验独立源码仓）：hotopic-mining
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

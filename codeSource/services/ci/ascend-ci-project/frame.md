@@ -2,6 +2,7 @@
 tags: [ci, ascend-ci-project]
 service: ascend-ci-project
 source: https://github.com/opensourceways/ascend-ci-project
+source_repo: https://github.com/opensourceways/ascend-ci-project
 updated_at: 2026-08-04
 ---
 
@@ -14,14 +15,11 @@ updated_at: 2026-08-04
 
 ## components
 
-| name | role |
-| --- | --- |
-| 当前来源不足，未作推断 | 当前来源不足，未作推断 |
+未列出未核验组件。
 
 ## 源码
 
-- source_repo: https://github.com/opensourceways/ascend-ci-project
-- sub_repos:
-  - 注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：注册配置名称，未核验独立源码仓：当前来源不足，未作推断
+- 注册主仓：[ascend-ci-project](https://github.com/opensourceways/ascend-ci-project)
+- 无已核验子仓记录。
 
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)
