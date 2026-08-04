@@ -1,5 +1,7 @@
 # Organization Overview
 
+文档导航：[`README.md`](../README.md) · [`org-overview.md`](org-overview.md) · [`service-map.md`](service-map.md) · [`source-registry.md`](source-registry.md)。
+
 ## 文档目的
 
 本文件用于提供团队和组织的公开概览，作为外网知识库的高层入口。内容应遵循渐进式披露原则，只呈现已经确认并适合公开的信息。
@@ -9,9 +11,9 @@
 ## 当前状态
 
 - 数据快照日期：2026-08-04
-- 数据来源：服务注册项由外部 backlog 输入 `.ai-flow/services/<id>.yaml` 定义，来源为 <https://github.com/opensourceways/backlog>，访问需要组织权限，公开读者可能收到 404，不能将其描述为公开可验证来源。本公开仓库不复制 backlog 配置。具体清单以 [`source-registry.md`](source-registry.md) 为准
-- 生成状态：当前处于生成阶段，本文件仍是占位说明，尚未形成正式组织统计快照
-- 统计数字：除范围快照中的 24 个服务注册项外，尚未生成其他统计数字，不在此处编造
+- 数据来源：服务注册项由外部 backlog 输入 `.ai-flow/services/<id>.yaml` 定义，来源为 <https://github.com/opensourceways/backlog>，访问需要组织权限，公开读者可能收到 404，不能将其描述为公开可验证来源。本公开仓库不复制 backlog 配置。具体清单以 [`source-registry.md`](source-registry.md) 为准。
+- 生成状态：当前处于生成阶段，本文件仍是占位说明，尚未形成正式组织统计快照。
+- 统计数字：除范围快照中的 24 个服务注册项外，尚未生成其他统计数字，不在此处编造。
 
 ## 计划覆盖内容
 
@@ -21,6 +23,6 @@
 - 项目和服务归属关系
 - 服务生命周期和维护状态
 - 公开可验证的职责、依赖和协作关系
-- 24 个服务注册项的全景索引。每个注册项对应一个外部 backlog 输入文件，其中 `label: project:<id>` 仅用于 GitHub issue 路由，不构成另一组数量
+- 24 个服务注册项的全景索引。每个注册项对应一个外部 backlog 输入文件，其中 `label: project:<id>` 仅用于 GitHub issue 路由，不构成另一组数量。
 
 上述内容仅表示目标覆盖范围。在数据生成和审核完成前，不代表已有对应统计或服务明细。当前不编造 24 个服务注册项的具体内容。

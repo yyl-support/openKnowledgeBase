@@ -2,6 +2,8 @@
 
 这是一个公开仓库，也是 AI 时代团队外网知识库总仓。
 
+文档导航：[`README.md`](README.md) · [`org-overview.md`](codeSource/org-overview.md) · [`service-map.md`](codeSource/service-map.md) · [`source-registry.md`](codeSource/source-registry.md)。
+
 ## 定位
 
 `codeSource/` 用于沉淀可公开发布的组织概览、服务地图和相关代码事实。内容采用渐进式披露原则：先提供稳定、可验证的概览，再逐步补充经过审核的细节。
