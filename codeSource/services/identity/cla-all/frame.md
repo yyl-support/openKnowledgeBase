@@ -7,7 +7,7 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-CLA umbrella 仓，聚合 CLA 签署后端、统计服务和 WebUI。
+CLA 聚合仓，聚合 CLA 签署后端、统计服务和 WebUI。
 
 ## infrastructure
 

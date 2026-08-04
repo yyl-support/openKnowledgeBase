@@ -25,5 +25,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 - 本地注册只提供服务 ID、名称和源码仓，release 部分为注释模板，未形成可用部署事实。
 - infra-common service.md 未找到 pod-exporter-monitoring 或 pod_exporter_monitoring 的直接服务映射行。
 - 无法确认组件、连接关系、公开端点和部署方式。
-- 当前公开来源未能为 集群监控服务 核验完整组件清单。
+- 集群监控服务的组件明细尚未从现有来源确认。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

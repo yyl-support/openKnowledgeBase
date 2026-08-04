@@ -25,5 +25,5 @@ infra-common service.md 未核验到本服务注册主仓的直接部署记录�
 - sub_repos 名称来自本地服务注册的 separate_deploy_subs，无法由 GitHub 目录树进一步核验。
 - infra-common service.md 未找到 meeting-server 的直接映射行，未将相近记录推断为本服务。
 - 无法确认数据库、字幕服务或其他连接关系。
-- 当前公开来源未能为 会议服务 核验完整组件清单。
+- 会议服务的组件清单仍缺少可复核来源。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)

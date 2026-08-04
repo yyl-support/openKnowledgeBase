@@ -7,7 +7,7 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-openEuler OneID 统一身份认证 umbrella 仓，聚合后端 API、前端 UI 和工作台前端；README 说明其用于统一账号/SSO/CLA 登录等身份中心能力。
+openEuler OneID 统一身份认证聚合仓，聚合后端 API、前端 UI 和工作台前端；README 说明其用于统一账号/SSO/CLA 登录等身份中心能力。
 
 ## infrastructure
 

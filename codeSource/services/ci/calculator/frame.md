@@ -16,7 +16,7 @@ updated_at: 2026-08-04
 
 ## components
 
-当前公开来源未能为 calculator 示例服务 核验完整组件清单。
+现有来源不足以展开 calculator 示例服务的组件明细。
 
 ## 源码
 

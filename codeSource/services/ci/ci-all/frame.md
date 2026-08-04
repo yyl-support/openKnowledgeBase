@@ -7,7 +7,7 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-Jenkins / CodeArts CI 通用工具链，注册说明包含脚本同步和日志扫描用途。代码仓库是 cascading umbrella，具体子仓以仓库目录树为准。
+Jenkins / CodeArts CI 通用工具链，注册说明包含脚本同步和日志扫描用途。代码仓库是级联聚合仓，具体子仓以仓库目录树为准。
 
 ## infrastructure
 
@@ -15,7 +15,7 @@ Jenkins / CodeArts CI 通用工具链，注册说明包含脚本同步和日志�
 
 ## components
 
-当前公开来源未能为 CI 通用工具 核验完整组件清单。
+公开资料未给出 CI 通用工具的组件清单。
 
 ## 源码
 

@@ -7,7 +7,7 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-GitHub 公共仓库将该服务描述为 cascading umbrella，注册信息定位为大文件资源中心、Git LFS 以及 CDN 上传下载入口。
+GitHub 公共仓库将该服务描述为级联聚合仓，注册信息定位为大文件资源中心、Git LFS 以及 CDN 上传下载入口。
 
 ## infrastructure
 
@@ -17,7 +17,7 @@ GitHub 公共仓库将该服务描述为 cascading umbrella，注册信息定位
 
 ## components
 
-当前公开来源未能为 大文件与 LFS 服务 核验完整组件清单。
+大文件与 LFS 服务的完整组件明细尚未得到公开资料确认。
 
 ## 源码
 

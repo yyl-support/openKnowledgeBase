@@ -7,7 +7,7 @@ updated_at: 2026-08-04
 ---
 
 ## summary
-认证/证书 umbrella 仓，聚合 openEuler 兼容性认证服务端和认证网站，服务说明为证书签发与验证。
+认证/证书聚合仓，聚合 openEuler 兼容性认证服务端和认证网站，服务说明为证书签发与验证。
 
 ## infrastructure
 
