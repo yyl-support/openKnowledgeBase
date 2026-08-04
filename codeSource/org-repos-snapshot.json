@@ -1,0 +1,28 @@
+{
+  "snapshot_date": "2026-08-04",
+  "organization": "opensourceways",
+  "total_repositories": 450,
+  "fork_repositories": 42,
+  "archived_repositories": 246,
+  "private_repositories": 397,
+  "language_top10": {
+    "Go": 160,
+    "Unknown": 87,
+    "Python": 75,
+    "Java": 23,
+    "Shell": 19,
+    "Vue": 16,
+    "JavaScript": 13,
+    "HTML": 10,
+    "Dockerfile": 8,
+    "CSS": 7
+  },
+  "push_activity": {
+    "within_6_months": 222,
+    "6_to_24_months": 135,
+    "over_24_months": 93
+  },
+  "method": "统计基于授权 GitHub API org repos 元数据，pushed_at 截止日期为 2026-08-04。",
+  "source": "GET /orgs/opensourceways/repos?per_page=100&page=<n>",
+  "privacy_note": "仅保存聚合统计，不保存仓库名称、私有仓库元数据或源码。"
+}
