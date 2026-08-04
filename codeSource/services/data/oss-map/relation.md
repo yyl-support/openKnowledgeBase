@@ -21,15 +21,13 @@ updated_at: 2026-08-04
 
 ## deploy
 
-| 环境 | 公开域名 | 镜像/源码仓 | 归档方式 | 来源 |
-| --- | --- | --- | --- | --- |
-| test | 未记录 | [oss-map](https://github.com/opensourceways/oss-map) | 未记录 | infra-common service.md |
+| 部署范围 | 环境 | 公开域名 | 镜像/源码仓 | 归档方式 | 来源 |
+| --- | --- | --- | --- | --- | --- |
+| 主仓 | test | 未记录 | [oss-map](https://github.com/opensourceways/oss-map) | 未记录 | infra-common service.md |
 
 ## facts_insufficient
 
-- 未能从允许来源核验完整组件清单，因此未作补充。
-
 - 最近公开 commit 未达 10 条。
 - 未确认生产部署记录。
-
+- 公开 README 与目录树未提供可核验的完整组件清单。
 导航：[`README`](../../../../README.md) · [`org-overview`](../../../org-overview.md) · [`service-map`](../../../service-map.md) · [`source-registry`](../../../source-registry.md)
