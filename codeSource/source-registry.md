@@ -8,6 +8,8 @@
 
 backlog 是组织访问受控的外部来源。公开读者访问其 URL 时可能收到 404，因此不能将该 URL 描述为公开可验证来源。外部来源入口为 <https://github.com/opensourceways/backlog>，访问需要组织权限。本文件是本次公开知识库的范围快照，不复制 YAML 全文。
 
+源码 URL 可能指向需要组织权限的私有或受控仓库；URL 是原始来源定位，不代表公开读者一定可访问。抽查出现 404 时保留原始 URL，不伪造替代 URL。
+
 每行依次为 `service_id`、`project_label`、`tools_repo` 和来源文件名。`project_label` 是 GitHub issue 路由标签，不是另一组服务数量。
 
 来源记录如下：读取日期为 `2026-08-04`，API 请求路径模板为 `GET /repos/opensourceways/backlog/contents/.ai-flow/services/<filename>`，REST API 地址为 <https://api.github.com>。表格中的逐项来源路径是受控来源定位信息，公开读者可能无法访问；当前未记录 backlog commit SHA。

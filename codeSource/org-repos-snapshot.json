@@ -24,5 +24,5 @@
   },
   "method": "统计基于授权 GitHub API org repos 元数据，pushed_at 截止日期为 2026-08-04。",
   "source": "GET /orgs/opensourceways/repos?per_page=100&page=<n>",
-  "privacy_note": "仅保存聚合统计，不保存仓库名称、私有仓库元数据或源码。"
+  "privacy_note": "仅保存组织级聚合统计（包括私有仓库数量），不保存仓库名称、逐仓私有属性和仓库级私有元数据或源码。"
 }

@@ -16,7 +16,11 @@ updated_at: 2026-08-04
 - 服务注册信息：公开入口 [id.openeuler.org](https://id.openeuler.org)；来源：受控的 backlog service YAML。
 - 关联的聚合配置仓：oneid-all；来源：受控的 backlog service YAML。
 
-## evolution
+## evolution_source
+
+frontmatter 中的 `source_repo` 与 service registry 的 `tools_repo` 均为 `oneid-server`。当前演进记录链接的是关联聚合仓 `oneid-all` 的记录，不代表 `oneid-server` 主仓的提交。
+
+### 关联聚合仓 oneid-all 的近期记录
 
 以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - 2026-06-12 [419715c](https://github.com/opensourceways/oneid-all/commit/419715c) 关联的聚合仓 oneid-all 的记录：分支运行时处理调整。

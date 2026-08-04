@@ -23,7 +23,7 @@
 - [`codeSource/source-registry.md`](codeSource/source-registry.md)：本次服务注册项范围快照
 - [`codeSource/services/`](codeSource/services/)：已生成的 24 个服务级文档
 
-当前已完成 `codeSource` 文档，覆盖 24 个服务注册项、48 个服务级 Markdown 文件（每个服务一份 `frame.md` 和一份 `relation.md`），详见 [`codeSource/services/`](codeSource/services/)。组织概览、组织仓库聚合快照、服务地图和本次来源快照分别见 [`codeSource/org-overview.md`](codeSource/org-overview.md)、[`codeSource/org-repos-snapshot.json`](codeSource/org-repos-snapshot.json)、[`codeSource/service-map.md`](codeSource/service-map.md) 和 [`codeSource/source-registry.md`](codeSource/source-registry.md)。聚合快照仅保存统计，不保存仓库名称、私有仓库元数据或源码；原始授权 API 的仓库级数据未复制。每个服务注册项由 backlog 仓库外部输入 `.ai-flow/services/<id>.yaml` 定义。其中 `label: project:<id>` 是 GitHub issue 路由标签，不是另一组服务数量，二者不代表两个数量。
+当前已完成 `codeSource` 文档，覆盖 24 个服务注册项、48 个服务级 Markdown 文件（每个服务一份 `frame.md` 和一份 `relation.md`），详见 [`codeSource/services/`](codeSource/services/)。组织概览、组织仓库聚合快照、服务地图和本次来源快照分别见 [`codeSource/org-overview.md`](codeSource/org-overview.md)、[`codeSource/org-repos-snapshot.json`](codeSource/org-repos-snapshot.json)、[`codeSource/service-map.md`](codeSource/service-map.md) 和 [`codeSource/source-registry.md`](codeSource/source-registry.md)。聚合快照仅保留组织级聚合数量（包括私有仓库数量），不保存仓库名称、逐仓私有属性和仓库级私有元数据或源码；原始授权 API 的仓库级数据未复制。每个服务注册项由 backlog 仓库外部输入 `.ai-flow/services/<id>.yaml` 定义。其中 `label: project:<id>` 是 GitHub issue 路由标签，不是另一组服务数量，二者不代表两个数量。
 
 公开安全边界：服务成品仅发布经过审核的公开事实，不发布凭据、密钥、令牌、内部部署路径、集群与网络细节等受限内容；私有/归档统计仅来自授权元数据，不发布私有源码细节。
 

@@ -30,36 +30,38 @@
 
 分类将基于外部 backlog 的 `.ai-flow/services/*.yaml` 中的服务数据生成。外部来源为 <https://github.com/opensourceways/backlog>，访问需要组织权限，公开读者可能收到 404，不能将其描述为公开可验证来源。本公开仓库不复制 backlog 配置。`label: project:<id>` 是 GitHub issue 路由标签，与 24 个服务注册项不是两个数量。
 
+源码 URL 可能指向需要组织权限的私有或受控仓库；URL 仅用于定位原始来源，不代表公开读者一定可以访问。抽查时出现 404 应按此来源可访问性限制理解，不以替代 URL 臆造公开来源。
+
 `codeSource/services/` 包含 24 个已生成的服务级文档。
 
 ## 服务分类表
 
-| category | service_id | project_label | tools_repo | source_file |
-| --- | --- | --- | --- | --- |
-| ci | ascend-ci-project | project:ascend-ci-project | https://github.com/opensourceways/ascend-ci-project | ascend-ci-project.yaml |
-| data | bigfiles-lfs-all | project:bigfiles-lfs-all | https://github.com/opensourceways/bigfiles-lfs-all | bigfiles-lfs-all.yaml |
-| ci | calculator | project:calculator-umbrella | https://github.com/opensourceways/calculator-umbrella | calculator.yaml |
-| security | certification-all | project:certification-all | https://github.com/opensourceways/certification-all | certification-all.yaml |
-| ci | ci-all | project:ci-all | https://github.com/opensourceways/ci-all | ci-all.yaml |
-| identity | cla-all | project:cla-all | https://github.com/opensourceways/cla-all | cla-all.yaml |
-| community | etherpad-lite | project:etherpad-lite | https://github.com/opensourceways/etherpad-lite | etherpad-lite.yaml |
-| package | eur-build-all | project:eur-build-all | https://github.com/opensourceways/eur-build-all | eur-build-all.yaml |
-| robots | forum-reply-robot | project:forum-reply-robot | https://github.com/opensourceways/forum-reply-robot | forum-reply-robot.yaml |
-| community | hotopic-all | project:hotopic-all | https://github.com/opensourceways/hotopic-all | hotopic-all.yaml |
-| community | mailman | project:mailman | https://github.com/opensourceways/mailman | mailman.yaml |
-| community | meeting-server | project:meeting-server | https://github.com/opensourceways/meeting-server | meeting-server.yaml |
-| community | message-bus-all | project:message-bus-all | https://github.com/opensourceways/message-bus-all | message-bus-all.yaml |
-| data | om-datacenter | project:om-datacenter | https://github.com/opensourceways/om-datacenter | om-datacenter.yaml |
-| identity | om-webserver | project:om-webserver | https://github.com/opensourceways/om-webserver | om-webserver.yaml |
-| identity | oneid-all | project:oneid-all | https://github.com/opensourceways/oneid-server | oneid-all.yaml |
-| data | oss-map | project:oss-map | https://github.com/opensourceways/oss-map | oss-map.yaml |
-| security | patch-manager | project:patch-manager | https://github.com/opensourceways/patch-manager | patch-manager.yaml |
-| community | pod-exporter-monitoring | project:pod_exporter_monitoring | https://github.com/opensourceways/pod_exporter_monitoring | pod-exporter-monitoring.yaml |
-| robots | robot | project:community-robots | https://github.com/opensourceways/community-robots | robot.yaml |
-| community | search-all | project:search-all | https://github.com/opensourceways/search-all | search-all.yaml |
-| security | security-cve-all | project:security-cve-all | https://github.com/opensourceways/security-cve-all | security-cve-all.yaml |
-| package | software-package-all | project:software-package-all | https://github.com/opensourceways/software-package-all | software-package-all.yaml |
-| data | xihe | project:xihe-all | https://github.com/opensourceways/xihe-all | xihe-all.yaml |
+| category | service_id | project_label | tools_repo | source_file | frame | relation |
+| --- | --- | --- | --- | --- | --- | --- |
+| ci | ascend-ci-project | project:ascend-ci-project | https://github.com/opensourceways/ascend-ci-project | ascend-ci-project.yaml | [frame](services/ci/ascend-ci-project/frame.md) | [relation](services/ci/ascend-ci-project/relation.md) |
+| data | bigfiles-lfs-all | project:bigfiles-lfs-all | https://github.com/opensourceways/bigfiles-lfs-all | bigfiles-lfs-all.yaml | [frame](services/data/bigfiles-lfs-all/frame.md) | [relation](services/data/bigfiles-lfs-all/relation.md) |
+| ci | calculator | project:calculator-umbrella | https://github.com/opensourceways/calculator-umbrella | calculator.yaml | [frame](services/ci/calculator/frame.md) | [relation](services/ci/calculator/relation.md) |
+| security | certification-all | project:certification-all | https://github.com/opensourceways/certification-all | certification-all.yaml | [frame](services/security/certification-all/frame.md) | [relation](services/security/certification-all/relation.md) |
+| ci | ci-all | project:ci-all | https://github.com/opensourceways/ci-all | ci-all.yaml | [frame](services/ci/ci-all/frame.md) | [relation](services/ci/ci-all/relation.md) |
+| identity | cla-all | project:cla-all | https://github.com/opensourceways/cla-all | cla-all.yaml | [frame](services/identity/cla-all/frame.md) | [relation](services/identity/cla-all/relation.md) |
+| community | etherpad-lite | project:etherpad-lite | https://github.com/opensourceways/etherpad-lite | etherpad-lite.yaml | [frame](services/community/etherpad-lite/frame.md) | [relation](services/community/etherpad-lite/relation.md) |
+| package | eur-build-all | project:eur-build-all | https://github.com/opensourceways/eur-build-all | eur-build-all.yaml | [frame](services/package/eur-build-all/frame.md) | [relation](services/package/eur-build-all/relation.md) |
+| robots | forum-reply-robot | project:forum-reply-robot | https://github.com/opensourceways/forum-reply-robot | forum-reply-robot.yaml | [frame](services/robots/forum-reply-robot/frame.md) | [relation](services/robots/forum-reply-robot/relation.md) |
+| community | hotopic-all | project:hotopic-all | https://github.com/opensourceways/hotopic-all | hotopic-all.yaml | [frame](services/community/hotopic-all/frame.md) | [relation](services/community/hotopic-all/relation.md) |
+| community | mailman | project:mailman | https://github.com/opensourceways/mailman | mailman.yaml | [frame](services/community/mailman/frame.md) | [relation](services/community/mailman/relation.md) |
+| community | meeting-server | project:meeting-server | https://github.com/opensourceways/meeting-server | meeting-server.yaml | [frame](services/community/meeting-server/frame.md) | [relation](services/community/meeting-server/relation.md) |
+| community | message-bus-all | project:message-bus-all | https://github.com/opensourceways/message-bus-all | message-bus-all.yaml | [frame](services/community/message-bus-all/frame.md) | [relation](services/community/message-bus-all/relation.md) |
+| data | om-datacenter | project:om-datacenter | https://github.com/opensourceways/om-datacenter | om-datacenter.yaml | [frame](services/data/om-datacenter/frame.md) | [relation](services/data/om-datacenter/relation.md) |
+| identity | om-webserver | project:om-webserver | https://github.com/opensourceways/om-webserver | om-webserver.yaml | [frame](services/identity/om-webserver/frame.md) | [relation](services/identity/om-webserver/relation.md) |
+| identity | oneid-all | project:oneid-all | https://github.com/opensourceways/oneid-server | oneid-all.yaml | [frame](services/identity/oneid-all/frame.md) | [relation](services/identity/oneid-all/relation.md) |
+| data | oss-map | project:oss-map | https://github.com/opensourceways/oss-map | oss-map.yaml | [frame](services/data/oss-map/frame.md) | [relation](services/data/oss-map/relation.md) |
+| security | patch-manager | project:patch-manager | https://github.com/opensourceways/patch-manager | patch-manager.yaml | [frame](services/security/patch-manager/frame.md) | [relation](services/security/patch-manager/relation.md) |
+| community | pod-exporter-monitoring | project:pod_exporter_monitoring | https://github.com/opensourceways/pod_exporter_monitoring | pod-exporter-monitoring.yaml | [frame](services/community/pod-exporter-monitoring/frame.md) | [relation](services/community/pod-exporter-monitoring/relation.md) |
+| robots | robot | project:community-robots | https://github.com/opensourceways/community-robots | robot.yaml | [frame](services/robots/robot/frame.md) | [relation](services/robots/robot/relation.md) |
+| community | search-all | project:search-all | https://github.com/opensourceways/search-all | search-all.yaml | [frame](services/community/search-all/frame.md) | [relation](services/community/search-all/relation.md) |
+| security | security-cve-all | project:security-cve-all | https://github.com/opensourceways/security-cve-all | security-cve-all.yaml | [frame](services/security/security-cve-all/frame.md) | [relation](services/security/security-cve-all/relation.md) |
+| package | software-package-all | project:software-package-all | https://github.com/opensourceways/software-package-all | software-package-all.yaml | [frame](services/package/software-package-all/frame.md) | [relation](services/package/software-package-all/relation.md) |
+| data | xihe | project:xihe-all | https://github.com/opensourceways/xihe-all | xihe-all.yaml | [frame](services/data/xihe/frame.md) | [relation](services/data/xihe/relation.md) |
 
 ## 生成状态
 
