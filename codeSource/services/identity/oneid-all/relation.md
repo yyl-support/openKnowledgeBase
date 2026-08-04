@@ -18,6 +18,7 @@ updated_at: 2026-08-04
 
 ## evolution
 
+以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - 2026-06-12 [419715c](https://github.com/opensourceways/oneid-all/commit/419715c) 关联 umbrella 仓 oneid-all 的记录：分支运行时处理调整。
 - 2026-06-12 [a772625](https://github.com/opensourceways/oneid-all/commit/a772625) 关联 umbrella 仓 oneid-all 的记录：fix(preview): runtime-clone 按前缀解析真实分支 issue-N-from-<base>；不再裸 clone issue-N。
 - 2026-06-09 [92cb9cf](https://github.com/opensourceways/oneid-all/commit/92cb9cf) 关联 umbrella 仓 oneid-all 的记录：!3 feature: 设置子模块；设置子模块。
@@ -31,9 +32,7 @@ updated_at: 2026-08-04
 
 ## deploy
 
-| 环境 | 公开域名 | 镜像/源码仓 | 部署方式 | 来源 |
-| --- | --- | --- | --- | --- |
-| prod | 未记录 | [oneid-server](https://github.com/opensourceways/oneid-server) | kustomize | infra-common service.md |
+infra-common service.md 未核验到本服务注册主仓的直接部署记录。
 
 ## facts_insufficient
 

@@ -10,12 +10,9 @@ updated_at: 2026-08-04
 
 - .ai-flow/deploy/init 包含 SQL 与 MongoDB 初始化脚本，test-sync 包含同步脚本。
 
-## registry_info
-
-- 未记录可公开的 registry YAML 入口。
-
 ## evolution
 
+以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - 2026-07-15 [eb3d1f1](https://github.com/opensourceways/hotopic-all/commit/eb3d1f1) 演进记录：!25 更新 CLAUDE.md 模型指导；更新协作指导。
 - 2026-07-14 [f204581](https://github.com/opensourceways/hotopic-all/commit/f204581) 演进记录：chore: 更新测试分支参数；调整部署测试参数。
 - 2026-06-16 [73b91c2](https://github.com/opensourceways/hotopic-all/commit/73b91c2) 演进记录：Merge pull request #22；合并分支变更。
@@ -29,7 +26,7 @@ updated_at: 2026-08-04
 
 ## deploy
 
-- service.md 未核验到主仓直接部署记录。
+infra-common service.md 未核验到本服务注册主仓的直接部署记录。
 
 ## facts_insufficient
 

@@ -10,17 +10,14 @@ updated_at: 2026-08-04
 
 - 通过 LightRAG 知识库检索后生成论坛回复；允许来源未提供更细数据流。
 
-## registry_info
-
-- 未记录可公开的 registry YAML 入口。
-
 ## evolution
 
+以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - GitHub API 未能核验演进记录，因此未推断演进方向。
 
 ## deploy
 
-- service.md 未核验到主仓直接部署记录。
+infra-common service.md 未核验到本服务注册主仓的直接部署记录。
 
 ## facts_insufficient
 

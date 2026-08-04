@@ -10,12 +10,9 @@ updated_at: 2026-08-04
 
 - README 明确服务使用 Redis 和 OBS；未在允许来源中确认更细的接口或数据流连接。
 
-## registry_info
-
-- 未记录可公开的 registry YAML 入口。
-
 ## evolution
 
+以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - 2026-07-29 [67ea4fd](https://github.com/opensourceways/om-webserver/commit/67ea4fd) 演进记录：!239 fix(om-webserver): 启用 fastjson/fastjson2 safeMode 修复 CVE 安全漏洞；启用 fastjson/fastjson2 safeMode。
 - 2026-07-29 [216f115](https://github.com/opensourceways/om-webserver/commit/216f115) 演进记录：fix(om-webserver): 启用 fastjson/fastjson2 safeMode 修复 CVE 安全漏洞；在 Dockerfile CMD 增加 JVM safeMode 参数。
 - 2026-07-22 [2461649](https://github.com/opensourceways/om-webserver/commit/2461649) 演进记录：!238 fix(om-webserver): 升级 fastjson2 至 2.0.62 修复 CVE 安全告警；升级 fastjson2。
@@ -29,10 +26,7 @@ updated_at: 2026-08-04
 
 ## deploy
 
-| 环境 | 公开域名 | 镜像/源码仓 | 部署方式 | 来源 |
-| --- | --- | --- | --- | --- |
-| test | 未记录 | [om-webserver](https://github.com/opensourceways/om-webserver) | kustomize | infra-common service.md |
-| prod | 未记录 | [om-webserver](https://github.com/opensourceways/om-webserver) | helm | infra-common service.md |
+infra-common service.md 未核验到本服务注册主仓的直接部署记录。
 
 ## facts_insufficient
 

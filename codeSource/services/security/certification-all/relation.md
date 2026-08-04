@@ -16,12 +16,13 @@ updated_at: 2026-08-04
 
 ## evolution
 
+以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - 2026-05-31 [cf3cbb9](https://github.com/opensourceways/certification-all/commit/cf3cbb9) 演进记录：chore: 接入 2 个 submodule + 初始化 CLAUDE.md；接入认证服务端和网站子仓并初始化协作说明。
 - 2026-05-31 [50c7eb1](https://github.com/opensourceways/certification-all/commit/50c7eb1) 演进记录：Initial commit；仓库初始化。
 
 ## deploy
 
-- service.md 未核验到主仓直接部署记录。
+infra-common service.md 未核验到本服务注册主仓的直接部署记录。
 
 ## facts_insufficient
 

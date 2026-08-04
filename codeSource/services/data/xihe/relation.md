@@ -11,17 +11,21 @@ updated_at: 2026-08-04
 - 服务间存在注册配置记录的协议连接，公开版本不展开具体组件名称。
 - 持久层使用 PostgreSQL 和 Redis。
 
-## registry_info
+## related_deployments
 
-- 未记录可公开的 registry YAML 入口。
+| 关联仓 | 环境 | 公开域名 | 部署方式 | 来源 |
+| --- | --- | --- | --- | --- |
+| xihe-server | prod | 未记录 | kustomize | infra-common service.md；关联仓部署，不代表本服务主仓部署。 |
+| deployment-xihe-jupyter-server | prod | 未记录 | kustomize | infra-common service.md；关联仓部署，不代表本服务主仓部署。 |
 
 ## evolution
 
+以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - GitHub API 未能核验演进记录，因此未推断演进方向。
 
 ## deploy
 
-- service.md 未核验到 xihe-all 主仓直接部署记录。
+infra-common service.md 未核验到本服务注册主仓的直接部署记录。
 
 ## facts_insufficient
 
@@ -30,7 +34,6 @@ updated_at: 2026-08-04
 - 当前公开来源未提供完整组件清单，未作补充。
 
 - GitHub API 无法核验 README、目录树和最近提交，因此未推断组件与演进方向。
-- 关联仓匹配到 xihe-server 和 deployment-xihe-jupyter-server；这是关联仓信息，不作为本服务主仓部署结论。
 - service.md 未核验到 xihe-all 主仓直接部署记录。
 - 主仓最近 10 条 commit 或 issue 未能取得。
 - infra-common service.md 仅匹配 xihe-server 和 deployment-xihe-jupyter-server，未匹配其他 umbrella 子仓的直接部署源码行。

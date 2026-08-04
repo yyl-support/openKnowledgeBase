@@ -10,17 +10,14 @@ updated_at: 2026-08-04
 
 - 部署方式在注册文件中标记为未配置。
 
-## registry_info
-
-- 未记录可公开的 registry YAML 入口。
-
 ## evolution
 
+以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - GitHub API 未能核验演进记录，因此未推断演进方向。
 
 ## deploy
 
-- service.md 未核验到主仓直接部署记录。
+infra-common service.md 未核验到本服务注册主仓的直接部署记录。
 
 ## facts_insufficient
 

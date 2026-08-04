@@ -10,18 +10,15 @@ updated_at: 2026-08-04
 
 - 主仓通过 submodule 组织 backend 与 frontend；注册信息记录 k8s manifests 与 pod selector。
 
-## registry_info
-
-- 未记录可公开的 registry YAML 入口。
-
 ## evolution
 
+以下记录按当前可取得的公开 commit/issue 整理；不足 10 条时不补造记录。
 - 2026-05-21 [e0f06a5](https://github.com/opensourceways/calculator-umbrella/commit/e0f06a5) 演进记录：CI 参数约定调整；与通用参数约定一致。
 - 2026-05-21 [dac0a45](https://github.com/opensourceways/calculator-umbrella/commit/dac0a45) 演进记录：ci: pod 步骤内联安装 kubectl；为 runner 镜像补充 kubectl。
 
 ## deploy
 
-- service.md 未核验到主仓直接部署记录。
+infra-common service.md 未核验到本服务注册主仓的直接部署记录。
 
 ## facts_insufficient
 
