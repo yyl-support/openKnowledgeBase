@@ -18,32 +18,34 @@ scope: 只答三个问题——业界方案归纳 / 长期维护 / 快速应用
 
 ### 1.1 全部来源
 
-| # | 方案 | 家族 | 逻辑链 | 核心思想 | 可借鉴 |
-|---|---|---|---|---|---|
-| 1 | BookStack / Wiki.js / DokuWiki / MediaWiki / XWiki / MM-Wiki | 传统团队 Wiki | 人写 → 人分类 → 人维护 | 结构化存放 | 纯文本无数据库（DokuWiki）→ 载体开放 |
-| 2 | Notion / 语雀 / 飞书文档 / 石墨 / 腾讯文档 | 协作文档 | 人写 → 实时协作 → 生态内分发 | 降低写作与协作摩擦 | 长在 IM/生态里 → 知识出现在工作路径 |
-| 3 | Confluence + Atlassian Intelligence | 传统强者 + AI 外挂 | 人写 → AI 辅助检索 → 集成 Jira | 与工单系统打通 | **「效果取决于治理纪律」** → 治理权重 > 功能 |
-| 4 | Guru | 同上 | 人写 → AI 校验时效 → 浏览器扩展推送 | 在工作流中交付知识 | 扩展形态：不要求用户切换应用 |
-| 5 | PingCode / 亿方云 / Worktile | 国内企业级 | 人写 + RAG → 私有化部署 | 安全合规优先 | 私有化部署形态（内网链路参考） |
-| 6 | KMS Lighthouse | RAG 问答平台 | 多源导入 → 索引 → 查询时生成 | 准确、可操作的知识交付 | 「准确性」作为一等指标 |
-| 7 | Coworker | 同上 | 连 50+ 源 → 统一索引 → 带来源答案 | 消除信息孤岛 | **答案必须带来源依据** |
-| 8 | Wonderchat Workspace | 同上 | 一个知识库 → 内外双界面 | 单一真源、多交付界面 | 真源单一、界面可多 |
-| 9 | Tencent/WeKnora | AI 原生 | 文档 → RAG → 自主推理 → **自维护 Wiki** | Self-maintaining Wiki | 「自维护」是目标态命名 |
-| 10 | SonicBotMan/wiki-kb | AI 原生 | 源 → **编译时写入** → 结构化真相 + 时间线 + 实体注册表 | **编译时写入，而非查询时检索** | 编译式 + LLM 审计追踪 |
-| 11 | AgriciDaniel/claude-obsidian | AI 原生 | 文件 → AI 自动阅读/链接 → 知识图谱 | 纯 Markdown，数据完全自有 | 载体开放 + 自动建链 |
-| 12 | SiYuan 思源笔记 | 个人 PKM | 本地优先 → 双向链接 + 块引用 | Local-first、块级引用 | 块级引用 → 精确定位 |
-| 13 | Karpathy「LLM Wiki」Gist | 理念源头 | LLM 增量维护文档 → 知识复利 | **「LLM 每次查询从头重推导，没有积累」** | 整条思路的第一性原理起点 |
-| 14 | DeepWiki / deepwiki-open | 代码知识 | 仓 → 向量库 → Web Wiki + RAG 问答 | 代码即知识源 | 交互体验；但产物不落文件 |
-| 15 | zread / open-zread | 代码知识 | 仓 → CLI 编译 → Markdown + Mermaid + **diff-aware sync** | 一条命令出 Wiki，文档随代码同步 | **产物即文件 + diff 同步** |
-| 16 | Egonex-AI/Understand-Anything | 代码知识 | 仓 → 多 agent 管线 → 知识图谱 + 导览 + chat | 长在 coding agent 里 | 插件形态 = 零成本进工作路径 |
-| 17 | colbymchenry/codegraph | 代码知识底座 | 仓 → 预索引符号/调用图 | 预索引的代码图谱 | 被腾讯直接复用的底座 |
-| 18 | **TencentCloud/TencentDB-Agent-Memory** | AI 原生 + 代码知识 | 对话/文档/代码 → 四类记忆资产（Chat Memory / Skill / **Wiki** / **CodeGraph**）→ Hub 治理 → 按身份装配给 Agent | **凡能让下一个 Agent 少走弯路的信息都该被保存、组织、复用** | **本次最大收获，见 1.3** |
+| # | 方案（含来源 URL） | 逻辑链 | 核心思想 | 可借鉴 |
+|---|---|---|---|---|
+| 1 | [TencentCloud/TencentDB-Agent-Memory](https://github.com/TencentCloud/TencentDB-Agent-Memory) | 对话/文档/代码 → 四类记忆资产（Chat Memory / Skill / **Wiki** / **CodeGraph**）→ Hub 治理 → 按身份装配给 Agent | 凡能让下一个 Agent 少走弯路的信息都该被保存、组织、复用 | **已实测代码，见 1.3** |
+| 2 | [Tencent/WeKnora](https://github.com/Tencent/WeKnora) | 文档 → RAG → 自主推理 Agent → **自维护 Wiki** | Self-maintaining Wiki | 「自维护」作为目标态 |
+| 3 | [SonicBotMan/wiki-kb](https://github.com/SonicBotMan/wiki-kb) | 源 → **编译时写入** → 结构化真相 + 时间线 + 实体注册表 | 编译时写入，而非查询时检索 | 编译式 + LLM 审计追踪 |
+| 4 | [AgriciDaniel/claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian) | 文件 → AI 自动阅读/建链 → 知识图谱 | 纯 Markdown，数据完全自有 | 载体开放 + 自动建链 |
+| 5 | [deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) | 仓 → 向量库 → Web Wiki + RAG 问答 | 代码即知识源 | 交互体验好；但产物不落文件 |
+| 6 | [open-zread](https://github.com/bb-boy680/open-zread) · [zread.ai](https://zread.ai/) | 仓 → CLI 编译 → Markdown + Mermaid + **diff-aware sync** | 一条命令出 Wiki，文档随代码同步 | 产物即文件 + diff 同步 |
+| 7 | [Egonex-AI/Understand-Anything](https://github.com/Egonex-AI/Understand-Anything) | 仓 → 多 agent 管线 → 知识图谱 + 导览 + chat | 长在 coding agent 里 | 插件形态 = 零成本进工作路径 |
+| 8 | [colbymchenry/codegraph](https://github.com/colbymchenry/codegraph) | 仓 → 预索引符号 / 文件 / 调用关系 | 预索引的代码图谱 | 被 #1 直接复用的底座 |
+| 9 | [nousresearch/hermes-agent](https://github.com/nousresearch/hermes-agent) | 对话 → 提炼可复用 Skill（版本/触发边界/验证规则） | Skill 不只是 Prompt | 被 #1 复用于 Skill 资产 |
+| 10 | [siyuan-note/siyuan](https://github.com/siyuan-note/siyuan) | 本地优先 → 双向链接 + 块引用 | Local-first、块级引用 | 块级引用 → 精确定位 |
+| 11 | [Confluence + Atlassian Intelligence](https://www.techtarget.com/searchenterpriseai/feature/10-top-AI-knowledge-management-platforms-for-businesses) | 人写 → AI 辅助检索 → 深度集成 Jira | 与工单系统打通 | **「效果取决于内容结构和治理纪律」** |
+| 12 | [Guru](https://helpjuice.com/blog/open-source-knowledge-base) | 人写 → AI 校验时效 → 浏览器扩展推送 | 在工作流程中提供知识 | 扩展形态：不要求用户切换应用 |
+| 13 | [Coworker](https://coworker.ai/blog/knowledge-management-tools) | 连 50+ 数据源 → 统一索引 → 带来源依据的答案 | 消除信息孤岛 | 答案必须带来源依据 |
+| 14 | [Wonderchat Workspace](https://wonderchat.io/blog/best-km-tools-enterprise) | 一个知识库 → 同时服务内部员工与外部客户 | 单一真源、多交付界面 | 真源单一、界面可多 |
+| 15 | [KMS Lighthouse](https://www.analyticsinsight.net/artificial-intelligence/7-best-ai-knowledge-management-systems-for-enterprise-teams-2026) | 多源导入 → 索引 → 查询时生成 | 准确性与可操作性 | 「准确性」作为一等指标 |
+| 16 | [BookStack / DokuWiki / Wiki.js / MediaWiki / XWiki](https://helpcenter.io/blog/10-open-source-knowledge-base-software-solutions/) | 人写 → 人分类 → 人维护 | 结构化存放 | DokuWiki 纯文本无数据库 → 载体开放 |
+| 17 | Notion / 语雀 / 飞书文档 / 石墨 / 腾讯文档（详见[全景图](./知识管理系统全景图.md)§三） | 人写 → 实时协作 → 生态内分发 | 降低写作与协作摩擦 | 长在 IM/生态里 → 知识在工作路径上 |
+| 18 | PingCode / 亿方云 / Worktile / MM-Wiki / MinDoc（详见[全景图](./知识管理系统全景图.md)§三） | 人写 + RAG → 私有化部署 | 安全合规优先 | 私有化部署形态（内网链路参考） |
 
-> 18 的组装策略本身就是结论：CodeGraph 复用 `colbymchenry/codegraph`、Skill 复用 Hermes Agent、Wiki 理念来自 Karpathy。**腾讯也不自己造读代码的轮子。**
+> **#1 的组装策略本身就是结论**：CodeGraph 复用 #8、Skill 复用 #9、Wiki 理念来自 Karpathy。**腾讯也不自己造读代码的轮子。**
+
+**理念源头**（不是方案，是这批 AI 原生方案共同的第一性原理起点）：[Karpathy「LLM Wiki」Gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) —— **「LLM 在每次查询时从头重新推导知识，没有积累。」** #1 #2 #3 #4 均明确致谢或引用。
 
 ### 1.2 归纳：五条跨代不变量 + 四条代际分水岭
 
-**不变量**（1–18 全部成立，违反任一条无论多新都会死）：
+**不变量**（上表 18 项全部成立，违反任一条无论多新都会死）：
 
 | 不变量 | 第一性原理 |
 |---|---|
@@ -53,7 +55,7 @@ scope: 只答三个问题——业界方案归纳 / 长期维护 / 快速应用
 | 治理纪律权重 > 工具功能 | 价值来自可信，可信来自责任归属 → **无责任人的知识只是待验证字符串** |
 | 关系与结构是一等公民 | 孤立 N 条事实价值为 N，连接后接近 N² |
 
-**分水岭**（9–18 有，1–5 没有）：
+**分水岭**（#1–#8 具备，#11–#18 不具备）：
 
 | 分水岭 | 第一性原理 |
 |---|---|
@@ -68,7 +70,7 @@ scope: 只答三个问题——业界方案归纳 / 长期维护 / 快速应用
 
 | 文件 | 机制 | 我们的用法 |
 |---|---|---|
-| `ingest-v2/merge.ts` | **四档合并策略** | 直接采用，见 2.3 |
+| `ingest-v2/merge.ts` | **四档合并策略** | 参照，见 2.5 |
 | `ingest-v2/cascade.ts` | 删源级联 + 悬空 `[[wikilink]]` 清理 | 解决引用完整性腐烂 |
 | `ingest-v2/frontmatter.ts` | 页契约 `type/title/sources/tags/timestamp/locked`；**`buildPage` 永不写 `locked`** | 机器无法自锁、只能被锁 → 人工修改绝对优先 |
 | `mcp/tools.ts` | `wiki_search`（BM25 + graph 多跳）/ `wiki_read` / `wiki_list` / `wiki_graph` + 8 个 `code_*` | MCP 契约直接参照，不必自定 |
@@ -105,7 +107,22 @@ flowchart LR
     Base -->|MCP / CLAUDE.md 指针| Consume[人读 + AI 读]
 ```
 
-事实基础由外部工具生成（`open-zread` 或 `MemoryKnowledge` 单模块，需各跑一个仓实测取舍）。**差异化不在编译，在反哺**——外部工具只能答 What，`backlog` 才有 Why/How/坑。
+**差异化不在编译，在反哺**——外部工具只能答 What，`backlog` 才有 Why/How/坑。
+
+### 2.1.1 事实基础生产方案：待定，未拍板
+
+已定的只有一条**方向**：不自研读代码生成 Wiki 的能力，用成熟工具。**具体用哪个尚未决定**，下表列候选与取舍供决策，不预设结论。
+
+| 候选 | 产物 | 形态与成本 | 满足不变量三（载体开放） | 附带能力 | 主要顾虑 |
+|---|---|---|---|---|---|
+| [open-zread](https://github.com/bb-boy680/open-zread) | Markdown 文件 + Mermaid | CLI，可进 CI，最轻 | ✅ | diff-aware sync | 社区项目，成熟度未验证；无代码图谱 |
+| [MemoryKnowledge](https://github.com/TencentCloud/TencentDB-Agent-Memory)（#1 的单模块） | Markdown 文件 + frontmatter | 需 Node ≥22 + 数据库，较重 | ✅ | **CodeGraph（callers/callees/impact）+ MCP 12 工具 + merge/cascade 全套** | 能否只用单模块不起整套四模块，待验证 |
+| [Understand-Anything](https://github.com/Egonex-AI/Understand-Anything) | 知识图谱 + 导览 | Claude Code 插件，零服务器 | ⚠️ 产物形态待确认 | 天然在 agent 工作路径上 | 产物是否可落 Git 文件待验证 |
+| [deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) | Web Wiki（服务内） | 前后端 + 向量库 | ❌ 产物不落文件 | RAG 问答体验最好 | **违反不变量三**，不建议 |
+
+**建议的决策方式**：取一个 opensourceways 仓（如 forum-reply-robot），前三个候选各跑一遍，比产物质量、落地成本、是否可进 Git。实测后再定,不靠文档推演。
+
+**决策待你确认**——这是本方案唯一悬空项，其余部分（2.2 起）与选哪个候选无关，可先推进。
 
 ### 2.2 knowledge-core 处置
 
@@ -152,7 +169,9 @@ Wiki 是 build artifact。页面错了不改页面，改 prompt / 描述符 / �
 
 > 边界：只读上游 + 只写我方产物仓，**不改任何线上 workflow**。定时脚本拉取，不要求 backlog 侧配合改造。
 
-### 2.5 【长期维护】机制三：合并与级联（采用 TencentDB-Agent-Memory 实现）
+### 2.5 【长期维护】机制三：合并与级联（参照 TencentDB-Agent-Memory 实现）
+
+> 与 2.1.1 的候选选择无关：无论最终用哪个工具产生事实基础，反向更新时都要解决「新知识怎么并进旧页」和「删源后引用怎么清理」。以下机制来自 #1 的已实测实现，可直接参照或复用。
 
 **四档合并策略**（`merge.ts`）：
 
@@ -217,9 +236,9 @@ Wiki 是 build artifact。页面错了不改页面，改 prompt / 描述符 / �
 
 ## 来源
 
-- [知识管理系统全景图](./知识管理系统全景图.md)（方案 1–13 样本）
-- [TencentCloud/TencentDB-Agent-Memory](https://github.com/TencentCloud/TencentDB-Agent-Memory)
-- [Tencent/WeKnora](https://github.com/Tencent/WeKnora) · [SonicBotMan/wiki-kb](https://github.com/SonicBotMan/wiki-kb) · [AgriciDaniel/claude-obsidian](https://github.com/AgriciDaniel/claude-obsidian)
-- [deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) · [open-zread](https://github.com/bb-boy680/open-zread) · [Understand-Anything](https://github.com/Egonex-AI/Understand-Anything) · [colbymchenry/codegraph](https://github.com/colbymchenry/codegraph)
-- [Karpathy LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
-- backlog 本地仓：`docs/workflow-design.md`、`docs/local-debug/`、`issue_docs/`、`changelogs/`
+外部方案的 URL 已就地标在 §1.1 表内，不重复罗列。其余来源：
+
+- [知识管理系统全景图](./知识管理系统全景图.md) —— §1.1 中 #11–#18 的样本出处
+- `TencentCloud/TencentDB-Agent-Memory` 已 clone 至本地，§1.3 的机制均来自实际代码阅读，非二手信息
+- backlog 本地仓（`origin/main` @ 2026-08-07）：`docs/workflow-design.md`、`docs/local-debug/`、`issue_docs/`、`changelogs/`、`.github/workflows/knowledge-summary.yml`
+- release-mgmt 本地仓：`.github/workflows/workflow_release_pipeline.yml:1213`（§2.7 断链证据）
