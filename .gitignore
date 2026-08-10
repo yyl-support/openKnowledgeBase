@@ -3,3 +3,6 @@
 .knowledge/
 __pycache__/
 *.pyc
+
+# 知识提取脚本的中间产物（原始 JSON），不提交
+output/*/.raw/

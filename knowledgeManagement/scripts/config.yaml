@@ -1,0 +1,54 @@
+# 配置文件示例
+# 代码知识提取工具配置
+
+adapters:
+  # MemoryKnowledge 适配器配置
+  mk:
+    api_url: http://localhost:8421
+    api_prefix: /v3
+    service_name: trial-svc
+    team_name: trial-team
+
+  # open-zread 适配器配置（无需配置，直接调用命令行）
+  zread:
+    # open-zread 通过命令行调用，无需额外配置
+
+  # Understand-Anything 适配器配置
+  # UA 是 Claude Code 插件，没有 HTTP API：需要先在目标仓库对应的 Claude Code
+  # 会话中运行 /understand 完成分析，产物落盘到 <repo>/.ua/knowledge-graph.json
+  ua:
+    # data_dir 可选：显式指定知识图谱产物所在目录（不传则自动探测
+    # <repo>/.ua/ 或旧版 <repo>/.understand-anything/）
+    # 留空 {} 避免 create_adapter 拿到 None
+    {}
+
+# 输出路径配置
+output:
+  # 输出根目录：相对路径基于 scripts 目录解析（不是当前工作目录）
+  # 命令行 --output-root 优先级高于此配置
+  root: ../../output
+
+# 二次提炼层配置
+# 经 4router 使用 Claude。注意 4router 上不存在 claude-opus-4，
+# 实际可用：claude-opus-4-6 / 4-7 / 4-8 / claude-opus-5 / claude-sonnet-5 / claude-sonnet-4-6
+refiner:
+  model: claude-opus-4-6
+
+  # 4router 走 Anthropic 原生协议。注意这里不要带 /v1：
+  # anthropic SDK 自己会拼 /v1/messages，带上会变成 /v1/v1/messages 报 404
+  # 域名是 4router.net，不是 api.4router.net
+  base_url: https://4router.net
+
+  # API Key 只从环境变量读取，不写入本文件
+  api_key: ${ANTHROPIC_API_KEY}
+
+# DeepSeek 配置示例（注释掉）
+# refiner:
+#   model: deepseek-chat
+#   base_url: https://api.deepseek.com
+#   api_key: ${DEEPSEEK_API_KEY}
+
+# Anthropic 官方直连示例（不配 base_url 即走官方）
+# refiner:
+#   model: claude-opus-4-6
+#   api_key: ${ANTHROPIC_API_KEY}

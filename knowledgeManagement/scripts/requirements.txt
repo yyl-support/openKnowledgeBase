@@ -1,0 +1,17 @@
+# 依赖包清单
+# 代码知识提取工具所需的 Python 包
+
+# HTTP 请求
+requests>=2.31.0
+
+# YAML 配置解析
+PyYAML>=6.0
+
+# Anthropic SDK（用于 Claude 模型）
+anthropic>=0.18.0
+
+# OpenAI SDK（用于 OpenAI 兼容接口，如 DeepSeek）
+openai>=1.12.0
+
+# 日志和工具
+python-json-logger>=2.0.7
