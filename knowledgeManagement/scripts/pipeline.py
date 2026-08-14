@@ -259,6 +259,11 @@ def layer1_preprocess(repo_path: str, work_dir: str, *, model: str,
 扫描清单已写入：{manifest_path}
 请先 Read 这份清单，再按你的 CLAUDE.md 契约输出 JSON。
 
+注意第 2c 条：从同构目录抽代表样本时，先用 grep 统计关键字段
+（schedulerName / storageClassName / image / version / replicas / nodeSelector 等）
+在该组内的取值分布，每种取值至少抽一个样本，并把分布填进 dimension_coverage 字段。
+只抽一个样本会让它的属性被下游当成全局事实——这是已核实的事故来源。
+
 清单内容摘要（完整内容请读文件）：
 - 目录数 {len(scan['dir_stats'])}，规则候选文件 {len(scan['rule_candidates'])} 个
 - CLAUDE.md {len(scan['claude_md'])} 份
@@ -328,6 +333,32 @@ def layer1_preprocess(repo_path: str, work_dir: str, *, model: str,
         data["decision_request"] = (existing + f"\n另：约定文件超限未读取（{paths}），"
                                               f"需决定是否分批读取。").strip()
 
+    # 复核抽样的维度覆盖。只抽一个样本会让它的属性被下游当成全局事实 ——
+    # 实测事故：329 个 runner chart 只抽了一个，其 schedulerName 为 npu-scheduler
+    # （全仓 180 次），而多数派是 volcano（255 次），错误结论进了交付报告。
+    dim = data.get("dimension_coverage") or []
+    if not dim:
+        logger.warning(
+            "Layer 1 未给出 dimension_coverage —— 无法判断代表样本是否覆盖"
+            "关键字段的每种取值，下游有把样本属性当成全局事实的风险"
+        )
+    else:
+        gaps = [d for d in dim if (d or {}).get("uncovered_values")]
+        logger.info("Layer 1 维度覆盖：核查 %d 个维度，%d 个存在未覆盖取值",
+                    len(dim), len(gaps))
+        if gaps:
+            data["needs_user_decision"] = True
+            lines = []
+            for d in gaps:
+                unc = ", ".join(str(v) for v in (d.get("uncovered_values") or []))
+                lines.append(f"  - {d.get('dimension')}：未覆盖取值 {unc}")
+            existing = _as_text(data.get("decision_request"))
+            data["decision_request"] = (
+                existing + "\n\n【抽样维度缺口】以下关键字段存在未被代表样本覆盖的取值，"
+                "下游可能把已抽样本的取值当成全局事实：\n" + "\n".join(lines) +
+                "\n请决定是否补抽这些取值的样本。"
+            ).strip()
+
     logger.info("Layer 1 完成：rule_facts=%d core=%d auxiliary=%d excluded=%d",
                 len(data["rule_facts"]), n_core, n_aux,
                 len(ii.get("excluded", [])))
@@ -352,6 +383,21 @@ def write_decision_request(work_dir: str, pre: Dict) -> str:
         f"判定的主流程：{pre.get('core_flow', '（未给出）')}",
         "",
     ]
+    dim = pre.get("dimension_coverage") or []
+    if dim:
+        lines += ["## 抽样维度覆盖", "",
+                  "| 维度 | 取值数 | 已抽样 | 未覆盖 |", "|---|---|---|---|"]
+        for d in dim:
+            d = d or {}
+            vals = d.get("values") or {}
+            sampled = d.get("sampled_values") or []
+            unc = d.get("uncovered_values") or []
+            lines.append(
+                f"| {d.get('dimension','?')} | {len(vals)} | {len(sampled)} | "
+                f"{', '.join(str(v) for v in unc) or '—'} |"
+            )
+        lines.append("")
+
     acct = pre.get("file_accounting") or {}
     if acct:
         lines += [

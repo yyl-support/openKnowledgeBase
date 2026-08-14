@@ -215,15 +215,17 @@ runner chart 实例，归为以下机型族：
 负责 NPU 拓扑感知调度，配合 `ascend-ci.com/*` 系列 pod 标签工作。主要写在 runner
 chart 的 `values.yaml` 中。
 
-### 两层配置可能不一致
+### 两层声明：这是约定，不是冲突
 
-同一个 runner 的调度器在两处声明，且实测存在不一致。例如
-`projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/`：
+同一个 runner 的 `schedulerName` 在两处声明，且两处**故意不同**：
 
-| 位置 | schedulerName |
-|---|---|
-| `linux-aarch64-a3-2/values.yaml` | `npu-scheduler` |
-| `config-cn12-001/linux-aarch64-a3-2-configmap.yaml` | `volcano` |
+| 位置 | schedulerName | 作用对象 |
+|---|---|---|
+| `{runner-variant}/values.yaml` | `npu-scheduler` | Helm chart 渲染出的 listener / controller pod |
+| `config-{cluster}/{runner}-configmap.yaml` | `volcano` | 实际执行 job 的 ephemeral runner pod |
 
-`values.yaml` 中的值作用于 Helm chart 渲染出的 listener/controller pod，configmap
-中的值作用于实际执行 job 的 ephemeral runner pod。修改调度器时必须确认改的是哪一层。
+在 124 对可比对的 runner 中，120 对是 `npu-scheduler → volcano`、4 对是
+`volcano → volcano`，反向 0 例。方向完全一致，说明这是刻意的分层设计：控制面走
+NPU 拓扑感知调度，数据面（真正跑 job 的 pod）走 volcano 的队列与批处理。
+
+修改调度器时必须确认改的是哪一层 —— 改错层不会报错，但不会生效在预期的 pod 上。

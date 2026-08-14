@@ -34,6 +34,12 @@ Python 侧传给你的结构化清单，包含：
     "excluded": [{"path": "单个文件或目录的相对路径", "reason": "..."}]
   },
   "core_flow": "一句话说明你判定的主流程是什么，及判定依据的文件路径",
+  "dimension_coverage": [
+    {"dimension": "关键字段名或分类维度名，如 schedulerName / 机型族",
+     "values": {"取值": 出现次数},
+     "sampled_values": ["已被 core 样本覆盖的取值"],
+     "uncovered_values": ["未被覆盖的取值；为空表示全覆盖"]}
+  ],
   "needs_user_decision": false,
   "decision_request": null
 }
@@ -108,6 +114,34 @@ CLAUDE.md 里的规则要摘成可校验的断言，例如
    要排除大量文件时，把它们的**共同目录**写进 `excluded` 一条即可（`excluded` 允许
    填目录），并在 `reason` 里写明该目录下大约有多少文件、为什么整体排除。不要靠
    「不提及」来实现排除。
+
+2c. **抽样必须覆盖关键字段的每种取值。** 从同构目录里抽代表样本时，只抽第一个或
+   随便一个是不够的 —— 样本的属性会被下游当成全局事实。
+
+   抽样前先对该组文件的**关键字段**做取值统计，典型字段：`schedulerName`、
+   `storageClassName`、`image`/`repository`、`version`、`replicas`、`nodeSelector`、
+   调度队列注解、资源限制。命令形如：
+
+   ```bash
+   grep -rhoE 'schedulerName:\\s*[^\\s]+' --include='*.yaml' <目录> | sort | uniq -c | sort -rn
+   ```
+
+   然后按以下规则定样本：
+
+   - 某关键字段只有一种取值 → 抽一个样本即可
+   - 有 N 种取值（N <= 4）→ **每种取值至少抽一个样本**，并在 `reason` 里写明
+     该样本代表哪一种取值、该取值在组内占多少
+   - 取值超过 4 种 → 抽出现次数最多的 3 种 + 最少的 1 种，并在
+     `decision_request` 里列出完整分布交用户决策
+
+   已核实的事故：从 329 个 runner chart 里只抽了
+   `projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/` 一个样本，它的
+   `schedulerName` 是 `npu-scheduler`（全仓 180 次），而全仓多数派是 `volcano`
+   （255 次）。下游据此写出「调度由 npu-scheduler 接管」的错误结论，进了交付报告，
+   由领域专家指出才发现。同一项目下有 39 处用 volcano，只是都在抽样范围外。
+
+   同理，机型、加速卡型号、架构这类**分类维度**也要覆盖：不要只抽 `linux-aarch64-a3`
+   一种就代表全部 14 个机型族。分类维度的完整清单要写进 `dimension_coverage` 字段。
 
 3. **判定不了就说判定不了。** `reason` 里禁止写「推测」「可能」类的话来凑。
    拿不出仓内证据的文件，归入需用户决策。
