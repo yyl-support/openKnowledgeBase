@@ -1,0 +1,93 @@
+{
+  "checked_count": 45,
+  "conflicts": [
+    {
+      "id": "K01",
+      "claim": "argocd/clusters/gy-004/git-cdn.yaml 使用 sfsturbo-subpath-sc 存储类（'specific to gy-004'）；Shared Cluster Resources 汇总节点将 sfsturbo-subpath-sc 列为跨项目共享资源",
+      "claim_source": "raw.json path=argocd/clusters/gy-004/git-cdn.yaml 及匿名 Shared Cluster Resources 汇总节点",
+      "rule_basis": "CLAUDE.md：存储类 sfsturbo-subpath-sc 仅用于 gy-006、cn12-001、hk-ci",
+      "verification": "grep -rl \"storageClassName:.*csi-sfsturbo\" --include=\"*.yaml\" .; grep -rl \"storageClassName:.*sfsturbo-subpath-sc\" --include=\"*.yaml\" .; grep -rl \"sfsturbo-subpath-sc\" argocd/clusters/*/*.yaml | sed -E 's#argocd/clusters/([^/]+)/.*#\\1#' | sort -u; cat other/opensourceways/config/local-storage-pvc.yaml",
+      "evidence": "csi-sfsturbo 命中 99 个文件；sfsturbo-subpath-sc 命中 303-304 个文件；sfsturbo-subpath-sc 实际涉及集群目录含 ascend-infra-guiyang-cluster-001, cn12-001, gy-004, gy-005, hk-001, openmerlin-guiyang-006，远超 CLAUDE.md 声称的 gy-006/cn12-001/hk-ci 三个；数十个 projects/other 下 runner values.yaml 及 manifests/grafana、manifests/nginx-pypi-cache-* 的 pvc.yaml 均使用该存储类作为 ephemeral/共享存储默认选择",
+      "verdict": "rule_basis_wrong",
+      "corrected_fact": "sfsturbo-subpath-sc 是仓库中使用最广泛的存储类（304 个文件引用），用于绝大多数项目 runner 的 ephemeral 工作卷及部分共享组件（grafana、nginx-pypi-cache）的持久化存储，实际使用集群包括但不限于 gy-004、gy-005、gy-006、hk-001、hk-ci、cn12-001、ascend-infra-guiyang-cluster-001（gy-001），而非仅限 gy-006、cn12-001、hk-ci 三个集群；csi-sfsturbo（99 个文件引用）主要用于各项目 config/local-storage-pvc.yaml 的基础持久化存储，并非'大多数集群使用'的 ephemeral 存储类",
+      "severity": "fact_conflict",
+      "check_type": "rule_conflict"
+    },
+    {
+      "id": "K02",
+      "claim": "projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/values.yaml 使用 'an ascend-1980 NPU node selector for a 2-way runner pool'",
+      "claim_source": "raw.json path=projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/values.yaml",
+      "rule_basis": "源文件自身实际结构",
+      "verification": "grep -n \"ascend-1980\\|nodeSelector\\|minRunners\\|maxRunners\\|replicas\\|npu-resource-model\\|required-npu-count\" projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/values.yaml",
+      "evidence": "line 16-17: nodeSelector 位于 listenerTemplate.spec 下，值为 beta.kubernetes.io/arch: amd64，与 NPU 无关；line 27: ascend-1980 实际位于 template.metadata.labels 下的 ascend-ci.com/npu-resource-model（pod 标签，非 nodeSelector）；line 25: \"2\" 来自 ascend-ci.com/required-npu-count，指单个 runner pod 所需 NPU 数量；grep -c minRunners/maxRunners/replicas 结果为 0，文件中不存在这三个字段",
+      "verdict": "CONFIRMED",
+      "corrected_fact": "ascend-1980 是 template.metadata.labels 下的 pod 标签（ascend-ci.com/npu-resource-model），不是 nodeSelector；该文件唯一的 nodeSelector 是 beta.kubernetes.io/arch: amd64。\"2\" 来自 ascend-ci.com/required-npu-count，指每个 runner pod 需要 2 张 NPU，不是 2 个 runner 的池规模；文件中不存在 minRunners/maxRunners/replicas 字段",
+      "severity": "fact_conflict",
+      "check_type": "structural"
+    },
+    {
+      "id": "K03",
+      "claim": "manifests/arc-controller-0.14.2/values.yaml 具有 'custom image registry' 和 'resource limits'",
+      "claim_source": "raw.json path=manifests/arc-controller-0.14.2/values.yaml",
+      "rule_basis": "CLAUDE.md：ARC >= 0.14.0 定制镜像固定为 swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/gha-runner-scale-set-controller:0.14.201",
+      "verification": "grep -n \"image:\\|repository:\\|resources:\\|limits:\\|requests:\\|nodeSelector\" manifests/arc-controller-0.14.2/values.yaml; grep -c \"myhuaweicloud\\|swr\\.\" manifests/arc-controller-0.14.2/values.yaml; grep -n \"myhuaweicloud\" argocd/controllers/arc-controller-cn12-001.yaml",
+      "evidence": "该文件内 myhuaweicloud/swr. 出现次数为 0；image.repository（line 14）为默认 ghcr.nju.edu.cn/actions/gha-runner-scale-set-controller；resources（line 59）为空对象 {}，limits/requests（line 64-69）整块被注释；定制镜像实际写在 argocd/controllers/arc-controller-cn12-001.yaml line 17（ArgoCD Application inline helm values 覆盖）",
+      "verdict": "CONFIRMED",
+      "corrected_fact": "manifests/arc-controller-0.14.2/values.yaml 自身的 image.repository 是默认的 ghcr.nju.edu.cn/actions/gha-runner-scale-set-controller（NJU 镜像），tag 为空；resources: {}，limits/requests 均被注释，未配置实际资源限制。CLAUDE.md 要求的 Huawei SWR 定制镜像是通过每个集群的 ArgoCD Application（如 argocd/controllers/arc-controller-cn12-001.yaml line 17-18）以 inline helm values 覆盖注入的，不在这份 chart 的 values.yaml 中声明",
+      "severity": "fact_conflict",
+      "check_type": "structural"
+    },
+    {
+      "id": "K04",
+      "claim": "scripts/argocd-app-lint.sh 实现 'r1-r7 checks'",
+      "claim_source": "raw.json path=scripts/argocd-app-lint.sh",
+      "rule_basis": "源文件自身实际结构",
+      "verification": "grep -n \"^r[0-9]_check()\" scripts/argocd-app-lint.sh",
+      "evidence": "文件中共定义 6 个 rN_check 函数：r1_check(115行)、r2_check(139行)、r4_check(168行)、r5_check(240行)、r6_check(287行)、r7_check(322行)；不存在 r3_check",
+      "verdict": "CONFIRMED",
+      "corrected_fact": "scripts/argocd-app-lint.sh 定义了 6 个规则检查函数：r1_check、r2_check、r4_check、r5_check、r6_check、r7_check；不存在 r3_check，序号非连续",
+      "severity": "fact_conflict",
+      "check_type": "structural"
+    },
+    {
+      "id": "K05",
+      "claim": "monitoring/prometheus/values.yaml 配置了 'Prometheus HA (1 replica)'",
+      "claim_source": "raw.json path=monitoring/prometheus/values.yaml",
+      "rule_basis": "源文件自身实际结构（Chart.yaml description 作为设计意图对照）",
+      "verification": "grep -n \"replicas:\\|Anti-affinity\\|恢复 replicas\" monitoring/prometheus/values.yaml",
+      "evidence": "line 15, 88: replicas: 1（Prometheus 与 Alertmanager 均为单副本）；line 25, 93: 反亲和性配置被注释，注释写明'正式上线时恢复 replicas: 2'，说明当前未启用 HA",
+      "verdict": "CONFIRMED",
+      "corrected_fact": "monitoring/prometheus/values.yaml 当前将 Prometheus 与 Alertmanager 的 replicas 都设为 1，尚未启用 HA；实现 HA 所需的跨节点反亲和性配置目前被注释，注释说明将在正式上线时恢复为 replicas: 2。当前实际部署是单副本，不是 HA",
+      "severity": "fact_conflict",
+      "check_type": "structural"
+    },
+    {
+      "id": "K06",
+      "claim": "README.md 与 script.sh 之间存在 'documents' 关系",
+      "claim_source": "raw.json path=README.md, metadata.relations",
+      "rule_basis": "源文件 README.md 全文",
+      "verification": "grep -in \"script\" README.md",
+      "evidence": "grep 无匹配（exit code 1）；README.md 全文 60 行未提及 script.sh 或任何 script 字样",
+      "verdict": "CONFIRMED",
+      "corrected_fact": "README.md 全文未引用 script.sh；README.md 与 script.sh 之间不存在文档化关系，该关系边缺乏文本依据",
+      "severity": "fact_conflict",
+      "check_type": "structural"
+    }
+  ],
+  "structural_check": {
+    "core_files_checked": 19,
+    "core_files_total": 19,
+    "claims_examined": 45
+  },
+  "corrections_for_refiner": [
+    "sfsturbo-subpath-sc 是仓库中使用最广泛的存储类（304 个文件引用），实际使用集群包括 gy-004、gy-005、gy-006、hk-001、hk-ci、cn12-001、ascend-infra-guiyang-cluster-001 等，不限于 gy-006/cn12-001/hk-ci 三个；csi-sfsturbo（99 个文件）主要用于各项目 config/local-storage-pvc.yaml 的基础持久化存储",
+    "linux-aarch64-a3-2/values.yaml 中 ascend-1980 是 template.metadata.labels 下的 pod 标签（ascend-ci.com/npu-resource-model），不是 nodeSelector；该文件唯一的 nodeSelector 是 beta.kubernetes.io/arch: amd64",
+    "linux-aarch64-a3-2/values.yaml 中的 \"2\" 来自 ascend-ci.com/required-npu-count，指每个 runner pod 需要 2 张 NPU，不是 runner 池的规模；该文件不存在 minRunners/maxRunners/replicas",
+    "manifests/arc-controller-0.14.2/values.yaml 自身使用默认 NJU 镜像且 resources 为空（limits/requests 被注释），Huawei SWR 定制镜像是通过各集群 ArgoCD Application 的 inline helm values 覆盖注入的，不在该 values.yaml 中",
+    "scripts/argocd-app-lint.sh 定义 6 个规则检查函数（r1、r2、r4、r5、r6、r7），不存在 r3_check",
+    "monitoring/prometheus/values.yaml 当前 Prometheus 与 Alertmanager 均为单副本（replicas: 1），HA 所需的反亲和性配置被注释未启用，当前不是 HA 部署",
+    "README.md 与 script.sh 之间不存在文档化关系"
+  ],
+  "blocking": false,
+  "blocking_reason": null
+}

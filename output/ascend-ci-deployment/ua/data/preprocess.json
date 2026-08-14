@@ -1,0 +1,325 @@
+{
+  "project_name": "ascend-ci-deployment",
+  "total_files": 2224,
+  "rule_facts": [
+    {
+      "path": "CLAUDE.md",
+      "kind": "claude_md",
+      "assertions": [
+        "projects/{org}/{repo}/ 用于 GitHub 上有活跃 CI 的 org/repo，长期维护；other/{org}/{repo}/ 用于不再活跃维护但仍需保留 runner 的项目",
+        "monitoring/ 永远在顶层，不在 projects/ 或 other/ 下",
+        "一个 org 下只有 runner 相关项目时，runner 配置直接放在 other/{org}/ 下（如 other/ascend-gha-runners/）",
+        "ArgoCD Application 的 source.path 必须与 projects/、other/、monitoring/、manifests/ 目录对应",
+        "新项目命名空间格式为 {org-lower}-{repo-lower} 全小写，如 alibaba/ROLL → alibaba-roll；已有项目保持已有命名不重命名，如 vllm-project/vllm-ascend → vllm-project",
+        "ARC < 0.14.0 的 runner 目录命名为 linux-{arch}-{npu}-{count}，如 linux-aarch64-a3-2；ARC >= 0.14.0 为 linux-{arch}-{npu}-{count}-{cluster_suffix}，如 linux-aarch64-a3-2-gy005",
+        "config 目录命名变体：config/（默认）、config-{cluster}/（无 for 前缀，如 config-hk001/）、config-for-{cluster}/（带 for 前缀，如 config-for-guiyang-005/），规则是匹配已有约定不统一",
+        "ARC >= 0.14.0 的 gha-runner-scale-set.scaleSetLabels 必须有 2 个标签（capability label + cluster label）",
+        "ARC >= 0.14.0 的 gha-runner-scale-set.resourceMeta.ephemeralRunnerSet.annotations 必须标注 actions.github.com/job-cpu、actions.github.com/job-memory、actions.github.com/job-npu",
+        "ARC >= 0.14.0 定制镜像固定为 swr.cn-southwest-2.myhuaweicloud.com/modelfoundry/gha-runner-scale-set-controller:0.14.201",
+        "Config Application 必须包含 syncOptions: [CreateNamespace=true]；Runner Application 必须指定 spec.source.helm.releaseName；所有 Application 必须设置 automated.prune: true；多个 runner 可合并到一个文件用 --- 分隔",
+        "ArgoCD 集群目录与 ARC 版本对应表：gy-003→0.13.0, gy-004→0.14.2, gy-005→0.14.2, gy-006→0.14.2, hk-001→0.13.0, hk-ci→0.13.0, cn12-001→0.14.2, hb-003→0.13.0, hb-003-verl→0.13.0, hidevlab-k8s→0.13.0, verl-suzhou→0.13.0, karmada-test→0.13.0",
+        "存储类：csi-sfsturbo（ReadWriteMany，大多数集群使用）；sfsturbo-subpath-sc 仅用于 gy-006、cn12-001、hk-ci",
+        "默认分支必须通过 PR 合入，禁止直接 push；每个 PR 必须在 body 中包含独立一行 'resolve <issue URL>'"
+      ]
+    },
+    {
+      "path": "AGENTS.md",
+      "kind": "claude_md",
+      "assertions": [
+        "AGENTS.md 内容为 @CLAUDE.md，即整体指向复用 CLAUDE.md 的规则内容"
+      ]
+    },
+    {
+      "path": ".yamllint",
+      "kind": "lint",
+      "assertions": [
+        "extends: default",
+        "ignore 路径：manifests/*/templates/、manifests/*/chart/templates/、manifests/*/chart/charts/、manifests/liqo/liqo-*/、manifests/karmada-operator/",
+        "line-length.max: 200，allow-non-breakable-inline-mappings: true",
+        "indentation.spaces: 2，indent-sequences: true",
+        "new-line-at-end-of-file: enable",
+        "document-start: disable",
+        "comments.min-spaces-from-content: 1",
+        "empty-lines.max: 1，max-end: 0",
+        "truthy.allowed-values: ['true', 'false', 'on', 'off']"
+      ]
+    },
+    {
+      "path": ".github/workflows/ci-lint.yml",
+      "kind": "ci",
+      "assertions": [
+        "触发条件：pull_request 到 branches: [main]，路径过滤 **.yaml、**.yml、.yamllint、scripts/argocd-app-lint.sh、scripts/check-projects-coverage.py、.github/workflows/ci-lint.yml",
+        "job yamllint：runs-on linux-amd64-cpu-1，container image python:3.12，对 PR 变更的 *.yaml/*.yml 文件运行 yamllint -c .yamllint",
+        "job argocd-app-lint：runs-on linux-amd64-cpu-1，container image python:3.12，执行 bash scripts/argocd-app-lint.sh",
+        "job check-projects-coverage：runs-on linux-amd64-cpu-1，container image python:3.12，执行 python3 scripts/check-projects-coverage.py 检查新 projects/ 目录是否有对应 ArgoCD Application 和文档条目",
+        "job check-scale-set-labels：runs-on linux-amd64-cpu-1，container image python:3.12，检测 */values.yaml 中 scaleSetLabels 的新增/修改并在 PR 评论中提醒",
+        "所有 job 均有条件 if: \"!contains(github.event.pull_request.title, '[skip ci]')\""
+      ]
+    },
+    {
+      "path": ".github/workflows/notify-docs-refresh.yml",
+      "kind": "ci",
+      "assertions": [
+        "输入中未提供具体触发条件与步骤字面量，需查阅源码确认"
+      ]
+    },
+    {
+      "path": ".github/workflows/notify-superproject.yml",
+      "kind": "ci",
+      "assertions": [
+        "输入中未提供具体触发条件与步骤字面量，需查阅源码确认"
+      ]
+    },
+    {
+      "path": ".github/workflows/sync-images.yml",
+      "kind": "ci",
+      "assertions": [
+        "输入中未提供具体触发条件与步骤字面量，需查阅源码确认"
+      ]
+    },
+    {
+      "path": "manifests/arc-controller-0.14.2/Chart.yaml",
+      "kind": "dependency",
+      "assertions": [
+        "该 chart：apiVersion v2, name: arc, version: 0.14.2",
+        "dependencies: gha-runner-scale-set-controller version 0.14.2, repository oci://ghcr.io/actions/actions-runner-controller-charts"
+      ]
+    },
+    {
+      "path": "manifests/liqo/liqo-1.2.0/Chart.yaml",
+      "kind": "dependency",
+      "assertions": [
+        "该 chart：apiVersion v2, name: liqo, type: application, version: 0.1.0, appVersion: v1.2.0",
+        "dependencies: liqo-crds version 0.1.0, repository file://./charts/liqo-crds"
+      ]
+    }
+  ],
+  "interpret_inputs": {
+    "core": [
+      {
+        "path": "README.md",
+        "reason": "仓库根说明文档，描述整体用途，判定为主流程说明依据"
+      },
+      {
+        "path": "docs/ci-checks.md",
+        "reason": "CI 检查项文档，与 .github/workflows/ci-lint.yml 中的检查逐一对应，是主流程 CI 校验的说明文件"
+      },
+      {
+        "path": "scripts/argocd-app-lint.sh",
+        "reason": "被 .github/workflows/ci-lint.yml 的 argocd-app-lint job 直接调用，属于 CI 主流程执行代码"
+      },
+      {
+        "path": "scripts/check-projects-coverage.py",
+        "reason": "被 .github/workflows/ci-lint.yml 的 check-projects-coverage job 直接调用，属于 CI 主流程执行代码"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/SKILL.md",
+        "reason": "CLAUDE.md 中 Agent Skill 表格列出的核心 skill，定义主流程之一（生成部署配置）"
+      },
+      {
+        "path": "argocd/controllers/arc-controller-cn12-001.yaml",
+        "reason": "代表：ARC 控制器 Application（每集群一个），部署链路起点"
+      },
+      {
+        "path": "manifests/arc-controller-0.14.2/Chart.yaml",
+        "reason": "代表：ARC 控制器 chart 元数据与上游依赖声明（当前主力版本 0.14.2）"
+      },
+      {
+        "path": "manifests/arc-controller-0.14.2/values.yaml",
+        "reason": "代表：ARC 控制器部署参数"
+      },
+      {
+        "path": "manifests/arc-controller-0.14.2/templates/clusterrole-management.yaml",
+        "reason": "代表：ARC 控制器所需的集群权限模板"
+      },
+      {
+        "path": "argocd/clusters/cn12-001/vllm-project-vllm-ascend-cn12-001-config.yaml",
+        "reason": "代表：指向 config-{cluster} overlay 的 ArgoCD Application"
+      },
+      {
+        "path": "argocd/clusters/cn12-001/vllm-project-vllm-ascend-cn12-001-linux-aarch64-a3.yaml",
+        "reason": "代表：指向 runner chart 的 ArgoCD Application"
+      },
+      {
+        "path": "projects/vllm-project/vllm-ascend/config-cn12-001/kustomization.yaml",
+        "reason": "代表：Kustomize overlay 入口，串起该集群下的全部 configmap"
+      },
+      {
+        "path": "projects/vllm-project/vllm-ascend/config-cn12-001/linux-aarch64-a3-2-configmap.yaml",
+        "reason": "代表：runner 的 pod template configmap"
+      },
+      {
+        "path": "projects/vllm-project/vllm-ascend/config-cn12-001/runner-pod-permission.yaml",
+        "reason": "代表：runner pod 的权限声明"
+      },
+      {
+        "path": "projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/Chart.yaml",
+        "reason": "代表：单个 runner 变体的 chart 与上游依赖版本"
+      },
+      {
+        "path": "projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/values.yaml",
+        "reason": "代表：单个 runner 变体的部署参数（NPU 资源、镜像、规模）"
+      },
+      {
+        "path": "other/Ascend/Ascend-CI/linux-aarch64-310p-1/Chart.yaml",
+        "reason": "代表：other/ 下低活跃项目的 runner chart，与 projects/ 同构"
+      },
+      {
+        "path": "monitoring/prometheus/Chart.yaml",
+        "reason": "代表：监控组件 chart 与上游依赖"
+      },
+      {
+        "path": "monitoring/prometheus/values.yaml",
+        "reason": "代表：监控组件部署参数"
+      }
+    ],
+    "auxiliary": [
+      {
+        "path": "PROGRESS_REPORT.md",
+        "reason": "历史进度记录，辅助性说明文档而非主流程"
+      },
+      {
+        "path": "argocd-removal-record.md",
+        "reason": "历史移除记录，辅助性说明文档"
+      },
+      {
+        "path": "config-pod-template-analysis.md",
+        "reason": "Pod 模板分析文档，辅助参考材料"
+      },
+      {
+        "path": "script.sh",
+        "reason": "根目录零散脚本，未被 CI 工作流引用，判定为辅助工具脚本"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/templates/local.json",
+        "reason": "SKILL.md 引用的模板文件，辅助 skill 的示例配置"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/templates/sfsturbo.json",
+        "reason": "SKILL.md 引用的模板文件，辅助 skill 的示例配置"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/templates/test-hidevlab-k8s.json",
+        "reason": "SKILL.md 引用的模板文件，辅助 skill 的示例配置"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/templates/test-hidevlab-k8s-a3-0.json",
+        "reason": "SKILL.md 引用的模板文件，辅助 skill 的示例配置"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/templates/test-hidevlab-k8s-a3-2.json",
+        "reason": "SKILL.md 引用的模板文件，辅助 skill 的示例配置"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/templates/test-hidevlab-k8s-a3-4.json",
+        "reason": "SKILL.md 引用的模板文件，辅助 skill 的示例配置"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/templates/test-hidevlab-k8s-a3-8.json",
+        "reason": "SKILL.md 引用的模板文件，辅助 skill 的示例配置"
+      },
+      {
+        "path": ".claude/skills/arc-deploy/templates/test-hidevlab-k8s-a3-16.json",
+        "reason": "SKILL.md 引用的模板文件，辅助 skill 的示例配置"
+      },
+      {
+        "path": "tests/test-argocd-app-lint.sh",
+        "reason": "argocd-app-lint.sh 的测试，属辅助能力，熟悉作用即可"
+      },
+      {
+        "path": "tests/test_check_projects_coverage.py",
+        "reason": "check-projects-coverage.py 的测试，属辅助能力"
+      },
+      {
+        "path": "tests/test_sync_new_projects_to_docs.py",
+        "reason": "文档同步脚本的测试，属辅助能力"
+      }
+    ],
+    "excluded": [
+      {
+        "path": "manifests/liqo/liqo-1.2.0/charts/liqo-crds/crds",
+        "reason": "约 28 个文件，为第三方 vendored CRD 定义（liqo 项目上游生成物），非本仓库自研逻辑"
+      },
+      {
+        "path": ".gitignore",
+        "reason": "工具生成物配置，非规则事实也非功能代码"
+      },
+      {
+        "path": ".gitleaksignore",
+        "reason": "gitleaks 白名单列表，属于安全扫描工具配置项而非项目功能/规则事实，且内容为大量字面量误报条目"
+      },
+      {
+        "path": ".coveragerc",
+        "reason": "覆盖率工具配置，无实质业务规则可摘"
+      },
+      {
+        "path": "projects",
+        "reason": "723 个文件。按 CLAUDE.md 固定模板复制到不同 org/repo/cluster 的同构实例；已由 projects/vllm-project/vllm-ascend/ 的代表样本覆盖其结构与串联方式"
+      },
+      {
+        "path": "other",
+        "reason": "823 个文件。低活跃项目的 runner 配置，与 projects/ 结构同构；已由 other/Ascend/Ascend-CI 的代表样本覆盖"
+      },
+      {
+        "path": "argocd/clusters",
+        "reason": "287 个文件。每集群一组 ArgoCD Application，命名与 source.path 规律固定；已由 cn12-001 的 config + runner 两个代表样本覆盖"
+      },
+      {
+        "path": "argocd/controllers",
+        "reason": "16 个文件。每集群一个 ARC 控制器 Application，仅集群名与目标不同；已由 arc-controller-cn12-001.yaml 覆盖"
+      },
+      {
+        "path": "manifests/liqo",
+        "reason": "143 个文件。vendored 第三方 Liqo chart（含 CRD），非本仓自研内容"
+      },
+      {
+        "path": "manifests",
+        "reason": "331 个文件（含已单列的 arc-controller-0.14.2）。其余为 arc-controller 历史版本 0.12.0/0.13.0/0.13.1 与其他基础组件；依赖声明去重后仅 6 种，已由 0.14.2 代表样本覆盖"
+      },
+      {
+        "path": "monitoring",
+        "reason": "72 个文件。各集群监控配置，组件级 chart 已由 prometheus 代表样本覆盖"
+      }
+    ]
+  },
+  "core_flow": "主流程是 GitOps 部署：argocd/controllers/ 与 argocd/clusters/ 下的 ArgoCD Application 指向 projects/、other/ 下各项目的 config-{cluster}/（Kustomize overlay，产出 configmap 与权限）和 {runner-variant}/（Helm chart，依赖 manifests/ 的 arc-controller 或上游 gha-runner-scale-set），由 ArgoCD 同步到对应 K8s 集群，拉起 GitHub Actions self-hosted runner；monitoring/ 提供各集群监控。.github/workflows/ci-lint.yml 触发的 scripts/argocd-app-lint.sh 与 scripts/check-projects-coverage.py 是配套的结构校验，不是主流程本身。判定依据：CLAUDE.md 的目录职责说明，以及 argocd/clusters/ 下 Application YAML 的 source.path 实际指向 projects/、other/、manifests/、monitoring/。",
+  "needs_user_decision": false,
+  "decision_request": "已由用户决策并落实（2026-08-11）：每个同构分组抽 1-2 个代表性实例纳入 core，其余整组 excluded 并注明已被代表样本覆盖；同时纠正主流程判定为 GitOps 部署（原判为 CI lint 流程）。",
+  "file_accounting": {
+    "total": 2224,
+    "classified": 57,
+    "unaccounted": 2167,
+    "unaccounted_sample": [
+      "argocd/clusters/ascend-aiframework/monitoring-config.yaml",
+      "argocd/clusters/ascend-aiframework/monitoring-kube-state-metrics.yaml",
+      "argocd/clusters/ascend-ci-sglang-huadong2-cluster/buildkitd-server.yaml",
+      "argocd/clusters/ascend-gha-runners/sync-tools/ascend-hk-001/config.yaml",
+      "argocd/clusters/ascend-gha-runners/sync-tools/ascend-hk-001/linux-aarch64-a2b3-x.yaml",
+      "argocd/clusters/ascend-gha-runners/sync-tools/ascend-hk-001/linux-aarch64-hk001.yaml",
+      "argocd/clusters/ascend-gha-runners/sync-tools/openmerlin-guiyang-003/arc-system-service.yaml",
+      "argocd/clusters/ascend-gha-runners/sync-tools/openmerlin-guiyang-003/config.yaml",
+      "argocd/clusters/ascend-gha-runners/sync-tools/openmerlin-guiyang-004/config.yaml",
+      "argocd/clusters/ascend-gha-runners/sync-tools/openmerlin-guiyang-004/linux-amd64-sglang-guiyang004.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/devin-dc-huang-config.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/devin-dc-huang-linux-aarch64-a2-x.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/git-cdn.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/licy666-config.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/licy666-linux-aarch64-a2-x.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/opensourceways-config.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/opensourceways-linux-aarch64-a2-x.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/triton-lang-triton-ascend-config.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/triton-lang-triton-ascend-linux-aarch64-a2b1-x.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/verl-project-verl-omni-config.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/verl-project-verl-omni-linux-aarch64-a2b4-x.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/vllm-ascend-vllm-ascend-recipes-config.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/vllm-ascend-vllm-ascend-recipes-linux-aarch64-a2b4-x.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/vllm-project-vllm-ascend-config.yaml",
+      "argocd/clusters/ascend-infra-guiyang-cluster-001/vllm-project-vllm-ascend-linux-aarch64-a2b1-x.yaml",
+      "argocd/clusters/ascend-karmada-test/ascend-gha-runners/vllm-ascend/ascend-gha-runners-vllm-ascend-config-for-ascend-karmada-test-cluster.yaml",
+      "argocd/clusters/ascend-karmada-test/ascend-gha-runners/vllm-ascend/ascend-gha-runners-vllm-ascend-linux-aarch64-a3-x.yaml",
+      "argocd/clusters/ascend-mind-third-ci/monitoring-config.yaml",
+      "argocd/clusters/ascend-mind-third-ci/monitoring-kube-state-metrics.yaml",
+      "argocd/clusters/ascend-triton-agent-ci/monitoring-config.yaml"
+    ]
+  }
+}
