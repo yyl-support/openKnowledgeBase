@@ -21,8 +21,14 @@ adapters:
     # 产物缺失或过期时是否自己驱动 UA。false 则退回纯读取，找不到就报错
     auto_run: true
 
-    # UA 插件目录。不配则用 adapter 内的默认值
-    plugin_dir: /Users/gorden/huawei/code/Understand-Anything/understand-anything-plugin
+    # UA 插件目录。留空则自动探测，顺序为：
+    #   1. 环境变量 UA_PLUGIN_DIR
+    #   2. ~/.understand-anything-plugin（install.sh 的默认位置）
+    #   3. ~/.understand-anything/repo/understand-anything-plugin
+    #   4. ~/.claude/plugins/understand-anything/understand-anything-plugin
+    #   5. 与本仓库并列的 Understand-Anything/understand-anything-plugin
+    # 都找不到时会报错并列出已尝试的路径。不要在此写死机器专属的绝对路径
+    # plugin_dir: /path/to/understand-anything-plugin
 
     # 驱动 UA 的会话所用模型
     model: claude-sonnet-5

@@ -42,6 +42,87 @@ EXIT_VERIFY_BLOCKED = 5
 LARGE_PROJECT_THRESHOLD = 80
 
 
+def check_env(adapter: Optional[str] = None) -> bool:
+    """
+    环境自检：一次列清缺什么，而不是让用户逐个撞报错。
+
+    换机器首次使用时先跑 --check-env。返回 True 表示硬要求全部满足。
+    """
+    import shutil
+    import subprocess
+
+    ok = True
+    rows = []
+
+    def add(name: str, passed: bool, detail: str, required: bool) -> None:
+        nonlocal ok
+        if required and not passed:
+            ok = False
+        mark = "OK  " if passed else ("缺失" if required else "可选缺失")
+        rows.append(f"  [{mark}] {name}: {detail}")
+
+    # Python 版本
+    v = sys.version_info
+    add("Python", v >= (3, 9), f"{v.major}.{v.minor}.{v.micro}（需 3.9+）", True)
+
+    # Python 包
+    for pkg, mod in [("PyYAML", "yaml"), ("anthropic", "anthropic"),
+                     ("requests", "requests")]:
+        try:
+            __import__(mod)
+            add(f"包 {pkg}", True, "已安装", True)
+        except ImportError:
+            add(f"包 {pkg}", False, "pip install -r requirements.txt", True)
+
+    # claude CLI
+    claude = shutil.which("claude")
+    if claude:
+        try:
+            out = subprocess.run(["claude", "--version"], capture_output=True,
+                                 text=True, timeout=30)
+            add("claude CLI", out.returncode == 0,
+                (out.stdout or out.stderr).strip()[:60] or claude, True)
+        except (OSError, subprocess.TimeoutExpired) as e:
+            add("claude CLI", False, f"存在但无法执行: {e}", True)
+    else:
+        add("claude CLI", False, "未找到，四层 subagent 无法运行", True)
+
+    # API Key
+    key = os.getenv("ANTHROPIC_API_KEY") or os.getenv("OPENAI_API_KEY")
+    add("API Key", bool(key),
+        "已设置" if key else "export ANTHROPIC_API_KEY=...", True)
+
+    # git
+    add("git", bool(shutil.which("git")),
+        "已安装" if shutil.which("git") else "产物新鲜度检查将被跳过", False)
+
+    # adapter 专属依赖
+    if adapter in (None, "ua"):
+        from adapters.ua_adapter import resolve_plugin_dir
+        pd = resolve_plugin_dir()
+        add("UA 插件", bool(pd and os.path.isdir(pd)),
+            pd or "未找到，export UA_PLUGIN_DIR=<插件目录>", adapter == "ua")
+
+    if adapter in (None, "mk"):
+        import urllib.error
+        import urllib.request
+        url = "http://localhost:8421"
+        try:
+            urllib.request.urlopen(url, timeout=3)
+            reachable = True
+        except urllib.error.HTTPError:
+            reachable = True   # 有响应即服务在
+        except Exception:
+            reachable = False
+        add("MK 服务", reachable,
+            f"{url} 可达" if reachable else f"{url} 不可达", adapter == "mk")
+
+    print("=== 环境自检 ===")
+    print("\n".join(rows))
+    print(f"\n结论：{'硬要求全部满足，可以运行' if ok else '存在缺失，见上方标注'}")
+    return ok
+
+
 def _write_json(path: str, data: Dict) -> None:
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
@@ -728,11 +809,13 @@ def main():
       --stop-after preprocess
         """,
     )
-    parser.add_argument("--repo", required=True, help="代码仓本地路径")
-    parser.add_argument("--adapter", required=True, choices=["mk", "zread", "ua"])
-    parser.add_argument("--output-type", required=True,
+    parser.add_argument("--repo", help="代码仓本地路径（--check-env 时可省略）")
+    parser.add_argument("--adapter", choices=["mk", "zread", "ua"],
+                        help="三方件适配器（--check-env 时可省略）")
+    parser.add_argument("--output-type",
                         choices=["architecture", "quickstart", "api-reference",
-                                 "onboarding", "overview", "techstack", "standards"])
+                                 "onboarding", "overview", "techstack", "standards"],
+                        help="输出文档类型（--check-env 时可省略）")
     parser.add_argument("--config", default="config.yaml")
     parser.add_argument("--work-root", default="./work")
     parser.add_argument("--output-root",
@@ -746,10 +829,20 @@ def main():
     parser.add_argument("--stop-after",
                         choices=["preprocess", "extract", "verify"],
                         help="跑完指定层后停止")
+    parser.add_argument("--check-env", action="store_true",
+                        help="只做环境自检并退出：列出缺失的依赖与配置，不跑流水线")
     parser.add_argument("--reuse-preprocess", action="store_true",
                         help="复用 work 目录下已有的 preprocess.json，不重跑 Layer 1")
 
     args = parser.parse_args()
+
+    if args.check_env:
+        sys.exit(0 if check_env(args.adapter) else 1)
+
+    missing = [n for n, v in [("--repo", args.repo), ("--adapter", args.adapter),
+                              ("--output-type", args.output_type)] if not v]
+    if missing:
+        parser.error(f"缺少必需参数: {', '.join(missing)}")
 
     from extract import load_config, resolve_output_root
 

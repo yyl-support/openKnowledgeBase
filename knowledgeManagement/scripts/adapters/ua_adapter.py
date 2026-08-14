@@ -50,10 +50,54 @@ UA_DIR_CANDIDATES = ('.ua', '.understand-anything')
 KNOWLEDGE_GRAPH_FILENAME = 'knowledge-graph.json'
 META_FILENAME = 'meta.json'
 
-# UA 插件默认位置（本机已 clone 的仓库）
-DEFAULT_PLUGIN_DIR = (
-    '/Users/gorden/huawei/code/Understand-Anything/understand-anything-plugin'
-)
+# UA 插件位置的探测顺序。不写死绝对路径 —— 换一台机器路径就不存在，
+# 而 UA 是 Layer 2 的唯一入口，路径错了整条流水线跑不起来。
+#
+# 顺序：环境变量 > install.sh 的标准安装位置 > 与本仓库并列的源码克隆
+PLUGIN_DIR_ENV = 'UA_PLUGIN_DIR'
+
+
+def _default_plugin_dir_candidates() -> List[str]:
+    """UA 插件的候选位置，按优先级从高到低。"""
+    home = os.path.expanduser('~')
+    # 本文件位于 <repo>/knowledgeManagement/scripts/adapters/，上溯 4 级到仓库父目录
+    repo_parent = os.path.abspath(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                     '..', '..', '..', '..')
+    )
+    return [
+        # install.sh: PLUGIN_LINK="$HOME/.understand-anything-plugin"
+        os.path.join(home, '.understand-anything-plugin'),
+        # install.sh: REPO_DIR="${UA_DIR:-$HOME/.understand-anything/repo}"
+        os.path.join(home, '.understand-anything', 'repo',
+                     'understand-anything-plugin'),
+        # Claude Code 插件目录
+        os.path.join(home, '.claude', 'plugins', 'understand-anything',
+                     'understand-anything-plugin'),
+        # 与本仓库并列的源码克隆
+        os.path.join(repo_parent, 'Understand-Anything',
+                     'understand-anything-plugin'),
+    ]
+
+
+def resolve_plugin_dir(explicit: Optional[str] = None) -> Optional[str]:
+    """
+    解析 UA 插件目录。找不到返回 None，由调用方给出可操作的错误提示。
+
+    优先级：显式传入 > 环境变量 UA_PLUGIN_DIR > 标准安装位置 > 并列源码克隆
+    """
+    if explicit:
+        return explicit
+
+    env = os.getenv(PLUGIN_DIR_ENV)
+    if env:
+        return env
+
+    for cand in _default_plugin_dir_candidates():
+        if os.path.isdir(cand):
+            logger.info("UAAdapter: 自动探测到 UA 插件目录 %s", cand)
+            return cand
+    return None
 
 # skill 全名：必须带插件前缀，不带前缀模型找不到
 UNDERSTAND_SKILL = 'understand-anything:understand'
@@ -143,7 +187,8 @@ class UAAdapter(BaseAdapter):
                 .ua/ 或 .understand-anything/ 自动探测。
             auto_run: 产物缺失（或过期）时是否自己驱动 UA 生成。False 则退回纯读取，
                 找不到就报错。
-            plugin_dir: UA 插件目录，默认 DEFAULT_PLUGIN_DIR。
+            plugin_dir: UA 插件目录。不传则按 resolve_plugin_dir 的顺序探测：
+                环境变量 UA_PLUGIN_DIR > 标准安装位置 > 与本仓库并列的源码克隆。
             model: 驱动 UA 的会话所用模型。
             run_timeout: 驱动 UA 的超时秒数，默认 10800（3 小时）。
             force_rerun: 即使产物已存在也重跑。
@@ -152,7 +197,7 @@ class UAAdapter(BaseAdapter):
         """
         self.data_dir = data_dir
         self.auto_run = auto_run
-        self.plugin_dir = plugin_dir or DEFAULT_PLUGIN_DIR
+        self.plugin_dir = resolve_plugin_dir(plugin_dir)
         self.model = model
         self.run_timeout = run_timeout
         self.force_rerun = force_rerun
@@ -301,8 +346,20 @@ class UAAdapter(BaseAdapter):
         必须 bypassPermissions：UA 每个阶段都要 Bash 跑自带的 node 脚本，
         dontAsk 下 Bash 全被拒，UA 会直接放弃执行并报「无法在受限模式下继续」。
         """
-        if not os.path.isdir(self.plugin_dir):
-            raise UAAdapterError(f"UA 插件目录不存在: {self.plugin_dir}")
+        if not self.plugin_dir or not os.path.isdir(self.plugin_dir):
+            tried = "\n  ".join(_default_plugin_dir_candidates())
+            raise UAAdapterError(
+                f"找不到 UA 插件目录"
+                + (f"（给定路径不存在：{self.plugin_dir}）" if self.plugin_dir else "")
+                + f"。\n已尝试的标准位置：\n  {tried}\n"
+                f"请任选其一解决：\n"
+                f"  1. 安装 UA：见 https://github.com/Egonex-AI/Understand-Anything "
+                f"的 install.sh\n"
+                f"  2. 设置环境变量：export {PLUGIN_DIR_ENV}=<插件目录>\n"
+                f"  3. 在 config.yaml 的 adapters.ua.plugin_dir 中指定\n"
+                f"若只想读取已有的知识图谱产物、不需要驱动 UA，"
+                f"可设 adapters.ua.auto_run: false"
+            )
 
         os.makedirs(output_dir, exist_ok=True)
         log_path = os.path.join(output_dir, 'ua-run.log')

@@ -2,7 +2,7 @@
 MemoryKnowledge (MK) 适配器
 通过 HTTP API 调用 MemoryKnowledge 服务提取代码知识
 
-MK 服务契约（已对照 /Users/gorden/huawei/code/TencentDB-Agent-Memory/MemoryKnowledge/
+MK 服务契约（已对照 TencentDB-Agent-Memory/MemoryKnowledge/
 的 src/routes/wiki.ts 与 src/store/wiki-service.ts 核实）：
 - 默认端口 8421，所有接口路径前缀 /v3（可配置，对应服务端 config.apiPrefix）
 - 所有 wiki 相关接口均为 POST，统一响应包裹 {code, message, request_id?, data}

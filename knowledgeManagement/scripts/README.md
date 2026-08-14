@@ -145,6 +145,43 @@ output/
 - 产物文件名默认为 `<输出类型>.md`（如 `architecture.md`）。
 - `output/*/.raw/` 已加入 `.gitignore`，不会被提交。
 
+## 环境前置
+
+换一台机器首次使用，按下表逐项确认。**四层流水线（`pipeline.py`）的前三项是硬要求**，
+缺任一项都跑不起来。
+
+| 项 | 要求 | 检查命令 | 缺失时的表现 |
+|---|---|---|---|
+| Python | 3.9+ | `python3 --version` | 语法错误 |
+| Python 包 | 见 `requirements.txt` | `pip install -r requirements.txt` | `ImportError` |
+| `claude` CLI | 已登录且可用 | `claude --version` | 四层 subagent 全部失败（`FileNotFoundError`） |
+| API Key | `ANTHROPIC_API_KEY` | `echo $ANTHROPIC_API_KEY` | `Refiner` 初始化即报错 |
+| UA 插件 | 仅 `--adapter ua` 需要 | `ls ~/.understand-anything-plugin` | Layer 2 报错并列出已尝试路径 |
+| MK 服务 | 仅 `--adapter mk` 需要 | `curl localhost:8421` | 连接被拒 |
+| `open-zread` | 仅 `--adapter zread` 需要 | `python -m open_zread.main --help` | 命令不存在 |
+| `git` | 判断产物新鲜度用 | `git --version` | 跳过新鲜度检查并告警 |
+
+### 关于路径
+
+代码里不写死绝对路径。UA 插件目录按以下顺序自动探测，都找不到才报错：
+
+1. 环境变量 `UA_PLUGIN_DIR`
+2. `~/.understand-anything-plugin`（`install.sh` 的默认位置）
+3. `~/.understand-anything/repo/understand-anything-plugin`
+4. `~/.claude/plugins/understand-anything/understand-anything-plugin`
+5. 与本仓库并列的 `Understand-Anything/understand-anything-plugin`
+
+`config.yaml` 里的 `plugin_dir` 留空即走自动探测。**不要在里面写死机器专属路径。**
+
+输出根目录 `output.root` 用相对路径时，基准是 `scripts/` 目录而非当前工作目录，
+因此从任意 cwd 调用结果一致。
+
+### 关于权限
+
+驱动 UA 必须放开 Bash 权限（`--permission-mode bypassPermissions`）——
+UA 每个阶段都要执行自带的 node 脚本，受限模式下它会直接放弃执行。这一步只在
+目标仓库目录内运行，产物只落 `<repo>/.ua/`。
+
 ## 快速开始
 
 ### 1. 安装依赖
@@ -163,6 +200,9 @@ export ANTHROPIC_API_KEY="your-api-key"
 
 # 或使用 DeepSeek
 export DEEPSEEK_API_KEY="your-api-key"
+
+# 可选：UA 插件不在标准位置时显式指定
+export UA_PLUGIN_DIR="/path/to/understand-anything-plugin"
 ```
 
 ### 3. 运行提取
@@ -212,7 +252,7 @@ python extract.py \
 
 **前提条件**：
 - MemoryKnowledge 服务已在 `http://localhost:8421` 运行（接口前缀 `/v3`）
-- 参考路径：`/Users/gorden/huawei/code/TencentDB-Agent-Memory/MemoryKnowledge/`
+- MK 服务源码：`TencentDB-Agent-Memory/MemoryKnowledge/`（路径视本机克隆位置而定）
 
 **工作流程**：
 1. 创建 wiki（`POST /v3/wiki/create`，或传入 `wiki_id` 复用已有 wiki）
@@ -522,9 +562,9 @@ class MyAdapter(BaseAdapter):
 
 ## 参考资料
 
-- **MK API 示例**：`/Users/gorden/huawei/code/TencentDB-Agent-Memory/MemoryKnowledge/`
+- **MK API 契约**：见 MK 服务源码的 `routes/wiki.ts`
 - **open-zread 输出**：`/tmp/oz-trial/forum-reply-robot/.open-zread/wiki/`
-- **提炼示例文档**：`/Users/gorden/LLM/Obsidian/knowledgeBase/doc/2026-08-09/forum-reply-robot-architecture.md`
+- **产物示例**：本仓库 `output/ascend-ci-deployment/ua/`
 
 ## 许可证
 

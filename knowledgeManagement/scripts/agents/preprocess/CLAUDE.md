@@ -56,7 +56,7 @@ Python 侧传给你的结构化清单，包含：
 
 摘 `assertions` 时逐字复制字面量。版本号、镜像地址、资源键名一个字符都不能改。
 CLAUDE.md 里的规则要摘成可校验的断言，例如
-「输出文档必须落到 /Users/gorden/LLM/Obsidian/knowledgeBase」而不是「有输出路径规定」。
+「命名空间必须为 {org-lower}-{repo-lower} 全小写」而不是「命名空间有规范」。
 
 **`assertions` 不得为空数组。** 空断言等于给校验层一个假的事实依据 —— 校验层会以为
 这个文件已被采信，实际上无从比对。摘不出断言的文件就不要列进 `rule_facts`。

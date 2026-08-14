@@ -6,3 +6,10 @@ __pycache__/
 
 # 知识提取脚本的中间产物（原始 JSON），不提交
 output/*/.raw/
+
+# 流水线运行时的工作目录：scan.json / raw.json 等中间产物，单次运行可达数 MB。
+# 需要长期留存的机器可读产物请显式复制到 output/<项目>/<工具>/data/ 下再提交
+knowledgeManagement/scripts/work/
+
+# macOS
+.DS_Store
