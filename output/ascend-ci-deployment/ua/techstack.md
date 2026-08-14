@@ -127,7 +127,7 @@ flowchart TD
 2. **ARC 控制器部署**。`arc-controller-cn12-001.yaml` 把 ARC chart 同步到 `arc-systems` 命名空间，并通过 inline helm values 覆盖注入华为 SWR 定制镜像。chart 自身 `values.yaml` 用的是 NJU 默认镜像。
 3. **Kustomize 配置同步**。config Application 指向 `config-cn12-001/kustomization.yaml`，聚合 namespace、存储、RBAC、密钥、Docker CLI installer 与 runner pod template。
 4. **Runner Helm 部署**。runner Application 指向 `linux-aarch64-a3-2/`，chart 依赖上游 `gha-runner-scale-set 0.14.2`，values 设置 `scaleSetLabels: [linux-aarch64-a3-2, gy-005]` 与 NPU 相关的 pod 标签。
-5. **落地集群**。ARC 控制器监听 GitHub 的 job 队列，按 `scaleSetLabels` 匹配后创建 ephemeral runner pod，pod 由 `npu-scheduler` 调度到有对应 NPU 的节点。
+5. **落地集群**。ARC 控制器监听 GitHub 的 job 队列，按 `scaleSetLabels` 匹配后创建 ephemeral runner pod，pod 由 `volcano` 或 `npu-scheduler` 调度到有对应加速卡的节点（取决于该 runner 的 `schedulerName` 配置，详见第 6 节）。
 6. **监控并行采集**。`monitoring/` 下的 Prometheus 通过基于文件的服务发现跨集群抓取指标，与部署链路解耦。
 
 ### runner pod 的 NPU 声明方式
@@ -140,4 +140,90 @@ NPU 需求通过 pod 标签表达，不是 `nodeSelector`：
 | `ascend-ci.com/npu-resource-domain` | 资源域，如 `huawei.com` |
 | `ascend-ci.com/required-npu-count` | 单个 runner pod 需要的 NPU 张数 |
 
-调度由 `schedulerName: npu-scheduler` 接管。`values.yaml` 里的 `nodeSelector` 只用于架构筛选（如 `beta.kubernetes.io/arch: amd64`）。
+`values.yaml` 里的 `nodeSelector` 只用于架构筛选（如 `beta.kubernetes.io/arch: amd64`）。
+
+## 5. Runner 机型
+
+runner 目录名编码了机型信息：`linux-{arch}-{加速卡型号}-{数量}`。仓库共 329 个
+runner chart 实例，归为以下机型族：
+
+| 机型族 | 实例数 | 说明 |
+|---|---|---|
+| `linux-aarch64-a3` | 99 | Ascend A3，aarch64 |
+| `linux-aarch64-a2` | 60 | Ascend A2，aarch64 |
+| `linux-amd64-cpu` | 35 | 纯 CPU，x86_64 |
+| `linux-aarch64-a2b3` | 33 | Ascend A2 B3 变体 |
+| `linux-arm64-npu` | 16 | 早期 NPU 命名（ARC 0.12/0.13 时期） |
+| `linux-aarch64-a2b4` | 11 | Ascend A2 B4 变体 |
+| `linux-aarch64-cpu` | 10 | 纯 CPU，aarch64 |
+| `linux-aarch64-310p` | 9 | Ascend 310P |
+| `linux-aarch64-a5` | 8 | Ascend A5 |
+| `linux-aarch64-a3-800t` | 8 | Ascend A3 800T 机型 |
+| `linux-aarch64-a2b1` | 8 | Ascend A2 B1 变体 |
+| `linux-arm64-cpu` | 7 | 纯 CPU，arm64 命名 |
+| `linux-aarch64-nightly-a3` | 4 | A3 nightly 构建专用 |
+| `linux-amd64-a5` | 3 | Ascend A5，x86_64 宿主 |
+
+另有单实例的专用机型：`linux-amd64-vllm-a2`/`-a3`、`linux-amd64-sglang-a2`/`-a3`、
+`linux-amd64-verl-a3`、`linux-amd64-sync-hk001`，以及虚拟化切分机型
+`linux-aarch64-a2-5c8g-v-gy006`、`linux-aarch64-a2-10c16g-v-gy006`、
+`linux-aarch64-a2b3-v-quarter`、`linux-aarch64-a2b3-v-half`（`-v-` 表示 vNPU 切分）。
+
+数量后缀含义：`-0` 表示无加速卡（仅 CPU 调度），`-1`/`-2`/`-4`/`-8`/`-16` 表示
+单 pod 占用的加速卡张数。
+
+**注意区分**：`.github/workflows/ci-lint.yml` 中 `runs-on: linux-amd64-cpu-1` 是
+执行 CI 校验作业的 runner，属于上述 `linux-amd64-cpu` 机型族的一个实例，不代表
+本仓库部署的 runner 机型范围。
+
+## 6. 调度机制
+
+三种调度器并存，按 `schedulerName` 字段区分：
+
+| 调度器 | 出现次数 | 主要位置 |
+|---|---|---|
+| `volcano` | 255 | 主要在 config overlay 的 pod template configmap（236 处） |
+| `npu-scheduler` | 180 | 主要在 runner chart 的 `values.yaml`（178 处） |
+| `runner-pod-npu-scheduler` | 22 | `values.yaml`（21 处） |
+| `default-scheduler` | 2 | 显式指定默认调度器 |
+
+未声明 `schedulerName` 的 runner（多为纯 CPU 机型）走 K8s 默认调度器。
+
+### Volcano
+
+`volcano` 是使用最多的调度器，承担批处理与队列管理。相关组件在
+`manifests/volcano-controller-sh-001/`、`manifests/volcano-controller-sh-002/`、
+`manifests/volcano-queue/`，共 287 个文件涉及 volcano 配置。
+
+队列通过 `scheduling.volcano.sh/queue-name` 注解分配（64 处使用）：
+
+| 队列 | 使用次数 |
+|---|---|
+| `vllm-queue` | 24 |
+| `sglang-queue` | 16 |
+| `vllm-test-queue` | 10 |
+| `verl-queue` | 6 |
+| `sglang-npu-cn12-queue` | 4 |
+| `sgl-kernel-npu-cn12-queue` | 4 |
+
+使用 volcano 最多的项目：`projects/vllm-project/vllm-ascend`（39 处）、
+`other/ascend-gha-runners/vllm-ascend`（38 处）、`projects/sgl-project/sglang`（20 处）、
+`other/nv-action/vllm-benchmarks`（14 处）、`projects/triton-lang/triton-ascend`（12 处）。
+
+### npu-scheduler
+
+负责 NPU 拓扑感知调度，配合 `ascend-ci.com/*` 系列 pod 标签工作。主要写在 runner
+chart 的 `values.yaml` 中。
+
+### 两层配置可能不一致
+
+同一个 runner 的调度器在两处声明，且实测存在不一致。例如
+`projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/`：
+
+| 位置 | schedulerName |
+|---|---|
+| `linux-aarch64-a3-2/values.yaml` | `npu-scheduler` |
+| `config-cn12-001/linux-aarch64-a3-2-configmap.yaml` | `volcano` |
+
+`values.yaml` 中的值作用于 Helm chart 渲染出的 listener/controller pod，configmap
+中的值作用于实际执行 job 的 ephemeral runner pod。修改调度器时必须确认改的是哪一层。

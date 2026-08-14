@@ -518,6 +518,18 @@ def layer3_verify(repo_path: str, work_dir: str, output_dir: str, *,
 但位置或含义说错了，同样是 fact_conflict。用 grep -n 给出行号作为 evidence。
 把核验数量填进 structural_check 字段。
 
+**第三类 作用域核验**：上面这 {core_count} 个文件是从 2000+ 个同构文件里抽出的
+代表样本。对样本里的每个关键字段（schedulerName、storageClassName、image、
+version、replicas、nodeSelector、队列注解、资源限制等），用
+`grep -rhoE '<字段>:\\s*[^\\s]+' --include='*.yaml' .` 统计它在**全仓**的取值分布，
+再判断样本取值是不是多数派。
+
+不是多数派就必须报 conflict（check_type=scope），corrected_fact 里给出完整分布。
+把统计结果填进 scope_check 字段。详见你的 CLAUDE.md 第 2c 条。
+
+**第四类 枚举完整性**：核实「类型清单」类断言是否穷举。用 find/grep 数出实际种类数，
+与产物所列比对，少了就报 conflict（check_type=enumeration）。详见第 2d 条。
+
 执行顺序：
 1. 用 Write 写出 {check_path}
 2. 然后你的**最终回复必须是一个 JSON 对象，且只有这个 JSON 对象**
@@ -561,6 +573,28 @@ def layer3_verify(repo_path: str, work_dir: str, output_dir: str, *,
         logger.info("Layer 3 结构性核验覆盖 %d/%d 个 core 文件，检查断言 %s 条",
                     checked, core_count, sc.get("claims_examined"))
 
+    # 复核作用域核验是否真的做了统计。这条防线针对的错误是：core 样本的属性被当成
+    # 全局事实。实测事故：样本写 schedulerName: npu-scheduler（全仓 180 次），
+    # 而全仓多数派是 volcano（255 次），错误结论进了交付报告，由领域专家指出才发现。
+    # 只在契约里写 C5「不得放大作用域」而不要求实际统计，约束落不了地。
+    scope = data.get("scope_check") or {}
+    fields = int(scope.get("key_fields_examined") or 0)
+    if fields == 0:
+        logger.warning(
+            "Layer 3 未做作用域核验（key_fields_examined=0）—— 代表样本的属性"
+            "可能被当成全局事实，这类错误最难发现"
+        )
+        data.setdefault("coverage_warning", "")
+        data["coverage_warning"] = (
+            _as_text(data.get("coverage_warning")) + " 未做作用域核验"
+        ).strip()
+    else:
+        minority = int(scope.get("fields_where_sample_is_minority") or 0)
+        logger.info(
+            "Layer 3 作用域核验：检查 %d 个关键字段，其中 %d 个样本取值为少数派",
+            fields, minority,
+        )
+
     unresolved = [c for c in data["conflicts"]
                   if c.get("severity") == "fact_conflict"
                   and c.get("verdict") in ("unresolved", None)]
@@ -574,10 +608,13 @@ def layer3_verify(repo_path: str, work_dir: str, output_dir: str, *,
         )
 
     n_fact = sum(1 for c in data["conflicts"] if c.get("severity") == "fact_conflict")
-    n_struct = sum(1 for c in data["conflicts"] if c.get("check_type") == "structural")
+    by_type = {}
+    for c in data["conflicts"]:
+        t = c.get("check_type") or "unknown"
+        by_type[t] = by_type.get(t, 0) + 1
     logger.info(
-        "Layer 3 完成：校验 %s 条，冲突 %d（事实冲突 %d，其中结构性 %d），blocking=%s",
-        data["checked_count"], len(data["conflicts"]), n_fact, n_struct,
+        "Layer 3 完成：校验 %s 条，冲突 %d（事实冲突 %d），分类 %s，blocking=%s",
+        data["checked_count"], len(data["conflicts"]), n_fact, by_type,
         data["blocking"],
     )
     return data

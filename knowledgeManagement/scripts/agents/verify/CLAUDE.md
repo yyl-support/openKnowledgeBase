@@ -10,6 +10,8 @@
    断言，冲突必须查清并修正。
 2. **结构性核验**：对 `core` 层的每个文件，把三方件摘要里的结构性断言与源文件的实际
    结构逐条对照。字面量拼对了但位置或含义说错了，同样是事实错误。
+3. **作用域核验**：对 `core` 样本里的关键字段，统计其在全仓的取值分布。样本取值是
+   少数派却被当成普遍事实，是最难发现的一类错误。
 
 设置这一层的原因是已核实的事故。
 
@@ -56,12 +58,20 @@
      "verdict": "claim_wrong|rule_basis_wrong|both_wrong|claim_correct|unresolved",
      "corrected_fact": "以你实际检查结果为准的正确表述；unresolved 则为 null",
      "severity": "fact_conflict|description_vague",
-     "check_type": "rule_conflict|structural"}
+     "check_type": "rule_conflict|structural|scope|enumeration"}
   ],
   "structural_check": {
     "core_files_checked": 0,
     "core_files_total": 0,
     "claims_examined": 0
+  },
+  "scope_check": {
+    "key_fields_examined": 0,
+    "fields_where_sample_is_minority": 0,
+    "distributions": [
+      {"field": "schedulerName", "sample_value": "...", "全仓分布": {"值": 0},
+       "sample_is_majority": false}
+    ]
   },
   "corrections_for_refiner": ["供二次提炼层直接采用的修正后事实陈述"],
   "blocking": false,
@@ -116,6 +126,39 @@ Python 会告诉你写入路径。格式：
 
    这类问题的 `severity` 同样是 `fact_conflict` —— 字面量对而含义错，对新员工的
    误导性不低于拼错键名，而且更难被发现。`corrected_fact` 要写清正确的位置与含义。
+
+2c. **作用域核验：代表样本的属性不等于全局事实。** 大仓的 `core` 是从同构文件里
+   抽出的代表样本。样本上成立的属性，在全仓可能只是少数派，必须逐个核实。
+
+   对每个 core 文件，找出其中的**关键字段** —— 决定运行行为的配置项，典型如
+   `schedulerName`、`storageClassName`、`image`/`repository`、`version`、
+   `replicas`、`nodeSelector`、调度队列注解、资源请求与限制。
+
+   对每个关键字段，用 `grep -rhoE` 统计它在全仓的**取值分布**，再比对：
+
+   - 样本取值是多数派 → 可按普遍事实表述
+   - 样本取值不是多数派 → **必须报 conflict**，`corrected_fact` 给出完整分布，
+     并说明样本只是其中一种情况
+   - 全仓只此一种取值 → 可按普遍事实表述，无需标注
+
+   已核实的事故：core 样本
+   `projects/vllm-project/vllm-ascend/linux-aarch64-a3-2/values.yaml` 写
+   `schedulerName: npu-scheduler`，据此得出「调度由 npu-scheduler 接管」的结论。
+   实际全仓 `volcano` 出现 255 次、`npu-scheduler` 180 次 —— **样本取的是少数派**，
+   而且同一项目下有 39 处用 volcano，只是那些文件在抽样范围外。这条错误结论进了
+   交付报告，由领域专家指出才发现。
+
+   `severity` 为 `fact_conflict`，`check_type` 填 `scope`。C5「不得放大作用域」
+   正是靠这个动作落地 —— 只写约束不做统计，约束就是一句空话。
+
+2d. **枚举完整性核验。** 交付文档里凡是「类型清单」「机型清单」「组件清单」这类
+   枚举，必须核实是否穷举。方法：用 `find`/`grep` 数出该类目标在全仓的实际种类数，
+   与文档所列条数比对。少于实际种类数即报 conflict，`corrected_fact` 给出完整清单
+   与各自数量。
+
+   已核实的事故：交付报告只提到 `linux-amd64-cpu-1` 一种 runner 机型（那其实是
+   执行 CI 作业的机器），而仓库实际部署 329 个 runner chart、归为 14 个机型族。
+   同时要注意区分「仓库自身 CI 用什么」与「仓库交付什么」，这是两类不同的对象。
 
 3. **区分两种严重度。**
    - `fact_conflict`（事实冲突）：字面量错、数量错、依赖关系错、作用域错配。

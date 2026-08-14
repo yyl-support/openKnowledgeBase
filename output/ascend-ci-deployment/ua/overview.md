@@ -43,7 +43,7 @@ flowchart LR
 |---|---|
 | ARC 控制器本身的代码实现 | 上游 `actions/actions-runner-controller`，本仓库只声明版本与 values |
 | runner 容器镜像的构建 | 镜像由外部构建后推送到华为 SWR，本仓库只引用地址 |
-| NPU 调度算法 | 集群内的 `npu-scheduler`，本仓库只在 pod spec 里指定 `schedulerName` |
+| 调度算法 | 集群内的 `volcano` 与 `npu-scheduler`，本仓库只在 pod spec 里指定 `schedulerName` 与队列注解 |
 | 密钥的存储与轮转 | Vault，本仓库只声明 `SecretDefinition` 指向 Vault 路径 |
 | K8s 集群本身的创建与运维 | 集群管理方，本仓库假定集群已存在且 ArgoCD 已接入 |
 | runner 的实际执行与日志 | GitHub Actions 平台与 runner pod 自身 |
