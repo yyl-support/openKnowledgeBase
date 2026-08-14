@@ -48,12 +48,65 @@ MK_MAX_FILE_SIZE = 512 * 1024
 TRUNCATION_THRESHOLD = 400 * 1024
 
 
+def select_by_paths(repo_path: str, include_paths: List[str]) -> List[Dict[str, str]]:
+    """
+    按显式路径清单精确取文件，不抽样、不筛选。
+
+    供四层流水线使用：路径清单由预处理层 subagent 判定，抽样会在这里制造覆盖率
+    缺口（已核实：`--yaml-sample-per-group 2` 让一个 3 文件分组丢掉 1 个文件且无告警）。
+
+    读不到的文件不静默跳过，记入返回清单末尾的缺失说明文件，让下游能看见。
+
+    Args:
+        repo_path: 仓库本地路径
+        include_paths: 相对路径清单
+
+    Returns:
+        [{"filename": str, "content": str}, ...]
+    """
+    sources: List[Dict[str, str]] = []
+    unreadable: List[str] = []
+
+    for relpath in include_paths:
+        abspath = os.path.join(repo_path, relpath)
+        content = _read_text(abspath)
+        if content is None:
+            unreadable.append(relpath)
+            continue
+        content = _truncate_if_needed(content)
+        lower = relpath.lower()
+        if lower.endswith((".md", ".txt")):
+            payload = content
+        else:
+            ext = os.path.splitext(lower)[1].lstrip(".")
+            lang = {"py": "python", "sh": "bash", "yml": "yaml"}.get(ext, ext or "text")
+            payload = _wrap_non_md(relpath, content, lang)
+        sources.append({"filename": _escape_path_to_filename(relpath),
+                        "content": payload})
+
+    if unreadable:
+        logger.warning("select_by_paths: %d 个文件读取失败，已记入缺失说明",
+                       len(unreadable))
+        note = ["# 读取失败的文件", "",
+                "以下文件在预处理层判定为需解读，但读取失败，未进入解读输入：", ""]
+        note += [f"- `{p}`" for p in unreadable]
+        sources.append({"filename": "_unreadable-files.md",
+                        "content": "\n".join(note)})
+
+    logger.info("select_by_paths: 请求 %d 个，成功 %d 个，失败 %d 个",
+                len(include_paths), len(sources) - (1 if unreadable else 0),
+                len(unreadable))
+    return sources
+
+
 def select_sources(
     repo_path: str,
     *,
     seed: int = 42,
     yaml_sample_per_group: int = 2,
     group_depth: int = 2,
+    scope: Optional[str] = None,
+    include_paths: Optional[List[str]] = None,
 ) -> List[Dict[str, str]]:
     """
     从代码仓中选择一批代表性源文件
@@ -63,12 +116,19 @@ def select_sources(
         seed: 随机抽样种子，保证同一个仓库每次运行结果一致
         yaml_sample_per_group: 每个 YAML 分组抽样的文件数（默认 2）
         group_depth: YAML 分组时取目录路径的前几级作为分组键（默认 2）
+        scope: 可选，仅纳入相对路径以该前缀开头的文件（如 "manifests/arc-controller"）。
+            用于把提取范围限定到仓库的某个部分，避免大仓采样覆盖率过低。
+        include_paths: 可选，显式路径清单。给了就走 select_by_paths 精确取文件，
+            完全绕过抽样逻辑（四层流水线走这条路径）。
 
     Returns:
         [{"filename": str, "content": str}, ...]，filename 均以 .md/.txt 结尾
     """
     if not os.path.isdir(repo_path):
         raise ValueError(f"仓库路径不存在或不是目录: {repo_path}")
+
+    if include_paths is not None:
+        return select_by_paths(repo_path, include_paths)
 
     md_files: List[str] = []
     py_sh_files: List[str] = []
@@ -81,6 +141,8 @@ def select_sources(
         for fname in sorted(files):
             abspath = os.path.join(root, fname)
             relpath = os.path.relpath(abspath, repo_path).replace(os.sep, "/")
+            if scope and not relpath.startswith(scope):
+                continue
             all_files.append(relpath)
             lower = fname.lower()
 

@@ -172,9 +172,15 @@ def create_adapter(adapter_name: str, config: dict):
     elif adapter_name == 'zread':
         return ZreadAdapter()
     elif adapter_name == 'ua':
-        ua_config = adapters_config.get('ua', {})
+        ua_config = adapters_config.get('ua') or {}
         return UAAdapter(
-            data_dir=ua_config.get('data_dir')
+            data_dir=ua_config.get('data_dir'),
+            auto_run=ua_config.get('auto_run', True),
+            plugin_dir=ua_config.get('plugin_dir'),
+            model=ua_config.get('model', 'claude-sonnet-5'),
+            run_timeout=ua_config.get('run_timeout', 10800),
+            force_rerun=ua_config.get('force_rerun', False),
+            require_fresh=ua_config.get('require_fresh', True),
         )
     else:
         raise ValueError(f"不支持的适配器: {adapter_name}")
@@ -227,7 +233,9 @@ def main():
                         help='适配器类型：mk=MemoryKnowledge, zread=open-zread, ua=Understand-Anything')
     parser.add_argument('--repo', required=True,
                         help='代码仓路径（本地路径或 Git URL）')
-    parser.add_argument('--output-type', required=True, choices=['architecture', 'quickstart', 'api-reference'],
+    parser.add_argument('--output-type', required=True,
+                        choices=['architecture', 'quickstart', 'api-reference', 'onboarding',
+                                 'overview', 'techstack', 'standards'],
                         help='输出文档类型')
     parser.add_argument('--output',
                         help='输出文件路径（Markdown 格式）。不传则按 '
@@ -248,6 +256,9 @@ def main():
                         help='配合 --source-select：每个 YAML 分组抽样的文件数（默认: 2）')
     parser.add_argument('--yaml-group-depth', type=int, default=2,
                         help='配合 --source-select：YAML 分组时取目录路径的前几级作为分组键（默认: 2）')
+    parser.add_argument('--scope',
+                        help='配合 --source-select：只提取相对路径以该前缀开头的文件，'
+                             '如 manifests/arc-controller。用于把范围限定到仓库的某个部分')
 
     args = parser.parse_args()
 
@@ -277,12 +288,14 @@ def main():
                 raise ValueError("--source-select 仅支持 --adapter mk")
             logger.info(
                 f"使用 source_selector 挑选源文件（yaml_sample_per_group="
-                f"{args.yaml_sample_per_group}, group_depth={args.yaml_group_depth}）"
+                f"{args.yaml_sample_per_group}, group_depth={args.yaml_group_depth}"
+                f", scope={args.scope or '全仓'}）"
             )
             source_files = select_sources(
                 args.repo,
                 yaml_sample_per_group=args.yaml_sample_per_group,
                 group_depth=args.yaml_group_depth,
+                scope=args.scope,
             )
             total_bytes = sum(len(f["content"].encode("utf-8")) for f in source_files)
             logger.info(f"source_selector 选中 {len(source_files)} 个源文件，共 {total_bytes} 字节")

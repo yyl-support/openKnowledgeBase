@@ -14,13 +14,33 @@ adapters:
     # open-zread 通过命令行调用，无需额外配置
 
   # Understand-Anything 适配器配置
-  # UA 是 Claude Code 插件，没有 HTTP API：需要先在目标仓库对应的 Claude Code
-  # 会话中运行 /understand 完成分析，产物落盘到 <repo>/.ua/knowledge-graph.json
+  # UA 是 Claude Code 插件，没有 HTTP API。adapter 会自己以
+  # `claude -p --plugin-dir <plugin_dir>` 起一个非交互会话调用
+  # understand-anything:understand skill，产物落到 <repo>/.ua/knowledge-graph.json
   ua:
+    # 产物缺失或过期时是否自己驱动 UA。false 则退回纯读取，找不到就报错
+    auto_run: true
+
+    # UA 插件目录。不配则用 adapter 内的默认值
+    plugin_dir: /Users/gorden/huawei/code/Understand-Anything/understand-anything-plugin
+
+    # 驱动 UA 的会话所用模型
+    model: claude-sonnet-5
+
+    # 驱动超时（秒）。实测 2 文件约 10 分钟、5 文件约 12 分钟走完 7 个阶段，
+    # 固定开销占大头；大仓批次多，给到 3 小时
+    run_timeout: 10800
+
+    # 产物已存在也强制重跑
+    force_rerun: false
+
+    # 产物 meta.json 的 gitCommitHash 与仓库 HEAD 不一致时视为过期并重跑。
+    # 拿旧 commit 的图谱核验新代码会得出错误结论，保持 true
+    require_fresh: true
+
     # data_dir 可选：显式指定知识图谱产物所在目录（不传则自动探测
     # <repo>/.ua/ 或旧版 <repo>/.understand-anything/）
-    # 留空 {} 避免 create_adapter 拿到 None
-    {}
+    # data_dir: /path/to/.ua
 
 # 输出路径配置
 output:

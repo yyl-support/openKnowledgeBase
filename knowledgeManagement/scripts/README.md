@@ -1,47 +1,125 @@
 # 代码知识提取框架
 
-两层架构的代码知识提取工具：第一层通过适配器（Adapter）从多种工具提取原始知识，第二层通过提炼器（Refiner）使用大模型生成特定类型的文档。
+代码知识提取工具。有两个入口：
 
-## 架构设计
+- **`pipeline.py`（推荐）** — 四层流水线，带范围决策闸门与事实校验闸门。四层各由一个
+  独立 subagent（claude-sonnet-5）执行。
+- **`extract.py`** — 原两层直连入口（Adapter + Refiner），无预处理与校验层。
 
+## 交付标准
+
+最终报告必须同时满足：
+
+- **a** 无原则性错误、无事实错误
+- **b** 能指导新员工了解并熟悉该项目的流程 + 结构 + 技术栈
+- **c** 能辅助新员工对新需求做合理分析
+
+`onboarding` 输出类型专为 b/c 设计。
+
+## 四层架构（pipeline.py）
+
+```mermaid
+flowchart TD
+    A[repo_scanner<br/>确定性清点] --> B[Layer 1 预处理 subagent<br/>规则/功能分类 + 轻重缓急]
+    B --> G1{文件数 > 80<br/>或取舍无法裁定?}
+    G1 -->|是| D[写出 decision-request.md<br/>退出码 3 等用户决策]
+    G1 -->|否| C[Layer 2 三方件 Adapter<br/>MK / UA / zread]
+    C --> E[Layer 2 解读 subagent<br/>覆盖率核对]
+    E --> G2{core 有缺口<br/>或产物污染?}
+    G2 -->|是| F[退出码 4]
+    G2 -->|否| H[Layer 3 校验 subagent<br/>以 CLAUDE.md 为依据实际检索<br/>产出 check.md]
+    H --> G3{存在未修正的<br/>事实冲突?}
+    G3 -->|是| I[退出码 5]
+    G3 -->|否| J[Layer 4 提炼 subagent<br/>按章节契约写报告]
+    J --> K[最终报告 + check.md]
 ```
-┌─────────────────────────────────────────────────────────┐
-│                     CLI (extract.py)                    │
-└────────────────┬────────────────────────────────────────┘
-                 │
-        ┌────────┴────────┐
-        │                 │
-┌───────▼────────┐  ┌────▼──────────┐
-│  第一层：Adapter  │  │  第二层：Refiner │
-│                 │  │                │
-│ ┌─────────────┐ │  │  使用大模型     │
-│ │ MKAdapter   │ │  │  二次提炼       │
-│ │ ZreadAdapter│ │  │                │
-│ │ UAAdapter   │ │  │  生成文档：     │
-│ └─────────────┘ │  │  - architecture │
-│                 │  │  - quickstart   │
-│  统一输出格式    │  │  - api-reference│
-│  pages[] JSON   │  └────────────────┘
-└─────────────────┘
-```
+
+各层职责与硬约束写在 `agents/<layer>/CLAUDE.md`，运行时以 `--append-system-prompt`
+注入（不依赖 CLAUDE.md 自动发现，避免因 cwd 不同而漏掉约束）。
+全局强约束在 `constraints.py`，追加在层级约束之后，**每一次模型调用都注入**。
+
+### 三道闸门
+
+| 闸门 | 触发条件 | 退出码 | 恢复方式 |
+|---|---|---|---|
+| 范围决策 | core+auxiliary > 80，或取舍无法用仓内证据裁定，或约定文件超限未读 | 3 | 读 `work/<项目>/decision-request.md`，认可后加 `--decision-approved --reuse-preprocess` 重跑 |
+| 覆盖率 | core 层任一文件未进入产物；或 unexpected 页面占比 > 20%（产物污染） | 4 | 收窄范围或换用干净的 wiki 名重跑 |
+| 事实冲突 | 存在 severity=fact_conflict 且未修正/未裁定的条目 | 5 | 读 `output/<项目>/<工具>/check.md` 补充信息后重跑 |
+
+闸门的判定由 subagent 给出，Python 侧再复核一次并可强制升级 —— 模型会漏判。
 
 ## 目录结构
 
 ```
 scripts/
-├── adapters/              # 第一层：知识提取适配器
-│   ├── __init__.py
-│   ├── base.py           # BaseAdapter 抽象基类
-│   ├── mk_adapter.py     # MemoryKnowledge 适配器
-│   ├── zread_adapter.py  # open-zread 适配器
-│   └── ua_adapter.py     # Understand-Anything 适配器
-├── refine/               # 第二层：知识提炼
-│   ├── __init__.py
-│   └── refiner.py        # Refiner 提炼器
-├── extract.py            # CLI 主入口
-├── config.yaml           # 配置文件
-├── requirements.txt      # 依赖清单
-└── README.md            # 本文档
+├── agents/                    # 四层 subagent 的职责约束
+│   ├── preprocess/CLAUDE.md   #   Layer 1 规则/功能分类、轻重缓急
+│   ├── extract/CLAUDE.md      #   Layer 2 覆盖率核对
+│   ├── verify/CLAUDE.md       #   Layer 3 事实校验，产出 check.md
+│   └── refine/CLAUDE.md       #   Layer 4 按章节契约写报告
+├── adapters/                  # 三方件适配器
+│   ├── base.py                #   BaseAdapter 抽象基类
+│   ├── mk_adapter.py          #   MemoryKnowledge
+│   ├── zread_adapter.py       #   open-zread
+│   └── ua_adapter.py          #   Understand-Anything
+├── refine/refiner.py          # 章节契约 + 直连 API 的提炼实现
+├── constraints.py             # 全局强约束（唯一来源）
+├── agent_runner.py            # subagent 调用与产物契约校验
+├── repo_scanner.py            # 确定性仓库清点
+├── source_selector.py         # 源文件选择（抽样式 / 精确路径式）
+├── pipeline.py                # 四层流水线入口
+├── extract.py                 # 两层直连入口
+├── config.yaml
+├── requirements.txt
+└── README.md
+```
+
+## 中间产物
+
+`work/<项目名>/` 下逐层落盘，每层都可单独复查：
+
+| 文件 | 产出层 | 内容 |
+|---|---|---|
+| `scan.json` / `scan-manifest.md` | Python | 全量文件清单、目录统计、CLAUDE.md 全文 |
+| `preprocess.json` | Layer 1 | rule_facts、interpret_inputs（core/auxiliary/excluded）、core_flow |
+| `decision-request.md` | 闸门 | 需用户决策时的完整候选与方案 |
+| `raw.json` | Layer 2 | 三方件原始产物 |
+| `coverage.json` | Layer 2 | missing / unexpected / 覆盖率 |
+| `verify.json` | Layer 3 | conflicts、corrections_for_refiner |
+
+`check.md` 与最终报告落在 `output/<项目名>/<工具>/`。
+
+## 强约束设计（constraints.py）
+
+三组纪律，每条对应一次已核实的真实错误，不是预防性设计：
+
+| 组 | 条目 | 对应的真实错误 |
+|---|---|---|
+| 契约纪律 | C1 章节是契约不是下限<br/>C2 禁止自引对比维度 | prompt 只列 4 节，输出 7 节；自加章节造假密度 11.4%，是要求章节的 11 倍 |
+| 事实纪律 | C3 字面量逐字复制<br/>C4 无差异就写无差异<br/>C5 不放大作用域<br/>C6 无依据处留空标注<br/>C7 断言给来源路径 | `Ascend1980`（真实 `ascend-1980`，全仓 0 次）<br/>两版 values.yaml 实差 4 行却编出演进叙事<br/>vendored 容器的 python3.12 被说成全仓要求 |
+| 范围纪律 | C8 禁止擅自遗弃或截断<br/>C9 只做被要求的事 | 3000 字符硬截断静默吃掉 MK 产物 29.8% 内容 |
+
+**截断已被彻底移除。** `Refiner._build_pages_summary` 超出
+`input_char_limit`（默认 60 万字符）时抛 `OverflowError_`，附带最大的 10 个页面清单，
+由上层或用户决定分批还是收窄范围 —— 绝不静默丢数据。
+
+## 四层流水线用法
+
+```bash
+# 首次运行：跑到预处理层，若需决策会停下（退出码 3）
+python pipeline.py --repo /path/to/repo --adapter mk --output-type onboarding
+
+# 阅读 work/<项目名>/decision-request.md，认可后继续（复用已有划分，不重扫）
+python pipeline.py --repo /path/to/repo --adapter mk --output-type onboarding \
+    --decision-approved --reuse-preprocess
+
+# 只看预处理层的划分结果
+python pipeline.py --repo /path/to/repo --adapter mk --output-type onboarding \
+    --stop-after preprocess
+
+# 调整大项目阈值
+python pipeline.py --repo /path/to/repo --adapter mk --output-type onboarding \
+    --threshold 120
 ```
 
 ## 输出目录结构
@@ -259,6 +337,19 @@ python extract.py \
 - 接口列表（方法、参数、返回值、示例）
 - 错误码
 - SDK 使用示例
+
+### onboarding - 新员工上手报告
+
+对应交付标准 b（了解流程+结构+技术栈）与 c（辅助新需求分析）。六个章节：
+
+1. 项目定位
+2. 技术栈（版本号逐字来自输入，查不到就标注需查阅源码）
+3. 主流程（落到具体文件，Mermaid flowchart TD）
+4. 代码结构（辅助能力只需一到两句说清作用）
+5. 项目规则约束（来自 CLAUDE.md 与配置文件，逐条给来源路径）
+6. 新需求落点指引（需求类型 → 改哪些文件 → 受哪些规则约束）
+
+章节定义在 `Refiner.SECTION_CONTRACTS`，四层流水线与直连入口共用同一份。
 
 ## 配置文件详解
 
