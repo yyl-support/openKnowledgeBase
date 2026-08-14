@@ -829,6 +829,14 @@ def main():
     parser.add_argument("--stop-after",
                         choices=["preprocess", "extract", "verify"],
                         help="跑完指定层后停止")
+    parser.add_argument("--output-types", nargs="+",
+                        choices=["architecture", "quickstart", "api-reference",
+                                 "onboarding", "overview", "techstack", "standards"],
+                        help="一次产出多种文档。Layer 1-3 只跑一遍，Layer 4 按类型逐个提炼。"
+                             "与 --output-type 二选一")
+    parser.add_argument("--reuse-verify", action="store_true",
+                        help="复用 work 目录下已有的 raw.json / coverage.json / verify.json，"
+                             "跳过 Layer 2 与 Layer 3。适用于换 output-type 重新提炼")
     parser.add_argument("--check-env", action="store_true",
                         help="只做环境自检并退出：列出缺失的依赖与配置，不跑流水线")
     parser.add_argument("--reuse-preprocess", action="store_true",
@@ -839,8 +847,9 @@ def main():
     if args.check_env:
         sys.exit(0 if check_env(args.adapter) else 1)
 
+    types = args.output_types or ([args.output_type] if args.output_type else [])
     missing = [n for n, v in [("--repo", args.repo), ("--adapter", args.adapter),
-                              ("--output-type", args.output_type)] if not v]
+                              ("--output-type/--output-types", types)] if not v]
     if missing:
         parser.error(f"缺少必需参数: {', '.join(missing)}")
 
@@ -855,9 +864,9 @@ def main():
         os.makedirs(work_dir, exist_ok=True)
         output_root = resolve_output_root(config, args.output_root)
         output_dir = os.path.join(output_root, project_name, args.adapter)
-        output_path = os.path.join(output_dir, f"{args.output_type}.md")
 
-        logger.info("项目=%s work=%s 产物=%s", project_name, work_dir, output_path)
+        logger.info("项目=%s work=%s 输出类型=%s 产物目录=%s",
+                    project_name, work_dir, ",".join(types), output_dir)
 
         # ---- Layer 1
         pre_path = os.path.join(work_dir, "preprocess.json")
@@ -883,10 +892,16 @@ def main():
             return
 
         # ---- Layer 2
-        raw_path, cov = layer2_extract(repo_path, work_dir, pre,
-                                       adapter_name=args.adapter, config=config,
-                                       model=args.model)
-        _write_json(os.path.join(work_dir, "coverage.json"), cov)
+        cov_path = os.path.join(work_dir, "coverage.json")
+        raw_path = os.path.join(work_dir, "raw.json")
+        if args.reuse_verify and os.path.isfile(raw_path) and os.path.isfile(cov_path):
+            logger.info("复用已有 raw.json 与 coverage.json，跳过 Layer 2")
+            cov = _read_json(cov_path)
+        else:
+            raw_path, cov = layer2_extract(repo_path, work_dir, pre,
+                                           adapter_name=args.adapter, config=config,
+                                           model=args.model)
+            _write_json(cov_path, cov)
 
         if cov.get("blocking"):
             logger.error("解读层阻塞：%s", cov.get("blocking_reason"))
@@ -897,8 +912,16 @@ def main():
             return
 
         # ---- Layer 3
-        ver = layer3_verify(repo_path, work_dir, output_dir, model=args.model)
-        _write_json(os.path.join(work_dir, "verify.json"), ver)
+        # 一次核验、多次提炼：Layer 2/3 的结论只取决于仓库与 raw.json，与 output_type
+        # 无关。同一份产物出多种文档时重跑核验是纯浪费 —— 实测三份文档各重跑一遍
+        # Layer 2/3，多花约 30 分钟且结论完全相同。
+        ver_path = os.path.join(work_dir, "verify.json")
+        if args.reuse_verify and os.path.isfile(ver_path):
+            logger.info("复用已有 verify.json，跳过 Layer 3")
+            ver = _read_json(ver_path)
+        else:
+            ver = layer3_verify(repo_path, work_dir, output_dir, model=args.model)
+            _write_json(ver_path, ver)
 
         if ver.get("blocking"):
             logger.error("校验层阻塞：%s\n详见 %s",
@@ -910,10 +933,17 @@ def main():
             logger.info("--stop-after verify，结束")
             return
 
-        # ---- Layer 4
-        final = layer4_refine(repo_path, work_dir, output_path,
-                              output_type=args.output_type, model=args.model)
-        logger.info("✅ 流水线完成：%s", final)
+        # ---- Layer 4（按类型逐个提炼，共用上面的核验结论）
+        produced = []
+        for t in types:
+            out_path = os.path.join(output_dir, f"{t}.md")
+            produced.append(
+                layer4_refine(repo_path, work_dir, out_path,
+                              output_type=t, model=args.model)
+            )
+        logger.info("✅ 流水线完成，产出 %d 份：", len(produced))
+        for pth in produced:
+            logger.info("   %s", pth)
         logger.info("校验记录：%s", os.path.join(output_dir, "check.md"))
 
     except ar.AgentError as e:

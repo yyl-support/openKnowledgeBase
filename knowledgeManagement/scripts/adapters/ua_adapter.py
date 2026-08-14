@@ -108,7 +108,17 @@ UNDERSTAND_SKILL = 'understand-anything:understand'
 UNDERSTAND_PROMPT = """调用 Skill 工具执行 {skill}，对当前目录（{repo}）做完整分析，\
 严格按 SKILL.md 的全部阶段执行到底，产出 .ua/{graph} 。
 
-强制要求：
+## 本次为非交互运行，以下确认点已预先授权
+
+SKILL.md 的 Phase 0.5（Ignore Configuration）在两个分支上都写了
+「Wait for user confirmation before proceeding」。**本次运行中该确认视为已给出**：
+生成或发现 `.ua/.understandignore` 后，直接采用其当前内容继续执行 Phase 1，
+不要停下来等待确认。其他阶段若也有类似的「等待用户确认」步骤，同样视为已确认。
+
+这条必须遵守：本会话没有交互对端，停下来等确认等于永久挂起 —— 实测会话会在
+生成 ignore 文件后直接结束回合，导致整轮分析零产出。
+
+## 强制要求
 1. 不得跳过任何阶段，不得因为文件多而自行抽样或截断分析范围。
 2. SKILL.md 中关于 batch 输出文件命名的约束必须遵守：若融合多个小 batch 做一次 \
 dispatch，被派发的 agent 仍必须按原 batchIndex 逐个写出 batch-<batchIndex>.json；\
@@ -135,6 +145,12 @@ UNDERSTAND_RESUME_PROMPT = """继续一次被中断的 {skill} 分析，当前�
 - `.ua/intermediate/batches.json` 已存在，共 {total} 个 batch
 - 其中 {done} 个已完成并落盘（batch-<i>.json 或 batch-<i>-part-<k>.json）
 - 缺失 {missing_count} 个，batchIndex 为：{missing_list}
+
+## 本次为非交互运行，确认点已预先授权
+
+SKILL.md 中任何「Wait for user confirmation」步骤（含 Phase 0.5 的
+`.understandignore` 审阅）本次均视为已确认，直接采用当前内容继续，不要停下等待。
+本会话没有交互对端，停下等确认等于永久挂起。
 
 ## 你要做的事
 
