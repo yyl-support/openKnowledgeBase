@@ -191,6 +191,8 @@ class UAAdapter(BaseAdapter):
         auto_run: bool = True,
         plugin_dir: Optional[str] = None,
         model: str = 'claude-sonnet-5',
+        base_url: Optional[str] = None,
+        auth_token: Optional[str] = None,
         run_timeout: int = 10800,
         force_rerun: bool = False,
         require_fresh: bool = True,
@@ -206,6 +208,8 @@ class UAAdapter(BaseAdapter):
             plugin_dir: UA 插件目录。不传则按 resolve_plugin_dir 的顺序探测：
                 环境变量 UA_PLUGIN_DIR > 标准安装位置 > 与本仓库并列的源码克隆。
             model: 驱动 UA 的会话所用模型。
+            base_url: API base URL（用于切换为非 Anthropic 模型，如火山 ARK）。
+            auth_token: API token（用于切换为非 Anthropic 模型）。
             run_timeout: 驱动 UA 的超时秒数，默认 10800（3 小时）。
             force_rerun: 即使产物已存在也重跑。
             require_fresh: 产物的 gitCommitHash 与仓库当前 HEAD 不一致时视为过期。
@@ -215,6 +219,8 @@ class UAAdapter(BaseAdapter):
         self.auto_run = auto_run
         self.plugin_dir = resolve_plugin_dir(plugin_dir)
         self.model = model
+        self.base_url = base_url
+        self.auth_token = auth_token
         self.run_timeout = run_timeout
         self.force_rerun = force_rerun
         self.require_fresh = require_fresh
@@ -412,14 +418,38 @@ class UAAdapter(BaseAdapter):
             prompt,
         ]
 
+        # 构造环境变量：继承父进程 + 强制覆盖模型配置
+        env = os.environ.copy()
+
+        # 清除所有可能干扰的 ANTHROPIC 配置，避免被缓存的配置覆盖
+        for key in list(env.keys()):
+            if key.startswith('ANTHROPIC_'):
+                del env[key]
+
+        # 设置我们的配置
+        if self.base_url:
+            env['ANTHROPIC_BASE_URL'] = self.base_url
+        if self.auth_token:
+            env['ANTHROPIC_AUTH_TOKEN'] = self.auth_token
+        if self.model:
+            env['ANTHROPIC_MODEL'] = self.model
+
+        # 同时尝试设置 CLAUDE_CONFIG_DIR 为空，防止读取全局配置
+        env['CLAUDE_CONFIG_DIR'] = ''
+
         logger.info("UAAdapter: 驱动 UA（model=%s, timeout=%ds），日志: %s",
                     self.model, self.run_timeout, log_path)
+        if self.base_url:
+            logger.info("UAAdapter: 使用自定义 base_url: %s", self.base_url)
+        logger.info("UAAdapter: env传递检查 ANTHROPIC_BASE_URL=%s ANTHROPIC_MODEL=%s",
+                    env.get('ANTHROPIC_BASE_URL'), env.get('ANTHROPIC_MODEL'))
         logger.info("UAAdapter: 这一步会实际调用模型，大仓可能耗时数十分钟")
 
         try:
             proc = subprocess.run(
                 cmd, cwd=repo_path, capture_output=True,
                 stdin=subprocess.DEVNULL, text=True, timeout=self.run_timeout,
+                env=env,
             )
         except subprocess.TimeoutExpired:
             raise UAAdapterError(

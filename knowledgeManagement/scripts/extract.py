@@ -173,11 +173,20 @@ def create_adapter(adapter_name: str, config: dict):
         return ZreadAdapter()
     elif adapter_name == 'ua':
         ua_config = adapters_config.get('ua') or {}
+
+        # 处理环境变量占位符
+        auth_token = ua_config.get('auth_token', '')
+        if auth_token.startswith('${') and auth_token.endswith('}'):
+            env_var = auth_token[2:-1]
+            auth_token = os.getenv(env_var, '')
+
         return UAAdapter(
             data_dir=ua_config.get('data_dir'),
             auto_run=ua_config.get('auto_run', True),
             plugin_dir=ua_config.get('plugin_dir'),
             model=ua_config.get('model', 'claude-sonnet-5'),
+            base_url=ua_config.get('base_url'),
+            auth_token=auth_token or None,
             run_timeout=ua_config.get('run_timeout', 10800),
             force_rerun=ua_config.get('force_rerun', False),
             require_fresh=ua_config.get('require_fresh', True),

@@ -133,9 +133,37 @@ def parse_json_output(layer: str, text: str) -> Dict:
     try:
         return json.loads(stripped)
     except json.JSONDecodeError as e:
-        raise AgentError(
-            f"[{layer}] 产物不是合法 JSON: {e}\n原始输出前 1000 字符:\n{text[:1000]}"
+        # 尝试修复常见问题：数组元素内字符串值包含未转义的 "
+        # 策略：在 ": "..." 模式中，如果 ... 内有未转义的 "，转义它
+        # 用占位符法：先替换 \" 为占位符，然后替换剩余的 " 为 \"，最后恢复占位符
+        fixed = stripped.replace(r'\"', '\x00ESCAPED_QUOTE\x00')
+
+        # 正则替换：在 JSON 字符串值内部（": " 和 "[\,\}\]] 之间），转义所有 "
+        def escape_inner_quotes(match):
+            prefix = match.group(1)  # ": "
+            content = match.group(2)  # 字符串内容
+            suffix = match.group(3)  # " 和后续字符
+            # content 内的所有 " 都应该被转义
+            content = content.replace('"', '\\"')
+            return prefix + content + suffix
+
+        # 匹配模式：": "...<任何非反斜杠转义的内容>..."<,}]等>
+        # 简化：匹配 ": " 开头，到下一个 ", 或 "} 或 "], 为止
+        fixed = re.sub(
+            r'(:\s*")((?:[^"\\]|\\.)*)("[\s\n]*[,\}\]])',
+            escape_inner_quotes,
+            fixed
         )
+
+        # 恢复已转义的引号
+        fixed = fixed.replace('\x00ESCAPED_QUOTE\x00', r'\"')
+
+        try:
+            return json.loads(fixed)
+        except json.JSONDecodeError:
+            raise AgentError(
+                f"[{layer}] 产物不是合法 JSON: {e}\n原始输出前 1000 字符:\n{text[:1000]}"
+            )
 
 
 def require_keys(layer: str, data: Dict, keys: List[str]) -> None:

@@ -1,0 +1,334 @@
+{
+  "project_name": "forum-reply-robot",
+  "total_files": 138,
+  "rule_facts": [
+    {
+      "path": "CLAUDE.md",
+      "kind": "claude_md",
+      "assertions": [
+        "服务定位：自动监控论坛新帖并智能回复的机器人服务",
+        "处理链路1：常规问答回复链路（ForumMonitor._check_new_topics → _process_new_topics）",
+        "处理链路2：AI预审回复链路（ForumMonitor._check_pre_audit_topics → _process_pre_audit_topic）",
+        "处理链路3：知识库（LightRAG）维护链路（src/update_lightrag/），默认每天18:00 UTC触发增量更新",
+        "生产入口：main.py 为唯一生产入口",
+        "Flask健康检查接口：/health、/health/detail，绑定5000端口",
+        "数据库：PostgreSQL为权威存储，表包括forum_topics、processed_forum_topics、pre_audit_topics等",
+        "配置文件：config/config.yaml（已被.gitignore忽略，不入库）",
+        "main.py启动后立即调用delete_config_file()删除配置文件",
+        "SchemaFiles目录缺失则退出",
+        "监控线程崩溃可被外部探针通过健康检查感知"
+      ]
+    },
+    {
+      "path": "Dockerfile",
+      "kind": "ci",
+      "assertions": [
+        "基础镜像：python:3.10-slim",
+        "构建期从GitCode远程仓库git clone拉取Schema文件（Redfish_SchemaFiles、MDB_SchemaFiles）",
+        "以非root用户appuser运行",
+        "使用ADD .../info/refs让缓存随上游HEAD失效"
+      ]
+    },
+    {
+      "path": "requirements.txt",
+      "kind": "dependency",
+      "assertions": [
+        "依赖openai（OpenAI兼容接口）",
+        "依赖langchain-openai、langchain-core",
+        "依赖requests、httpx",
+        "依赖beautifulsoup4、markdownify",
+        "依赖flask、werkzeug",
+        "依赖psycopg[binary]（PostgreSQL）",
+        "依赖PyYAML、python-json-logger、python-dotenv",
+        "依赖schedule、retrying",
+        "多数依赖已固定精确版本"
+      ]
+    },
+    {
+      "path": "requirements-test.txt",
+      "kind": "dependency",
+      "assertions": [
+        "测试依赖声明文件"
+      ]
+    },
+    {
+      "path": "requirements-eval.txt",
+      "kind": "dependency",
+      "assertions": [
+        "评估依赖声明文件"
+      ]
+    },
+    {
+      "path": "pytest.ini",
+      "kind": "config",
+      "assertions": [
+        "pytest测试框架配置"
+      ]
+    },
+    {
+      "path": "src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.3.json",
+      "kind": "config",
+      "assertions": [
+        "MDB合规校验规则集v6.3"
+      ]
+    },
+    {
+      "path": "src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.5.json",
+      "kind": "config",
+      "assertions": [
+        "MDB合规校验规则集v6.5"
+      ]
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/SchemaFiles/redfish_compliance_rules.json",
+      "kind": "config",
+      "assertions": [
+        "Redfish合规校验规则集"
+      ]
+    }
+  ],
+  "interpret_inputs": {
+    "core": [
+      {
+        "path": "main.py",
+        "reason": "生产入口，CLAUDE.md明确标注为唯一生产入口，装配线程、健康检查、目录/Schema校验"
+      },
+      {
+        "path": "src/utils.py",
+        "reason": "CLAUDE.md标注为通用工具，提供load_config/delete_config_file等核心功能"
+      },
+      {
+        "path": "src/ForumBot/monitor.py",
+        "reason": "CLAUDE.md标注为编排核心，跑轮询主循环，串起两条回复链路"
+      },
+      {
+        "path": "src/ForumBot/forum_client.py",
+        "reason": "CLAUDE.md标注为论坛HTTP客户端，封装拉帖、发帖、搜索、检索"
+      },
+      {
+        "path": "src/ForumBot/ai_processor.py",
+        "reason": "CLAUDE.md标注为大模型调用层，封装所有LLM调用"
+      },
+      {
+        "path": "src/ForumBot/data_processor.py",
+        "reason": "CLAUDE.md标注为数据与解析层（最大模块~1150行），管理PostgreSQL连接、CSV读写、token落库"
+      },
+      {
+        "path": "src/ForumBot/image_processor.py",
+        "reason": "CLAUDE.md标注为帖子图片相关处理"
+      },
+      {
+        "path": "src/ForumBot/token_tracker.py",
+        "reason": "CLAUDE.md标注为全局单例token_tracker，跨模块累计token用量"
+      },
+      {
+        "path": "src/ForumBot/logging_config.py",
+        "reason": "CLAUDE.md标注为日志器配置，导出main_logger"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/end_to_end_check.py",
+        "reason": "CLAUDE.md标注为预审链路Redfish评审引擎的对外入口"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/extract_reviews.py",
+        "reason": "CLAUDE.md标注为评审点提取与相关性判断模块"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/redfish_checker.py",
+        "reason": "Redfish校验核心逻辑"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/redfish_common.py",
+        "reason": "CLAUDE.md标注为Config配置类与工具"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/redfish_review_workflow.py",
+        "reason": "CLAUDE.md标注为规则合规检查+规则集REDFISH_COMPLIANCE_RULES"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/redfish_schema_validator.py",
+        "reason": "CLAUDE.md标注为JSON Schema校验模块"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/redfish_uri_generator.py",
+        "reason": "CLAUDE.md标注为URI返回体示例生成模块"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/schema_debug_logger.py",
+        "reason": "CLAUDE.md标注为调试记录模块"
+      },
+      {
+        "path": "src/ForumBot/MdbValidation/mdb_checker.py",
+        "reason": "CLAUDE.md标注为MDB合规校验核心，MdbComplianceChecker调用大模型按规则集校验"
+      },
+      {
+        "path": "src/ForumBot/MdbValidation/mdb_classifier.py",
+        "reason": "CLAUDE.md标注为判断评审点是否与MDB资源协作接口相关"
+      },
+      {
+        "path": "src/update_lightrag/full_data_init.py",
+        "reason": "CLAUDE.md标注为启动时全量初始化LightRAG知识库"
+      },
+      {
+        "path": "src/update_lightrag/increment_date_update_timer.py",
+        "reason": "CLAUDE.md标注为增量更新执行器+定时器（每天18:00 UTC）"
+      },
+      {
+        "path": "src/update_lightrag/lightrag_client.py",
+        "reason": "CLAUDE.md标注为与LightRAG服务交互（灌库/删除）"
+      },
+      {
+        "path": "src/update_lightrag/forum_data_Fetcher.py",
+        "reason": "CLAUDE.md标注为抓取论坛帖子数据作为知识源"
+      },
+      {
+        "path": "src/update_lightrag/gitcode_client.py",
+        "reason": "CLAUDE.md标注为GitCode API客户端"
+      },
+      {
+        "path": "src/update_lightrag/gitode_full_fetcher.py",
+        "reason": "CLAUDE.md标注为GitCode仓库文档的全量抓取"
+      },
+      {
+        "path": "src/update_lightrag/gitcode_api_increment_fetcher.py",
+        "reason": "CLAUDE.md标注为GitCode仓库文档的增量抓取"
+      },
+      {
+        "path": "src/update_lightrag/image_processor.py",
+        "reason": "CLAUDE.md标注为知识源中的图片处理"
+      },
+      {
+        "path": "src/update_lightrag/filter.py",
+        "reason": "CLAUDE.md标注为数据灌库前的过滤"
+      },
+      {
+        "path": "src/update_lightrag/update_time.py",
+        "reason": "CLAUDE.md标注为增量更新的上次更新时间读写与幂等初始化"
+      }
+    ],
+    "auxiliary": [
+      {
+        "path": "README.md",
+        "reason": "项目说明文档"
+      },
+      {
+        "path": "src/ForumBot/api_main.py",
+        "reason": "CLAUDE.md标注为独立调试用API服务的命令行入口（非生产主链路）"
+      },
+      {
+        "path": "src/ForumBot/standalone_api.py",
+        "reason": "CLAUDE.md标注为独立调试用API服务，提供按需触发摘要/检索/回复等能力的Flask接口（非生产主链路）"
+      },
+      {
+        "path": "src/ForumBot/auth_middleware.py",
+        "reason": "认证中间件，非主流程必需"
+      },
+      {
+        "path": "src/ForumBot/oidc_client.py",
+        "reason": "OIDC客户端，用于身份认证，非主流程必需"
+      },
+      {
+        "path": "src/ForumBot/rbac_middleware.py",
+        "reason": "RBAC中间件，用于权限控制，非主流程必需"
+      },
+      {
+        "path": "src/ForumBot/rate_limiter.py",
+        "reason": "限流器，辅助功能"
+      },
+      {
+        "path": "src/ForumBot/prometheus_metrics.py",
+        "reason": "Prometheus指标导出，用于监控，非主流程必需"
+      },
+      {
+        "path": "src/ForumBot/llm_token_usage.py",
+        "reason": "LLM token使用统计，辅助功能"
+      },
+      {
+        "path": "src/ForumBot/evaluation_hooks.py",
+        "reason": "评估钩子，用于测试/评估场景"
+      },
+      {
+        "path": "src/ForumBot/rag_api.py",
+        "reason": "RAG API服务，提供检索接口，辅助功能"
+      },
+      {
+        "path": "src/evaluation/build_dataset.py",
+        "reason": "评估数据集构建，用于离线评估"
+      },
+      {
+        "path": "src/evaluation/run_baseline.py",
+        "reason": "基线评估运行，用于离线评估"
+      },
+      {
+        "path": "src/evaluation/templates.py",
+        "reason": "评估模板，用于离线评估"
+      },
+      {
+        "path": "src/external_api_app.py",
+        "reason": "外部API应用，辅助功能"
+      },
+      {
+        "path": "src/ForumBot/MdbValidation/__init__.py",
+        "reason": "MDB校验包初始化文件，205字节可能包含导出逻辑"
+      }
+    ],
+    "excluded": [
+      {
+        "path": "tests",
+        "reason": "测试代码目录，37个文件，用于pytest测试，不属于生产代码"
+      },
+      {
+        "path": "projects/-private-tmp-forum-reply-robot",
+        "reason": "临时工作目录，包含subagents对话记录（12个文件）和tool-results（2个文件），共15个文件，属于Claude Code工作产物"
+      },
+      {
+        "path": "backups",
+        "reason": "备份文件目录，5个.claude.json备份文件"
+      },
+      {
+        "path": ".ai-flow/deploy",
+        "reason": "部署脚本目录，6个文件（README.md、preview.sh、services.yaml、test-sync子目录），非业务代码"
+      },
+      {
+        "path": "config/config.yaml",
+        "reason": "运行时配置文件，含敏感信息（API key、数据库口令），CLAUDE.md明确说明已被.gitignore忽略且启动后会被delete_config_file()删除"
+      },
+      {
+        "path": ".gitignore",
+        "reason": "Git元数据文件"
+      },
+      {
+        "path": ".last-cleanup",
+        "reason": "临时元数据文件"
+      },
+      {
+        "path": "src/__init__.py",
+        "reason": "Python包标记文件，38字节，无实质逻辑"
+      },
+      {
+        "path": "src/ForumBot/__init__.py",
+        "reason": "Python包标记文件，38字节，无实质逻辑"
+      },
+      {
+        "path": "src/update_lightrag/__init__.py",
+        "reason": "Python包标记文件，31字节，无实质逻辑"
+      },
+      {
+        "path": "src/ForumBot/SchemaValidation/__init__.py",
+        "reason": "Python包标记文件，0字节，空文件"
+      },
+      {
+        "path": "src/evaluation/__init__.py",
+        "reason": "Python包标记文件，0字节，空文件"
+      },
+      {
+        "path": "tests/mdb_validation/__init__.py",
+        "reason": "测试包标记文件，23字节"
+      }
+    ]
+  },
+  "core_flow": "主流程为论坛机器人的两条回复链路（常规问答+AI预审）和知识库维护，入口为main.py，编排核心为src/ForumBot/monitor.py，依据CLAUDE.md中的架构描述和子模块职责划分表",
+  "dimension_coverage": [],
+  "needs_user_decision": false,
+  "decision_request": null
+}

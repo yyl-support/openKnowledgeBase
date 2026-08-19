@@ -1,0 +1,18 @@
+{
+  "checked_count": 29,
+  "conflicts": [],
+  "structural_check": {
+    "core_files_checked": 29,
+    "core_files_total": 29,
+    "claims_examined": 8
+  },
+  "scope_check": {
+    "key_fields_examined": 0,
+    "fields_where_sample_is_minority": 0,
+    "distributions": []
+  },
+  "corrections_for_refiner": [],
+  "blocking": false,
+  "blocking_reason": null,
+  "coverage_warning": "未做作用域核验"
+}

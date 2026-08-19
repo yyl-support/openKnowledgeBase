@@ -1,0 +1,56 @@
+{
+  "tool": "ua",
+  "expected_count": 45,
+  "actual_page_count": 116,
+  "matched": 45,
+  "missing": [],
+  "unexpected": [
+    {
+      "path": ".ai-flow/deploy/test-sync/README.md",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": "tests/schema_validation/test_redfish_uri_generator.py",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": "tests/test_logging_config.py",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": "tests/test_main_schema_files.py",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": "tests/test_evaluation_run_baseline.py",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": "tests/test_image_processor.py",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": "tests/conftest.py",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": "tests/test_gitcode_api_increment_fetcher.py",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": ".ai-flow/deploy/test-sync/routes.sh",
+      "note": "产物中出现但不在解读输入集内"
+    },
+    {
+      "path": "tests/test_rag_api.py",
+      "note": "产物中出现但不在解读输入集内"
+    }
+  ],
+  "empty_or_trivial": [],
+  "coverage_core": "29/29",
+  "coverage_auxiliary": "16/16",
+  "foreign_count": 0,
+  "scope_note": "UA 分析范围为整仓（116 个文件），预处理层判定清单为 45 个文件，产物包含 71 个预处理层未指定的文件，全部属于本仓库，为范围超集而非污染",
+  "blocking": false,
+  "blocking_reason": null
+}
