@@ -509,7 +509,7 @@ def write_decision_request(work_dir: str, pre: Dict) -> str:
 # ---------------------------------------------------------------- Layer 2
 
 def layer2_extract(repo_path: str, work_dir: str, pre: Dict, *, adapter_name: str,
-                   config: Dict, model: str) -> tuple:
+                   config: Dict, model: str, ua_overrides: dict = None) -> tuple:
     """
     解读层：调用三方件 + subagent 核对覆盖率。
 
@@ -520,7 +520,7 @@ def layer2_extract(repo_path: str, work_dir: str, pre: Dict, *, adapter_name: st
     from source_selector import select_sources
 
     logger.info("=== Layer 2 解读：调用 %s ===", adapter_name)
-    adapter = create_adapter(adapter_name, config)
+    adapter = create_adapter(adapter_name, config, ua_overrides=ua_overrides)
 
     ii = pre["interpret_inputs"]
     wanted = [x["path"] for x in ii.get("core", []) + ii.get("auxiliary", [])]
@@ -842,6 +842,17 @@ def main():
     parser.add_argument("--reuse-preprocess", action="store_true",
                         help="复用 work 目录下已有的 preprocess.json，不重跑 Layer 1")
 
+    # UA adapter 模型配置参数
+    parser.add_argument("--ua-profile",
+                        help="UA 模型配置 profile（在 config.yaml 的 adapters.ua.profiles 中定义）。"
+                             "不指定则使用 default_profile")
+    parser.add_argument("--ua-model",
+                        help="覆盖 UA 使用的模型名称（优先级高于 --ua-profile）")
+    parser.add_argument("--ua-base-url",
+                        help="覆盖 UA 的 API base URL（优先级高于 --ua-profile）")
+    parser.add_argument("--ua-token-env",
+                        help="覆盖 UA 的 API token 环境变量名（如 DEEPSEEK_API_KEY，优先级高于 --ua-profile）")
+
     args = parser.parse_args()
 
     if args.check_env:
@@ -898,9 +909,16 @@ def main():
             logger.info("复用已有 raw.json 与 coverage.json，跳过 Layer 2")
             cov = _read_json(cov_path)
         else:
+            # 构建 UA 覆盖参数
+            ua_overrides = {
+                'profile': args.ua_profile,
+                'model': args.ua_model,
+                'base_url': args.ua_base_url,
+                'token_env': args.ua_token_env,
+            }
             raw_path, cov = layer2_extract(repo_path, work_dir, pre,
                                            adapter_name=args.adapter, config=config,
-                                           model=args.model)
+                                           model=args.model, ua_overrides=ua_overrides)
             _write_json(cov_path, cov)
 
         if cov.get("blocking"):

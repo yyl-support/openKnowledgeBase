@@ -30,15 +30,6 @@ adapters:
     # 都找不到时会报错并列出已尝试的路径。不要在此写死机器专属的绝对路径
     # plugin_dir: /path/to/understand-anything-plugin
 
-    # 驱动 UA 的会话所用模型（支持通过 base_url/auth_token 切换为非 Anthropic 模型）
-    model: deepseek-v4-flash
-
-    # API base URL（留空则用 Claude Code 默认配置）
-    base_url: https://api.deepseek.com/anthropic
-
-    # API token（只从环境变量读取，不直接写明文）
-    auth_token: ${DEEPSEEK_API_KEY}
-
     # 驱动超时（秒）。实测 2 文件约 10 分钟、5 文件约 12 分钟走完 7 个阶段，
     # 固定开销占大头；大仓批次多，给到 3 小时
     run_timeout: 10800
@@ -53,6 +44,36 @@ adapters:
     # data_dir 可选：显式指定知识图谱产物所在目录（不传则自动探测
     # <repo>/.ua/ 或旧版 <repo>/.understand-anything/）
     # data_dir: /path/to/.ua
+
+    # 模型配置 profiles：预定义多套模型配置，通过 --ua-profile 参数选择
+    # 命令行参数 --ua-model/--ua-base-url/--ua-token-env 可覆盖选中的 profile
+    profiles:
+      # DeepSeek V4 Flash（默认，成本低）
+      deepseek:
+        model: deepseek-v4-flash
+        base_url: https://api.deepseek.com/anthropic
+        auth_token: ${DEEPSEEK_API_KEY}
+
+      # 智谱 GLM-5.3（火山 ARK）
+      glm:
+        model: glm-5.3
+        base_url: https://ark.cn-beijing.volces.com/api/coding
+        auth_token: ${ARK_API_KEY}
+
+      # Claude Sonnet 5（4router）
+      claude-4router:
+        model: claude-sonnet-5
+        base_url: https://4router.net
+        auth_token: ${ANTHROPIC_API_KEY}
+
+      # Claude Opus 5（官方直连）
+      claude-official:
+        model: claude-opus-5
+        # base_url 留空走官方
+        auth_token: ${ANTHROPIC_API_KEY}
+
+    # 默认使用的 profile（可通过 --ua-profile 覆盖）
+    default_profile: deepseek
 
 # 输出路径配置
 output:

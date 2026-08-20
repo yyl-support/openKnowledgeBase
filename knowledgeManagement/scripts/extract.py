@@ -148,13 +148,18 @@ def compute_raw_path(output_root: str, project_name: str, tool_name: str) -> str
     return os.path.join(raw_dir, f"{tool_name}-{timestamp}.json")
 
 
-def create_adapter(adapter_name: str, config: dict):
+def create_adapter(adapter_name: str, config: dict, ua_overrides: dict = None):
     """
     创建适配器实例
 
     Args:
         adapter_name: 适配器名称（mk / zread / ua）
         config: 配置字典
+        ua_overrides: UA adapter 的命令行覆盖参数（仅当 adapter_name='ua' 时生效）
+            - profile: profile 名称
+            - model: 模型名称
+            - base_url: API base URL
+            - token_env: API token 环境变量名
 
     Returns:
         适配器实例
@@ -173,19 +178,44 @@ def create_adapter(adapter_name: str, config: dict):
         return ZreadAdapter()
     elif adapter_name == 'ua':
         ua_config = adapters_config.get('ua') or {}
+        ua_overrides = ua_overrides or {}
 
-        # 处理环境变量占位符
-        auth_token = ua_config.get('auth_token', '')
-        if auth_token.startswith('${') and auth_token.endswith('}'):
-            env_var = auth_token[2:-1]
-            auth_token = os.getenv(env_var, '')
+        # 解析 profile：优先级 命令行 --ua-profile > config.default_profile > 'deepseek'
+        profiles = ua_config.get('profiles', {})
+        default_profile_name = ua_config.get('default_profile', 'deepseek')
+        profile_name = ua_overrides.get('profile') or default_profile_name
+
+        # 获取选中的 profile 配置
+        profile = profiles.get(profile_name, {})
+        if not profile and profile_name:
+            import logging
+            logging.warning(f"UA profile '{profile_name}' 不存在，使用空配置")
+
+        # 合并配置：profile < 命令行覆盖
+        # model
+        model = ua_overrides.get('model') or profile.get('model') or 'claude-sonnet-5'
+
+        # base_url
+        base_url = ua_overrides.get('base_url') or profile.get('base_url')
+
+        # auth_token：优先级 命令行环境变量 > profile 环境变量
+        token_env_name = ua_overrides.get('token_env') or None
+        if token_env_name:
+            # 命令行指定了环境变量名
+            auth_token = os.getenv(token_env_name, '')
+        else:
+            # 从 profile 读取
+            auth_token = profile.get('auth_token', '')
+            if auth_token.startswith('${') and auth_token.endswith('}'):
+                env_var = auth_token[2:-1]
+                auth_token = os.getenv(env_var, '')
 
         return UAAdapter(
             data_dir=ua_config.get('data_dir'),
             auto_run=ua_config.get('auto_run', True),
             plugin_dir=ua_config.get('plugin_dir'),
-            model=ua_config.get('model', 'claude-sonnet-5'),
-            base_url=ua_config.get('base_url'),
+            model=model,
+            base_url=base_url,
             auth_token=auth_token or None,
             run_timeout=ua_config.get('run_timeout', 10800),
             force_rerun=ua_config.get('force_rerun', False),
