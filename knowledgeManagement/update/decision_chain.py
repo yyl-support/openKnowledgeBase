@@ -6,30 +6,38 @@ UpdateDecisionChain: 更新决策链
 
 import logging
 import os
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+from langchain_community.callbacks.manager import get_openai_callback
 
 # 导入 Phase 2 的数据模型
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from extraction.models import IssueKnowledgePackage
+from config.pricing import calc_cost
 import config.env  # noqa: F401  加载 .env，使下方 os.getenv 能读到密钥
 
 logger = logging.getLogger(__name__)
+
+MODEL_NAME = "minimax-m3"
 
 
 class UpdateDecisionChain:
     """更新决策链：基于 LLM 智能决策全量/增量更新"""
 
-    def __init__(self):
+    def __init__(self, pricing: Optional[dict] = None):
         """
         初始化决策链
 
         使用火山 ARK MiniMax M3 模型
+
+        Args:
+            pricing: 模型单价表（global.pricing），缺省时成本记 0 并打 warning
         """
+        self.pricing = pricing
         # 初始化 LLM（火山 ARK）
         ark_api_key = os.getenv("ARK_API_KEY")
         if not ark_api_key:
@@ -39,7 +47,7 @@ class UpdateDecisionChain:
             self.llm = None
         else:
             self.llm = ChatOpenAI(
-                model="minimax-m3",
+                model=MODEL_NAME,
                 openai_api_key=ark_api_key,
                 openai_api_base="https://ark.cn-beijing.volces.com/api/coding/v3",
                 temperature=0.1  # 低温度，保证决策稳定性
@@ -107,7 +115,8 @@ class UpdateDecisionChain:
                 {
                     "decision": "full" | "incremental",
                     "reason": str,
-                    "confidence": float
+                    "confidence": float,
+                    "cost": {...}   # calc_cost() 返回值，规则引擎路径为全 0
                 }
         """
         logger.info(f"开始决策 Issue #{knowledge_package.issue_number} 的更新模式")
@@ -137,8 +146,18 @@ class UpdateDecisionChain:
         )
 
         try:
-            # 调用 LLM
-            response = self.chain.run(**input_data)
+            # 调用 LLM，用 callback 取真实 token 数
+            with get_openai_callback() as cb:
+                response = self.chain.run(**input_data)
+                prompt_tokens = cb.prompt_tokens
+                completion_tokens = cb.completion_tokens
+
+            cost = calc_cost(
+                MODEL_NAME,
+                prompt_tokens,
+                completion_tokens,
+                self.pricing
+            )
 
             # 解析响应（尝试提取 JSON）
             import json
@@ -163,11 +182,19 @@ class UpdateDecisionChain:
                         "confidence": 0.7
                     }
 
+            result["cost"] = cost
+
             logger.info(
                 f"决策结果: {result['decision']} "
                 f"(置信度={result.get('confidence', 0.0):.2f})"
             )
             logger.info(f"决策理由: {result['reason']}")
+            logger.info(
+                f"决策成本: token 输入={cost['prompt_tokens']} "
+                f"输出={cost['completion_tokens']}, "
+                f"金额={cost['cost']:.6f} {cost['currency']}"
+                f"{'' if cost['priced'] else '（无定价配置，记 0）'}"
+            )
 
             return result
 
@@ -197,12 +224,24 @@ class UpdateDecisionChain:
         changed_files = knowledge_package.get_changed_files_count()
         doc_size = knowledge_package.get_requirement_doc_size()
 
+        # 规则引擎不调 LLM，成本为真实的 0（区别于「无定价配置记 0」）
+        no_llm_cost = {
+            "model": MODEL_NAME,
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "cost": 0.0,
+            "currency": "USD",
+            "priced": True,
+        }
+
         # 规则 1: 架构或安全相关
         if "need_design" in labels or "need_security" in labels:
             return {
                 "decision": "full",
                 "reason": "Issue 涉及架构设计或安全（标签包含 need_design/need_security）",
-                "confidence": 0.95
+                "confidence": 0.95,
+                "cost": no_llm_cost
             }
 
         # 规则 2: 需求文档过大
@@ -210,7 +249,8 @@ class UpdateDecisionChain:
             return {
                 "decision": "full",
                 "reason": f"需求文档过大（{doc_size} 字符 > 15,000）",
-                "confidence": 0.9
+                "confidence": 0.9,
+                "cost": no_llm_cost
             }
 
         # 规则 3: 变更文件过多
@@ -218,7 +258,8 @@ class UpdateDecisionChain:
             return {
                 "decision": "full",
                 "reason": f"变更文件过多（{changed_files} 个文件 >= 9）",
-                "confidence": 0.85
+                "confidence": 0.85,
+                "cost": no_llm_cost
             }
 
         # 规则 4: 距上次更新时间过长
@@ -226,13 +267,15 @@ class UpdateDecisionChain:
             return {
                 "decision": "full",
                 "reason": f"距上次更新时间过长（{days_since_last_update:.1f} 天 > 7）",
-                "confidence": 0.8
+                "confidence": 0.8,
+                "cost": no_llm_cost
             }
 
         # 默认：增量更新
         return {
             "decision": "incremental",
             "reason": f"影响范围小（{changed_files} 个文件，{doc_size} 字符）",
-            "confidence": 0.8
+            "confidence": 0.8,
+            "cost": no_llm_cost
         }
 

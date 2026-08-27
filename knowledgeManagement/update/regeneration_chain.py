@@ -10,6 +10,7 @@ from typing import List, Dict, Any, Optional
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
+from langchain_community.callbacks.manager import get_openai_callback
 
 from .vector_store import VectorStore
 
@@ -18,22 +19,29 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from extraction.models import IssueKnowledgePackage
+from config.pricing import calc_cost, split_by_currency
 import config.env  # noqa: F401  加载 .env，使下方 os.getenv 能读到密钥
 
 logger = logging.getLogger(__name__)
+
+MODEL_NAME = "minimax-m3"
 
 
 class SectionRegenerationChain:
     """章节重新生成链：基于 RAG 重新生成受影响的文档章节"""
 
-    def __init__(self, project_name: str):
+    def __init__(self, project_name: str, pricing: Optional[dict] = None):
         """
         初始化章节生成链
 
         Args:
             project_name: 项目名称
+            pricing: 模型单价表（global.pricing），缺省时成本记 0 并打 warning
         """
         self.project_name = project_name
+        self.pricing = pricing
+        # 每次 regenerate_section 调用产生的成本记录，供 regenerate_all_affected 汇总
+        self.cost_records = []
 
         # 初始化向量存储
         self.vector_store = VectorStore(project_name)
@@ -47,7 +55,7 @@ class SectionRegenerationChain:
             self.llm = None
         else:
             self.llm = ChatOpenAI(
-                model="minimax-m3",
+                model=MODEL_NAME,
                 openai_api_key=ark_api_key,
                 openai_api_base="https://ark.cn-beijing.volces.com/api/coding/v3",
                 temperature=0.3  # 适中温度，保持生成质量和一致性
@@ -261,10 +269,26 @@ class SectionRegenerationChain:
 
             from langchain.chains import LLMChain
             chain = LLMChain(llm=self.llm, prompt=prompt)
-            new_content = chain.run(**input_data)
+
+            # 用 callback 取真实 token 数
+            with get_openai_callback() as cb:
+                new_content = chain.run(**input_data)
+                prompt_tokens = cb.prompt_tokens
+                completion_tokens = cb.completion_tokens
+
+            cost = calc_cost(
+                MODEL_NAME,
+                prompt_tokens,
+                completion_tokens,
+                self.pricing
+            )
+            self.cost_records.append(cost)
 
             logger.info(
-                f"章节生成成功: {len(new_content)} 字符"
+                f"章节生成成功: {len(new_content)} 字符, "
+                f"token 输入={cost['prompt_tokens']} 输出={cost['completion_tokens']}, "
+                f"金额={cost['cost']:.6f} {cost['currency']}"
+                f"{'' if cost['priced'] else '（无定价配置，记 0）'}"
             )
 
             return new_content
@@ -290,13 +314,19 @@ class SectionRegenerationChain:
         """
         logger.info("开始重新生成所有受影响的章节")
 
+        # 每次批量调用独立统计成本，避免跨调用累加
+        self.cost_records = []
+
         result = {
             "sections_regenerated": 0,
             "sections_failed": 0,
             "sections_skipped": [],
             "updated_documents": [],
             "success": True,
-            "error": None
+            "error": None,
+            "cost_usd": 0.0,
+            "cost_cny": 0.0,
+            "total_tokens": 0
         }
 
         try:
@@ -307,6 +337,7 @@ class SectionRegenerationChain:
 
             if not affected_sections:
                 logger.info("没有受影响的章节，跳过重新生成")
+                self._fill_cost(result)
                 return result
 
             # 2. 逐个重新生成
@@ -379,11 +410,15 @@ class SectionRegenerationChain:
                     logger.warning(f"章节写回失败: {document_name} / {section_name}")
                     result["sections_failed"] += 1
 
+            self._fill_cost(result)
+
             logger.info(
                 f"章节重新生成完成: "
                 f"成功={result['sections_regenerated']}, "
                 f"失败={result['sections_failed']}, "
-                f"跳过={len(result['sections_skipped'])}"
+                f"跳过={len(result['sections_skipped'])}, "
+                f"成本=${result['cost_usd']:.6f} / ¥{result['cost_cny']:.6f}, "
+                f"token={result['total_tokens']}"
             )
 
             return result
@@ -392,7 +427,17 @@ class SectionRegenerationChain:
             logger.error(f"批量重新生成失败: {e}")
             result["success"] = False
             result["error"] = str(e)
+            self._fill_cost(result)
             return result
+
+    def _fill_cost(self, result: Dict[str, Any]):
+        """把本次累积的成本记录按币种汇总写入 result（不做汇率折算）"""
+        totals = split_by_currency(self.cost_records)
+        result["cost_usd"] = totals["cost_usd"]
+        result["cost_cny"] = totals["cost_cny"]
+        result["total_tokens"] = sum(
+            r.get("total_tokens", 0) for r in self.cost_records
+        )
 
     def _extract_section(
         self,

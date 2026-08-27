@@ -92,6 +92,10 @@ class GlobalConfig(BaseModel):
         "slack_webhook": None
     }
 
+    # 模型单价表，供 config/pricing.calc_cost() 读取。
+    # 单价缺失时成本记 0 并打 warning（见 pricing.py），不静默放过。
+    pricing: dict = {}
+
 
 class SchedulerDaemonConfig(BaseModel):
     """调度器守护进程配置"""
