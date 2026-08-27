@@ -1,0 +1,52 @@
+projects:
+  forum-reply-robot:
+    repo_path: /tmp/forum-reply-robot
+    description: 论坛自动回复机器人
+    owner: team-a
+    issue_tracking:
+      backlog_repo: opensourceways/backlog
+      search_query: forum-reply-robot state:closed
+      poll_interval: 3.5
+    adapter: ua
+    ua_profile: deepseek
+    output_types:
+    - overview
+    - techstack
+    - standards
+    update_policy:
+      mode: auto
+      trigger: issue_polling
+      incremental: true
+      full_update_interval: 7
+    priority: high
+    metadata:
+      last_issue_number: 1748
+      last_update_time: 2026-08-20 20:15:59.911920
+      last_update_mode: full
+      total_updates: 1
+      total_cost_usd: 6.0
+global:
+  max_concurrent_updates: 3
+  github:
+    token_env: GH_TOKEN
+    cli_path: gh
+  embeddings:
+    provider: openai
+    model: text-embedding-3-small
+  storage:
+    base_dir: /Users/gorden/huawei/code/openKnowledgeBase
+    knowledge_dir: knowledgeBase
+    source_dir: codeSource
+    vector_dir: vectordb
+    metadata_db: metadata.db
+  notifications:
+    enabled: true
+    slack_webhook: ''
+scheduler:
+  enabled: true
+  polling_interval_days: 3.5
+  max_retries: 3
+  retry_delay_seconds: 300
+  daemon:
+    pid_file: "run/scheduler.pid"
+    log_dir: "logs"
