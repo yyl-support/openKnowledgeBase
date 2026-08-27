@@ -65,6 +65,8 @@ class ProjectConfig(BaseModel):
 
 class GlobalConfig(BaseModel):
     """全局配置"""
+    # 注意：当前 orchestrator.schedule_all_projects() 是串行执行，此配置尚未生效。
+    # 项目数少时串行足够；如需并发，需在 orchestrator 中引入线程池并读取该值。
     max_concurrent_updates: int = 3
 
     github: dict = {

@@ -5,7 +5,7 @@ projects:
     owner: team-a
     issue_tracking:
       backlog_repo: opensourceways/backlog
-      search_query: forum-reply-robot state:closed
+      search_query: label:project:forum-reply-robot state:closed
       poll_interval: 3.5
     adapter: ua
     ua_profile: deepseek
@@ -25,6 +25,32 @@ projects:
       last_update_mode: full
       total_updates: 1
       total_cost_usd: 6.0
+  ascend-ci-deployment:
+    repo_path: /tmp/ascend-ci-deployment
+    description: Ascend CI 部署工具
+    owner: team-b
+    issue_tracking:
+      backlog_repo: opensourceways/backlog
+      search_query: label:project:ascend-ci-project state:closed
+      poll_interval: 3.5
+    adapter: ua
+    ua_profile: deepseek
+    output_types:
+    - overview
+    - techstack
+    - standards
+    update_policy:
+      mode: auto
+      trigger: issue_polling
+      incremental: true
+      full_update_interval: 7
+    priority: medium
+    metadata:
+      last_issue_number: 0
+      last_update_time: null
+      last_update_mode: null
+      total_updates: 0
+      total_cost_usd: 0.0
 global:
   max_concurrent_updates: 3
   github:

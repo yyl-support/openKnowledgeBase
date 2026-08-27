@@ -3,19 +3,23 @@ from orchestration.gh_client import GitHubCLI
 
 
 def test_search_issues():
-    """测试搜索 Issue"""
+    """测试搜索 Issue
+
+    必须用 label: 前缀限定项目，否则 GitHub 会匹配标题/正文中含关键词的
+    所有 Issue，导致串项目（Phase 5 任务 2 实测有 21 个跨项目重复）。
+    """
     gh = GitHubCLI()
 
     issues = gh.search_issues(
         repo="opensourceways/backlog",
-        search_query="forum-reply-robot state:closed",
+        search_query="label:project:forum-reply-robot state:closed",
         limit=3
     )
 
     assert len(issues) > 0
     assert all(issue.number > 0 for issue in issues)
-    assert all("forum-reply-robot" in issue.title.lower() or
-               "project:forum-reply-robot" in issue.labels
+    # label 查询保证每个结果都带该项目标签，不再依赖标题匹配兜底
+    assert all("project:forum-reply-robot" in issue.labels
                for issue in issues)
 
 
