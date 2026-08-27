@@ -16,6 +16,7 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from extraction.models import IssueKnowledgePackage
+import config.env  # noqa: F401  加载 .env，使下方 os.getenv 能读到密钥
 
 logger = logging.getLogger(__name__)
 

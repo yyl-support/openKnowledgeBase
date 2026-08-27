@@ -6,10 +6,15 @@ VectorStore: 向量存储封装
 
 import logging
 import os
+import sys
+from pathlib import Path
 from typing import List, Optional, Dict, Any
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.schema import Document
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from config.env import require_env
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +40,10 @@ class VectorStore:
         os.makedirs(self.persist_directory, exist_ok=True)
 
         # 初始化 Embeddings（SiliconFlow Qwen3-Embedding-8B）
-        siliconflow_api_key = os.getenv("SILICONFLOW_API_KEY")
-        if not siliconflow_api_key:
-            raise ValueError(
-                "SILICONFLOW_API_KEY 环境变量未设置，无法初始化向量库。"
-                "请先 export SILICONFLOW_API_KEY=<your_key>"
-            )
+        siliconflow_api_key = require_env(
+            "SILICONFLOW_API_KEY",
+            "SiliconFlow 向量化服务"
+        )
 
         self.embeddings = OpenAIEmbeddings(
             model="Qwen/Qwen3-Embedding-8B",
