@@ -1,0 +1,99 @@
+projects:
+  forum-reply-robot:
+    repo_path: /tmp/forum-reply-robot
+    description: 论坛自动回复机器人
+    owner: team-a
+    issue_tracking:
+      backlog_repo: opensourceways/backlog
+      search_query: label:project:forum-reply-robot state:closed
+      poll_interval: 3.5
+    adapter: ua
+    ua_profile: deepseek
+    output_types:
+    - overview
+    - techstack
+    - standards
+    update_policy:
+      mode: auto
+      trigger: issue_polling
+      incremental: true
+      full_update_interval: 7
+    priority: high
+    metadata:
+      last_issue_number: 1748
+      last_update_time: 2026-08-20 20:15:59.911920
+      last_update_mode: full
+      total_updates: 1
+      total_cost_usd: 6.0
+  ascend-ci-deployment:
+    repo_path: /tmp/ascend-ci-deployment
+    description: Ascend CI 部署工具
+    owner: team-b
+    issue_tracking:
+      backlog_repo: opensourceways/backlog
+      search_query: label:project:ascend-ci-project state:closed
+      poll_interval: 3.5
+    adapter: ua
+    ua_profile: deepseek
+    output_types:
+    - overview
+    - techstack
+    - standards
+    update_policy:
+      mode: auto
+      trigger: issue_polling
+      incremental: true
+      full_update_interval: 7
+    priority: medium
+    metadata:
+      last_issue_number: 0
+      last_update_time: null
+      last_update_mode: null
+      total_updates: 0
+      total_cost_usd: 0.0
+global:
+  max_concurrent_updates: 3
+  github:
+    token_env: GH_TOKEN
+    cli_path: gh
+  embeddings:
+    provider: openai
+    model: text-embedding-3-small
+  storage:
+    base_dir: /Users/gorden/huawei/code/openKnowledgeBase
+    knowledge_dir: knowledgeBase
+    source_dir: codeSource
+    vector_dir: vectordb
+    metadata_db: metadata.db
+  notifications:
+    enabled: true
+    slack_webhook: ''
+  pricing:
+    # 单位：美元/百万 token。渠道方定价可能与官方价不同，以控制台账单为准后修正。
+    minimax-m3:
+      input_per_1m: 0.60
+      output_per_1m: 2.40
+      currency: USD
+      # 来源：MiniMax 官方公开价
+    deepseek-v4-flash:
+      input_per_1m: 0.44
+      output_per_1m: 1.32
+      currency: USD
+      # 来源：单一来源 morphllm.com 称 2026-08-16 调价后的高峰价，
+      # 与其他五家来源的 $0.14/$0.28 冲突，未能取到官方一手价证实
+      # （api-docs.deepseek.com 与 deepseek.ai 均被网络策略拦截）。
+      # 按用户指示取高峰价。本条目当前未被使用，见下方说明。
+    Qwen/Qwen3-Embedding-8B:
+      input_per_1m: 0.28
+      output_per_1m: 0.0
+      currency: CNY
+      # 来源：用户提供的 SiliconFlow 实际单价 ¥0.000280/K tokens。
+      # embedding 只计输入，无输出计费。
+scheduler:
+  enabled: true
+  polling_interval_days: 3.5
+  max_retries: 3
+  retry_delay_seconds: 300
+  daemon:
+    pid_file: "run/scheduler.pid"
+    log_dir: "logs"

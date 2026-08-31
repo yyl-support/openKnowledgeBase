@@ -1,0 +1,126 @@
+[
+  {
+    "id": "layer:api",
+    "name": "API 接入层",
+    "description": "基于 Flask 的应用工厂与 HTTP 入口，负责装配蓝图、暴露健康检查与 Prometheus 指标端点，并在后台线程中拉起论坛监控与 LightRAG 定时任务。",
+    "nodeIds": [
+      "file:main.py",
+      "file:src/external_api_app.py",
+      "file:src/ForumBot/standalone_api.py",
+      "file:src/ForumBot/rag_api.py",
+      "file:src/ForumBot/api_main.py",
+      "file:src/__init__.py"
+    ]
+  },
+  {
+    "id": "layer:middleware",
+    "name": "认证与访问控制中间件层",
+    "description": "围绕 OIDC 的身份认证、RBAC 授权与基于数据库的限流中间件，为 API 接入层提供统一的请求前置校验与安全防护。",
+    "nodeIds": [
+      "file:src/ForumBot/auth_middleware.py",
+      "file:src/ForumBot/rbac_middleware.py",
+      "file:src/ForumBot/oidc_client.py",
+      "file:src/ForumBot/rate_limiter.py"
+    ]
+  },
+  {
+    "id": "layer:service",
+    "name": "核心业务服务层",
+    "description": "论坛帖子监控调度、大模型回复生成与多模态图片增强的业务主干，由 monitor 编排 ai_processor、forum_client 与 image_processor 完成\"发现新帖到智能回复\"的闭环。",
+    "nodeIds": [
+      "file:src/ForumBot/monitor.py",
+      "file:src/ForumBot/ai_processor.py",
+      "file:src/ForumBot/forum_client.py",
+      "file:src/ForumBot/image_processor.py",
+      "file:src/ForumBot/__init__.py"
+    ]
+  },
+  {
+    "id": "layer:validation",
+    "name": "合规校验层",
+    "description": "Redfish 与 MDB 两套规则引擎，结合 JSON Schema 静态校验和大模型辅助判定对评审内容做合规检查，规则集以外置 JSON 规则文件驱动并支持多版本共存。",
+    "nodeIds": [
+      "file:src/ForumBot/SchemaValidation/end_to_end_check.py",
+      "file:src/ForumBot/SchemaValidation/redfish_checker.py",
+      "file:src/ForumBot/SchemaValidation/redfish_common.py",
+      "file:src/ForumBot/SchemaValidation/redfish_review_workflow.py",
+      "file:src/ForumBot/SchemaValidation/redfish_schema_validator.py",
+      "file:src/ForumBot/SchemaValidation/redfish_uri_generator.py",
+      "file:src/ForumBot/SchemaValidation/schema_debug_logger.py",
+      "config:src/ForumBot/SchemaValidation/SchemaFiles/redfish_compliance_rules.json",
+      "file:src/ForumBot/SchemaValidation/__init__.py",
+      "file:src/ForumBot/SchemaValidation/extract_reviews.py",
+      "file:src/ForumBot/MdbValidation/__init__.py",
+      "file:src/ForumBot/MdbValidation/mdb_checker.py",
+      "file:src/ForumBot/MdbValidation/mdb_classifier.py",
+      "config:src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.3.json",
+      "config:src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.5.json"
+    ]
+  },
+  {
+    "id": "layer:data-pipeline",
+    "name": "RAG 数据管道层",
+    "description": "面向 LightRAG 知识库的数据采集与同步管道，从论坛和 GitCode 抓取原始数据，经过滤与多模态富化后全量初始化或按时间戳增量更新入库。",
+    "nodeIds": [
+      "file:src/update_lightrag/filter.py",
+      "file:src/update_lightrag/forum_data_Fetcher.py",
+      "file:src/update_lightrag/full_data_init.py",
+      "file:src/update_lightrag/gitcode_api_increment_fetcher.py",
+      "file:src/update_lightrag/gitcode_client.py",
+      "file:src/update_lightrag/gitode_full_fetcher.py",
+      "file:src/update_lightrag/image_processor.py",
+      "file:src/update_lightrag/increment_date_update_timer.py",
+      "file:src/update_lightrag/lightrag_client.py",
+      "file:src/update_lightrag/update_time.py",
+      "file:src/update_lightrag/__init__.py"
+    ]
+  },
+  {
+    "id": "layer:utility",
+    "name": "共享工具与可观测层",
+    "description": "被全项目高频复用的横切基础能力，包括 PostgreSQL 连接池与配置加载、单例日志配置（fan-in 28，为全项目最高）、token 用量统计与 Prometheus 指标埋点。",
+    "nodeIds": [
+      "file:src/utils.py",
+      "file:src/ForumBot/logging_config.py",
+      "file:src/ForumBot/prometheus_metrics.py",
+      "file:src/ForumBot/token_tracker.py",
+      "file:src/ForumBot/llm_token_usage.py",
+      "file:src/ForumBot/evaluation_hooks.py",
+      "file:src/ForumBot/data_processor.py"
+    ]
+  },
+  {
+    "id": "layer:evaluation",
+    "name": "效果评测层",
+    "description": "离线评测工具链，从数据库采样构建评测集，以 LLM-as-judge 方式跑基线并输出指标报告，提示词模板集中在 templates 中维护。",
+    "nodeIds": [
+      "file:src/evaluation/__init__.py",
+      "file:src/evaluation/build_dataset.py",
+      "file:src/evaluation/run_baseline.py",
+      "file:src/evaluation/templates.py"
+    ]
+  },
+  {
+    "id": "layer:infrastructure",
+    "name": "基础设施与配置",
+    "description": "多阶段构建的容器镜像定义、运行时 YAML 配置（大模型 API 凭据等）、pytest 配置以及分场景的依赖清单，支撑服务的构建、部署与测试执行。",
+    "nodeIds": [
+      "service:Dockerfile",
+      "service:Dockerfile:python",
+      "config:config/config.yaml",
+      "config:pytest.ini",
+      "document:requirements.txt",
+      "document:requirements-test.txt",
+      "document:requirements-eval.txt"
+    ]
+  },
+  {
+    "id": "layer:documentation",
+    "name": "项目文档",
+    "description": "项目说明与架构上下文文档，覆盖快速上手、部署方式与面向 AI 协作的工程约定。",
+    "nodeIds": [
+      "document:README.md",
+      "document:CLAUDE.md"
+    ]
+  }
+]

@@ -33,6 +33,8 @@
 
 ## 3. DFX 要求
 
+# DFX 要求
+
 | 维度 | 要求 | 实施位置 |
 |------|------|----------|
 | 日志 | 主日志文件 `logs/main.log`，带轮转（单文件 20MB，保留 4 份）；控制台与文件日志统一配置；`main_logger` 全项目共享 | `src/ForumBot/logging_config.py`（`setup_logger`） |
@@ -43,11 +45,12 @@
 | 容错 - 外部服务 | 大模型调用带重试与退避（`retrying` 库装饰器）；校验类调用失败时默认从严（判为不相关/不合格，宁可不回复） | `src/ForumBot/ai_processor.py` |
 | 容错 - 知识库 | LightRAG 检索为空则用空字符串继续；若搜索也为空则跳过该帖 | `src/ForumBot/monitor.py`、`src/ForumBot/forum_client.py` |
 | 容错 - 预审基础设施 | 预审链路识别基础设施异常（超时、限流、空响应）并拒绝发帖，避免把服务错误当评审意见发出 | `src/ForumBot/SchemaValidation/end_to_end_check.py`（`is_infrastructure_error_text`） |
+| 容错 - 请求体大小限制 | Flask 应用设置 `MAX_CONTENT_LENGTH`（默认 1MB = `1024 * 1024`），可通过配置 `flask_max_content_length` 覆盖；超大请求体在视图读取 `request.get_json()` 时被 Flask 拦截并返回 413 状态码（结构化 JSON：`{"error": "PAYLOAD_TOO_LARGE", "message": ...}`），下游 OIDC / LightRAG 等重型调用不会被触发，从而避免恶意或异常大请求体导致的 OOM（issue #1611 缓解） | `main.py`（`app.config['MAX_CONTENT_LENGTH']`）、`src/ForumBot/rag_api.py`（`create_app`） |
 | 数据持久化 | PostgreSQL 为权威存储；CSV 与 PostgreSQL 并行双写提供可审计旁路；token 消耗、搜索结果、检索结果、处理记录均落库 | `src/ForumBot/data_processor.py` |
 | 可观测性 - Token 追踪 | 全局单例 `token_tracker` 按 `topic_id` 累计 prompt/completion/total token 用量，最终落库 `consume_tokens_topic` 表 | `src/ForumBot/token_tracker.py`、`src/ForumBot/data_processor.py` |
 | 可观测性 - 调试日志 | 预审链路写独立调试表 `schema_debug_logs`（相关性/评审点/逐点校验中间数据），失败仅记日志不影响主流程 | `src/ForumBot/SchemaValidation/schema_debug_logger.py` |
 
-**来源**：`CLAUDE.md`、`main.py`、`src/utils.py`、`src/ForumBot/logging_config.py`、`src/ForumBot/monitor.py`、`src/ForumBot/ai_processor.py`、`src/ForumBot/data_processor.py`、`src/ForumBot/token_tracker.py`、`src/ForumBot/prometheus_metrics.py`、`src/ForumBot/SchemaValidation/end_to_end_check.py`、`src/ForumBot/SchemaValidation/schema_debug_logger.py`
+**来源**：`CLAUDE.md`、`main.py`、`src/utils.py`、`src/ForumBot/logging_config.py`、`src/ForumBot/monitor.py`、`src/ForumBot/ai_processor.py`、`src/ForumBot/data_processor.py`、`src/ForumBot/token_tracker.py`、`src/ForumBot/prometheus_metrics.py`、`src/ForumBot/SchemaValidation/end_to_end_check.py`、`src/ForumBot/SchemaValidation/schema_debug_logger.py`、`src/ForumBot/rag_api.py`、`tests/test_request_size_limit.py`、`tests/test_external_api_app.py`
 
 ## 4. 当前风险点
 

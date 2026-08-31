@@ -45,9 +45,10 @@
 | **服务健康检查** | `main.py`（Flask 应用） | 对外暴露 `/health` 和 `/health/detail` 两个接口，绑定到自动探测出的内网私有 IP（优先 `10.` 段，其次 `192.168.`）的 5000 端口。健康判定依赖监控线程是否存活，监控线程崩溃可被外部探针感知 |
 | **数据持久化与去重** | `src/ForumBot/data_processor.py` | PostgreSQL 为权威存储，`forum_topics` / `pre_audit_topics` 表记录已见过的 topic_id，每轮只处理新 ID。数据库连接失败时跳过当轮而非崩溃。同时维护 CSV 文件作为并行输出 |
 | **Token 消耗追踪** | `src/ForumBot/token_tracker.py`（全局单例）<br>`src/ForumBot/data_processor.py`（落库） | 跨模块按 topic_id 累计 prompt/completion/total token 用量，最终写入 `consume_tokens_topic` 表与 CSV |
-| **安全防护** | `src/ForumBot/ai_processor.py`（提示词注入检测）<br>`src/utils.py`（配置文件删除） | 用户输入用随机字符串包裹后再喂给大模型以缓解提示词注入；`config/config.yaml` 加载后立即删除（`main.py` 的 `delete_config_file()`）以防敏感信息落盘 |
+| **安全防护** | `src/ForumBot/ai_processor.py`（提示词注入检测）<br>`src/utils.py`（配置文件删除）<br>`main.py` / `src/ForumBot/rag_api.py`（请求体大小限制） | 1) 用户输入用随机字符串包裹后再喂给大模型以缓解提示词注入；2) `config/config.yaml` 加载后立即删除（`main.py` 的 `delete_config_file()`）以防敏感信息落盘；3) **请求体大小限制（OOM 防护）**：生产应用 `main.app` 与外部 API 调试应用 `create_app` 均设置 Flask `MAX_CONTENT_LENGTH`（默认 1MB，可通过配置项 `flask_max_content_length` 覆盖），超大请求体在视图读取 `request.get_json()` 之前即被拦截，返回 `413` 状态码与 `{"error": "PAYLOAD_TOO_LARGE", "message": ...}` 结构化响应，避免 token 刷新等接口被恶意/异常大请求触发下游 OIDC、LightRAG 调用造成 OOM |
 
 **说明**：
 - 回复内容一律带"由 AI 生成，仅供参考"提示语，常规回答会把"总结/结论"章节摘出来放在折叠块外，完整解答放进 `[details]` 折叠块
 - 去重以数据库为权威，数据库连接失败时跳过当轮而非崩溃
 - 失败容错：单帖处理异常不影响其他帖子（逐帖 try/except continue）；大模型调用带重试与退避；注入检测/相关性/质量校验出错时默认从严（判为注入/不相关/不合格，宁可不回复）
+- 请求体大小防护：生产 `main.app` 与调试 `create_app` 均在启动时设置 `MAX_CONTENT_LENGTH` 并注册 413 错误处理器，确保超大请求在进入业务逻辑前即被拒绝，OOM 风险路径在框架层即被切断

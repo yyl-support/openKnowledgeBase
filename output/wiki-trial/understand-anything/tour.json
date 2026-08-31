@@ -1,0 +1,122 @@
+[
+  {
+    "order": 1,
+    "title": "项目概览",
+    "description": "从 README.md 开始，先弄清这个项目到底在做什么：一个周期性轮询论坛、发现新帖后调用大模型自动生成回复的机器人服务。文档用 27 个小节覆盖了功能特性、进程模型、两条核心处理链路（常规智能问答与 AI 预审合规校验）、快速开始与容器化部署方式。请特别留意其中的进程模型描述 main() → check_schema_files() → load_config() → 守护线程，它就是后续所有步骤的骨架。",
+    "nodeIds": ["document:README.md"]
+  },
+  {
+    "order": 2,
+    "title": "应用入口与运行配置",
+    "description": "main.py 是整个服务唯一的启动点：它创建 Flask 应用，把论坛监控、LightRAG 全量初始化和增量更新定时器分别放进后台守护线程，主线程只保留健康检查与 Prometheus 指标接口。与它成对出现的是 config/config.yaml，项目唯一的运行时配置文件，定义大模型的 base_url、api_key 与 model_name，由工具层读取后注入到所有调用点。理解这两个文件，就理解了「服务起来之后有哪几条线在并行跑」。",
+    "nodeIds": ["file:main.py", "config:config/config.yaml"],
+    "languageLesson": "Python 的守护线程（daemon thread）在主线程退出时会被强制终止，不会阻塞进程结束。这让 main.py 可以用「主线程跑 Flask、后台线程跑轮询」的模型，而不需要引入额外的进程管理器。"
+  },
+  {
+    "order": 3,
+    "title": "共享工具与日志基座",
+    "description": "在往上层业务走之前，先看两个被全项目依赖的底座模块。logging_config.py 是全图 fan-in 最高的节点（28 个模块指向它），它基于 RotatingFileHandler 构建带轮转的 logger 工厂，并导出一个全局共享的 main_logger；utils.py 则负责配置加载、目录清理，以及 PostgreSQL 数据库创建与全局连接池的初始化和借还。几乎每一个后续步骤的文件都会 import 这两个模块，所以先认识它们能省下后面大量的跳转。",
+    "nodeIds": ["file:src/ForumBot/logging_config.py", "file:src/utils.py"],
+    "languageLesson": "这里用的是 Python 的模块级单例模式：模块首次被 import 时执行顶层代码，之后所有 import 拿到的都是同一个对象。这正是 main_logger 与数据库连接池能被全局共享的原因。"
+  },
+  {
+    "order": 4,
+    "title": "论坛监控主循环",
+    "description": "monitor.py 是业务层的心脏，也是 fan-out 最高的代码文件（连出 9 条依赖）。它在第 2 步启动的后台线程里循环轮询新帖与预审帖，串联检索、大模型生成、质量校验与自动回复，最后把 CSV 结果同步到 Git 仓库。与它配套的 forum_client.py 封装了所有对论坛的 HTTP 交互：拉取主题详情、发布回复、检索相关主题以及 LightRAG 文档召回。可以把 monitor 看作编排者，forum_client 看作它的外部世界接口。",
+    "nodeIds": ["file:src/ForumBot/monitor.py", "file:src/ForumBot/forum_client.py"]
+  },
+  {
+    "order": 5,
+    "title": "数据处理与持久化",
+    "description": "第 4 步的监控循环拿到原始帖子后，交给 data_processor.py 做实际的数据加工：抓取主题内容、清洗 HTML 与图片链接、解析预审帖的就绪状态，再把主题、检索结果与 token 用量落库到 PostgreSQL 并并行写入 CSV。它使用的正是第 3 步 utils.py 里初始化的那个全局连接池，这体现了项目「连接池集中管理、业务层只借还不创建」的设计约定。",
+    "nodeIds": ["file:src/ForumBot/data_processor.py", "file:src/ForumBot/image_processor.py"]
+  },
+  {
+    "order": 6,
+    "title": "大模型调用与安全三层把关",
+    "description": "ai_processor.py 把所有和大模型打交道的能力收在一处：文本摘要、提示词注入检测、答案相关性校验与质量校验，并内置多模型轮询与重试机制。README 里提到的「三层把关，校验失败默认不回复」就落在这个文件里——它是安全边界，而不只是一个 LLM SDK 包装。llm_token_usage.py 位于依赖链的最深处（BFS depth 4），负责解析各模型返回的 token 计量口径差异，为后面的成本统计提供原始数据。",
+    "nodeIds": ["file:src/ForumBot/ai_processor.py", "file:src/ForumBot/llm_token_usage.py"],
+    "languageLesson": "多模型轮询靠的是「重试 + 回退（fallback）」组合：把候选模型列表按序尝试，任一模型超时或报错就切下一个。这类逻辑集中在单一模块里，业务层就不需要处理任何模型级异常。"
+  },
+  {
+    "order": 7,
+    "title": "合规校验层",
+    "description": "这是项目里最大的一个子系统（15 个文件），处理 README 中的第二条链路「AI 预审回复」。end_to_end_check.py 是编排层：判断帖子相关性、提取并分流评审点、串联 URI 生成、Schema 静态校验与规则检查，最后汇总成中文回复文本。真正的判定分成两路——redfish_checker.py 做 Redfish 接口合规检查（把全部规则合并为一次 LLM 调用以降低成本），mdb_checker.py 基于 LangChain ChatOpenAI 做 MDB 资源协作接口校验。两者的判定标准都不写在代码里，而是外置在 JSON 规则文件中。",
+    "nodeIds": [
+      "file:src/ForumBot/SchemaValidation/end_to_end_check.py",
+      "file:src/ForumBot/SchemaValidation/redfish_checker.py",
+      "file:src/ForumBot/MdbValidation/mdb_checker.py",
+      "config:src/ForumBot/SchemaValidation/SchemaFiles/redfish_compliance_rules.json",
+      "config:src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.5.json"
+    ],
+    "languageLesson": "规则外置为 JSON（rules-as-data）让合规标准可以随版本演进而无需改代码——注意 MDB 规则文件按 v6.3 / v6.5 并存，说明校验器需要同时支持多版本规范。代价是必须对模型输出做 JSON 修复与字段补全，因为 LLM 的结构化输出并不可靠。"
+  },
+  {
+    "order": 8,
+    "title": "RAG 数据管道",
+    "description": "第 6 步的大模型生成需要知识供给，这一层就是知识的来源。full_data_init.py 在服务启动时做同步全量初始化：串联论坛与 GitCode 全量抓取、关键词过滤、图片处理与文档上传，并比对映射关系确定需要更新的文件；increment_date_update_timer.py 则由 schedule 库驱动，每日按上次更新时间拉取增量数据。两者共同依赖 lightrag_client.py，它封装了文档上传删除、文件名到文档 ID 的映射维护，以及 pipeline 处理状态的轮询等待。",
+    "nodeIds": [
+      "file:src/update_lightrag/full_data_init.py",
+      "file:src/update_lightrag/increment_date_update_timer.py",
+      "file:src/update_lightrag/lightrag_client.py",
+      "file:src/update_lightrag/filter.py"
+    ]
+  },
+  {
+    "order": 9,
+    "title": "API 接入层",
+    "description": "除了自动回复，服务也把能力以 HTTP 接口对外暴露。rag_api.py 以 Flask Blueprint 注册检索与文档状态查询路由，standalone_api.py 是一个独立的应用工厂，提供 /health 与 /process_question 问答接口，内部复用第 4 至 6 步的检索与生成链路。api_main.py 是这套独立 API 的命令行入口，而 external_api_app.py 仅用于调试装配，生产环境该能力已并入主应用——这个细节解释了为什么 main.py 之外还存在多个「入口」。",
+    "nodeIds": [
+      "file:src/ForumBot/rag_api.py",
+      "file:src/ForumBot/standalone_api.py",
+      "file:src/ForumBot/api_main.py",
+      "file:src/external_api_app.py"
+    ],
+    "languageLesson": "Flask Blueprint 把一组路由打包成可复用单元，注册到任意 app 实例上。配合 application factory（应用工厂）模式，同一套路由既能挂进主服务，也能独立起一个进程用于调试或压测。"
+  },
+  {
+    "order": 10,
+    "title": "认证与访问控制中间件",
+    "description": "第 9 步的每个路由都不是裸露的，而是叠加了两层装饰器保护。auth_middleware.py 从请求头提取 Bearer token，通过 OIDC userinfo 端点校验有效性；oidc_client.py 提供完整的授权码流程生命周期——state 生成校验、授权 URL 构造、code 换 token、token 刷新与 id_token 解码。rate_limiter.py 则用 PostgreSQL 计数器实现用户级滑动窗口配额，复用的仍是第 3 步的连接池。",
+    "nodeIds": [
+      "file:src/ForumBot/auth_middleware.py",
+      "file:src/ForumBot/oidc_client.py",
+      "file:src/ForumBot/rate_limiter.py"
+    ],
+    "languageLesson": "Python 的 decorator（装饰器）在这里承担横切关注点：@require_auth 与限流装饰器包裹路由函数，认证和配额逻辑就不必侵入任何业务代码。多个装饰器叠加时自下而上执行，顺序决定了先限流还是先鉴权。"
+  },
+  {
+    "order": 11,
+    "title": "可观测性埋点",
+    "description": "服务跑起来之后靠什么判断它是否健康，就在这三个模块里。prometheus_metrics.py 定义了检索/生成/端到端延迟、空回复率与处理量等指标，并提供统一的更新入口，由第 2 步 main.py 暴露的指标接口对外导出；token_tracker.py 按模型维度累加输入输出 token，支撑成本核算；evaluation_hooks.py 用装饰器加线程局部存储采集各阶段延迟并对问题分类。三者都是旁路埋点，不参与业务判定。",
+    "nodeIds": [
+      "file:src/ForumBot/prometheus_metrics.py",
+      "file:src/ForumBot/token_tracker.py",
+      "file:src/ForumBot/evaluation_hooks.py"
+    ],
+    "languageLesson": "threading.local() 为每个线程提供独立的变量副本。因为第 2 步的架构是多线程并发处理帖子，用线程局部存储收集埋点数据可以避免各线程互相污染，同时省掉显式传参。"
+  },
+  {
+    "order": 12,
+    "title": "效果评测闭环",
+    "description": "第 11 步测的是「快不快」，这一层测的是「答得好不好」。build_dataset.py 从 PostgreSQL 历史回复表按天数窗口拉取样本，用 SequenceMatcher 相似度去重后分层抽样成数据集；run_baseline.py 用 LLM-as-judge 对每条样本按答案相关性、忠实度、上下文精确度三项指标打分，导出低分案例的 Markdown 报告；templates.py 存放这三项指标对应的 prompt 模板常量。这条离线链路和线上服务完全解耦，可以独立跑。",
+    "nodeIds": [
+      "file:src/evaluation/build_dataset.py",
+      "file:src/evaluation/run_baseline.py",
+      "file:src/evaluation/templates.py"
+    ]
+  },
+  {
+    "order": 13,
+    "title": "容器化与依赖管理",
+    "description": "Dockerfile 把前面所有代码打包成可交付的镜像：基于 python:3.9-slim 单阶段构建，安装依赖、拉取 Redfish 与 MDB Schema 文件仓库（正是第 7 步校验层需要的规则来源）、创建非 root 用户 appuser 并收敛文件权限，暴露 5000/5001 两个端口后以 python main.py 启动。requirements.txt 按功能分组固定版本：大模型接入、数据处理、Web 服务、PostgreSQL、定时调度、可观测性与认证加密，正好对应本次导览走过的每一层。",
+    "nodeIds": ["service:Dockerfile", "document:requirements.txt", "document:requirements-test.txt"],
+    "languageLesson": "Dockerfile 中先 COPY requirements.txt 再 pip install、最后才 COPY 应用代码，是为了利用镜像层缓存——依赖清单不变时改代码不会触发重新装包。以非 root 用户运行容器则是最小权限原则的标准做法。"
+  },
+  {
+    "order": 14,
+    "title": "回看全局：导航文档",
+    "description": "最后回到文档层收束。CLAUDE.md 是面向 AI 助手的项目导航文档，用 14 个小节说明服务定位、三条核心链路、技术栈、各子包职责划分、外部服务依赖与模块间接口约定，以及凭据处理规范。它是全图 fan-out 最高的节点（连出 10 条边），可以当作本次导览的索引反查表；读完前 13 步再看它，你应该能把每一句描述都对应到具体文件上。",
+    "nodeIds": ["document:CLAUDE.md", "config:pytest.ini"]
+  }
+]
