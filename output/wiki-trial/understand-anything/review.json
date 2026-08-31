@@ -1,0 +1,35 @@
+{
+  "issues": [],
+  "warnings": [
+    "Node 'file:src/ForumBot/SchemaValidation/__init__.py' has no edges (orphan)",
+    "Node 'file:src/ForumBot/__init__.py' has no edges (orphan)",
+    "Node 'file:src/__init__.py' has no edges (orphan)",
+    "Node 'file:src/evaluation/__init__.py' has no edges (orphan)",
+    "Node 'file:src/update_lightrag/__init__.py' has no edges (orphan)"
+  ],
+  "stats": {
+    "totalNodes": 225,
+    "totalEdges": 493,
+    "totalLayers": 9,
+    "tourSteps": 14,
+    "nodeTypes": {
+      "file": 49,
+      "class": 29,
+      "function": 135,
+      "service": 2,
+      "document": 5,
+      "config": 5
+    },
+    "edgeTypes": {
+      "contains": 165,
+      "exports": 153,
+      "imports": 96,
+      "calls": 39,
+      "depends_on": 5,
+      "related": 6,
+      "deploys": 4,
+      "documents": 18,
+      "configures": 7
+    }
+  }
+}

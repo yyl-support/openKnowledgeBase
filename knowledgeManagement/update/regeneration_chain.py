@@ -105,51 +105,57 @@ class SectionRegenerationChain:
 
         # 映射规则：文件 -> 文档章节
         for file_path in changed_files:
-            # 规则 1: 主程序文件 -> overview.md 的核心流程
+            # 规则 1: 主程序文件 -> overview 核心能力 + techstack 调用链
             if "main.py" in file_path or "app.py" in file_path:
                 affected_sections.append({
                     "document": "overview.md",
-                    "section": "核心流程",
+                    "section": "核心能力",
+                    "reason": f"{file_path} 变更"
+                })
+                affected_sections.append({
+                    "document": "techstack.md",
+                    "section": "调用链",
                     "reason": f"{file_path} 变更"
                 })
 
-            # 规则 2: requirements.txt -> techstack.md 的依赖管理
+            # 规则 2: 依赖清单 -> techstack.md 的构建与依赖
             if "requirements.txt" in file_path or "pyproject.toml" in file_path:
                 affected_sections.append({
                     "document": "techstack.md",
-                    "section": "依赖管理",
+                    "section": "构建与依赖",
                     "reason": f"{file_path} 变更"
                 })
 
-            # 规则 3: .github/workflows/ -> standards.md 的 CI/CD
+            # 规则 3: CI 定义 -> standards.md 的 DFX 要求
             if ".github/workflows" in file_path:
                 affected_sections.append({
                     "document": "standards.md",
-                    "section": "CI/CD",
+                    "section": "DFX 要求",
                     "reason": f"{file_path} 变更"
                 })
 
-            # 规则 4: Dockerfile -> techstack.md 的容器化
+            # 规则 4: 容器定义 -> techstack.md 的运行载体
             if "Dockerfile" in file_path or "docker-compose" in file_path:
                 affected_sections.append({
                     "document": "techstack.md",
-                    "section": "容器化",
+                    "section": "运行载体",
                     "reason": f"{file_path} 变更"
                 })
 
-            # 规则 5: 配置文件 -> techstack.md 的配置管理
+            # 规则 5: 配置文件 -> techstack.md 的调度与编排
             if "config" in file_path.lower() or file_path.endswith(('.yaml', '.yml', '.toml', '.ini')):
                 affected_sections.append({
                     "document": "techstack.md",
-                    "section": "配置管理",
+                    "section": "调度与编排",
                     "reason": f"{file_path} 变更"
                 })
 
-            # 规则 6: 测试文件 -> standards.md 的测试规范
+            # 规则 6: 测试文件 -> standards.md 的 DFX 要求
+            # UA 产出的 standards 没有独立的测试章节，测试相关内容归在 DFX 下
             if "test" in file_path.lower():
                 affected_sections.append({
                     "document": "standards.md",
-                    "section": "测试规范",
+                    "section": "DFX 要求",
                     "reason": f"{file_path} 变更"
                 })
 
@@ -457,7 +463,8 @@ class SectionRegenerationChain:
         # 简单实现：查找 ## section_name 到下一个 ## 之间的内容
         import re
 
-        pattern = rf"##\s+{re.escape(section_name)}\s*\n(.*?)(?=\n##|\Z)"
+        # 容忍 UA 产出的编号前缀（"## 1. 职责"），否则章节永远定位不到
+        pattern = rf"##\s+(?:\d+[.、]\s*)?{re.escape(section_name)}\s*\n(.*?)(?=\n##|\Z)"
         match = re.search(pattern, content, re.DOTALL)
 
         if match:
@@ -485,7 +492,9 @@ class SectionRegenerationChain:
         import re
 
         # 与 _extract_section 相同的定位规则，但保留 ## 标题行本身
-        pattern = rf"(##\s+{re.escape(section_name)}\s*\n)(.*?)(?=\n##|\Z)"
+        # 与 _extract_section 对称：容忍编号前缀，且第 1 组把原标题行整体捕获，
+        # 替换时原样写回，编号不会丢
+        pattern = rf"(##\s+(?:\d+[.、]\s*)?{re.escape(section_name)}\s*\n)(.*?)(?=\n##|\Z)"
         match = re.search(pattern, content, re.DOTALL)
 
         if not match:

@@ -9,6 +9,7 @@
 
 ## 2. 构建与依赖
 
+```markdown
 ### 构建工具
 
 | 工具 | 用途 | 声明位置 |
@@ -16,6 +17,39 @@
 | Docker | 容器镜像构建，构建期从 GitCode 拉取 Redfish/MDB Schema 规则文件 | `Dockerfile` |
 | pip | Python 依赖安装 | `requirements.txt` |
 | pytest | 测试框架 | `pytest.ini` / `requirements-test.txt` |
+
+### 请求体大小防护（Issue #1611 修复）
+
+为防止超大请求体（如恶意或异常的 token 刷新、OIDC 回调载荷）耗尽进程内存（OOM），Flask 应用通过 `MAX_CONTENT_LENGTH` 对请求体大小做上限控制，超限请求将被框架拦截并返回 `413 PAYLOAD_TOO_LARGE`，下游业务逻辑（如 OIDC / LightRAG 调用）不会执行。
+
+| 配置项 | 默认值 | 说明 |
+|--------|--------|------|
+| `flask_max_content_length` | `1048576`（1 MiB） | Flask `MAX_CONTENT_LENGTH`，单位为字节；可通过配置文件覆盖 |
+
+**生效范围**：
+
+- **生产应用 `main.app`**：在 `main.py` 配置加载阶段读取 `flask_max_content_length`，未显式设置时使用默认值 `1024 * 1024`。
+- **调试应用 `create_app(...)`**：由 `src/ForumBot/rag_api.py` 中的 `RAGAPIController` 在创建 Flask 实例时设置同等限制。
+
+**错误处理**：
+两个应用均注册了 413 错误处理器，返回结构化 JSON：
+
+```json
+{
+  "error": "PAYLOAD_TOO_LARGE",
+  "message": "..."
+}
+```
+
+**相关测试**：
+- `tests/test_request_size_limit.py`：验证 `main.app` 默认值、可通过 `flask_max_content_length` 覆盖、413 处理器返回结构化 JSON，并验证超大请求体不会触发下游 OIDC / LightRAG 调用。
+- `tests/test_external_api_app.py`：验证 `create_app` 路径下 413 拦截行为。
+
+### 关键依赖变更
+
+| 依赖 | 变更 | 原因 |
+|------|------|------|
+| `requests` | `2.33.0` → `2.32.5` | 兼容性回退 |
 
 ### 核心依赖及版本
 
@@ -104,11 +138,16 @@ flowchart TD
 flowchart TD
     A[main.py启动] --> B[检查SchemaFiles/MDB目录]
     B --> C[load_config加载配置]
-    C --> D[delete_config_file删除配置文件]
+    C --> CA[设置Flask MAX_CONTENT_LENGTH默认1MB可配置]
+    CA --> D[delete_config_file删除配置文件]
     D --> E[lightrag_data_init全量初始化知识库]
     E --> F[initialize_service启动MonitorThread守护线程]
     F --> G[lightrag_data_update_timer启动定时器守护线程]
     G --> H[Flask绑定内网IP:5000运行]
+    
+    H --> H1{请求体大小校验}
+    H1 -->|超过MAX_CONTENT_LENGTH| H2[直接返回413 PAYLOAD_TOO_LARGE]
+    H1 -->|正常| H3[路由到对应业务接口]
     
     F --> I[ForumMonitor.start轮询循环]
     I --> J[_check_new_topics检查常规新帖]
@@ -141,6 +180,39 @@ flowchart TD
     AG --> AH[执行删除与灌库]
     AH --> AI[保存新水位时间]
 ```
+
+### 请求体大小防护（Issue #1611）
+
+为缓解超大请求体导致的 OOM 风险，在 Flask 应用初始化阶段设置 `MAX_CONTENT_LENGTH` 上限，**在请求进入业务逻辑前由框架直接拦截**。
+
+| 维度 | 说明 |
+|---|---|
+| **默认阈值** | `1024 * 1024` 字节（1 MB） |
+| **配置项** | `flask_max_content_length`（在 `config.json` 中覆盖） |
+| **作用范围** | 所有 Flask 接口（含 `main.app` 生产应用与 `create_app` 调试应用） |
+| **触发条件** | 请求体（含 `Content-Length` 与流式读取）超过阈值 |
+| **响应状态** | HTTP 413 |
+| **响应体** | 结构化 JSON：`{"error": "PAYLOAD_TOO_LARGE", "message": "..."}` |
+| **OOM 切断点** | 超大请求在 `request.get_json()` 解析前被拒绝，下游 OIDC / LightRAG 等高内存占用调用不会执行 |
+
+**调用链上的拦截位置**：
+
+```mermaid
+flowchart LR
+    Client[客户端请求] -->|携带超大Body| Flask[Flask WSGI]
+    Flask -->|Content-Length检查| Check{是否超过MAX_CONTENT_LENGTH}
+    Check -->|是| Reject[返回413 PAYLOAD_TOO_LARGE]
+    Check -->|否| Route[路由到业务视图]
+    Route -->|token刷新接口| OIDC[OIDC Token调用]
+    Route -->|RAG查询| RAG[LightRAG检索]
+```
+
+**关键代码变更**：
+
+- `main.py`：在 `app` 配置阶段注入 `MAX_CONTENT_LENGTH`，默认值 `1024 * 1024`，可通过 `flask_max_content_length` 配置项覆盖。
+- `tests/test_request_size_limit.py`：新增集成测试，验证生产应用 `main.app` 默认与覆盖两种场景下 `MAX_CONTENT_LENGTH` 正确设置，且 413 处理器返回结构化 JSON。
+- `tests/test_external_api_app.py`：补充 `create_app` 路径下 413 响应的 `error` / `message` 字段断言。
+- `requirements.txt`：`requests` 由 `2.33.0` 回退至 `2.32.5`，规避上游兼容性问题。
 
 ### 逐步说明
 

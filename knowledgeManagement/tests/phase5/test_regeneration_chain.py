@@ -65,16 +65,19 @@ def kb_dir():
     """构造临时知识库目录，含 overview.md / techstack.md"""
     temp_dir = tempfile.mkdtemp()
 
+    # 章节名与 identify_affected_sections 的映射表保持一致，
+    # 且带编号前缀（"## 4. 核心能力"），对齐 UA 实际产出的格式
     Path(temp_dir, "overview.md").write_text(
         "# 项目概览\n\n"
-        "## 项目简介\n\n这是一个测试项目。\n\n"
-        "## 核心流程\n\n旧的核心流程描述：main.py 启动后直接退出。\n\n"
-        "## 部署方式\n\n本地运行。\n",
+        "## 1. 职责\n\n这是一个测试项目。\n\n"
+        "## 4. 核心能力\n\n旧的核心能力描述：main.py 启动后直接退出。\n\n"
+        "## 3. 边界\n\n本地运行。\n",
         encoding="utf-8",
     )
     Path(temp_dir, "techstack.md").write_text(
         "# 技术栈\n\n"
-        "## 依赖管理\n\n旧的依赖说明：requirements.txt 里只有 requests。\n",
+        "## 2. 构建与依赖\n\n旧的依赖说明：requirements.txt 里只有 requests。\n\n"
+        "## 4. 调用链\n\n旧的调用链描述。\n",
         encoding="utf-8",
     )
 
@@ -156,8 +159,8 @@ def test_identify_affected_sections_with_path_field(chain):
     pairs = {(s["document"], s["section"]) for s in sections}
 
     assert len(sections) > 0, "path 字段未被识别，说明字段名错配未修复"
-    assert ("overview.md", "核心流程") in pairs
-    assert ("techstack.md", "依赖管理") in pairs
+    assert ("overview.md", "核心能力") in pairs
+    assert ("techstack.md", "构建与依赖") in pairs
     # reason 里应带上真实文件名，而不是空串
     for s in sections:
         assert s["reason"].strip() not in ("变更", " 变更")
@@ -172,7 +175,7 @@ def test_identify_affected_sections_filename_still_works(chain):
         (s["document"], s["section"])
         for s in chain.identify_affected_sections(package)
     }
-    assert ("overview.md", "核心流程") in pairs
+    assert ("overview.md", "核心能力") in pairs
 
 
 def test_identify_affected_sections_no_code_change(chain):
@@ -243,12 +246,13 @@ def test_regenerate_all_affected_writes_back(chain, kb_dir, monkeypatch):
     tech_after = Path(kb_dir, "techstack.md").read_text(encoding="utf-8")
 
     assert result["success"] is True
-    assert result["sections_regenerated"] == 2
+    # main.py 触发 2 个 + requirements.txt 触发 1 个 = 3 个
+    assert result["sections_regenerated"] == 3
     assert result["sections_failed"] == 0
     # 文件内容真的变了
     assert after != before
     assert new_body in after
-    assert "旧的核心流程描述" not in after
+    assert "旧的核心能力描述" not in after
     assert new_body in tech_after
     # 未受影响的章节保持原样
     assert "这是一个测试项目" in after
@@ -279,17 +283,24 @@ def test_regenerate_all_affected_no_silent_skip(chain, kb_dir, monkeypatch):
 def test_regenerate_all_affected_section_not_found_recorded(chain, kb_dir, monkeypatch):
     """文档存在但章节不存在：记录 section_not_found"""
     monkeypatch.setattr(chain, "regenerate_section", lambda *a, **k: "生成内容")
-    # overview.md 存在但没有「核心流程」章节
+    # overview.md 存在但没有「核心能力」章节；techstack.md 也创建，但没有「调用链」
     Path(kb_dir, "overview.md").write_text(
         "# 项目概览\n\n## 项目简介\n\n只有简介。\n", encoding="utf-8"
+    )
+    Path(kb_dir, "techstack.md").write_text(
+        "# 技术栈\n\n## 编程语言\n\nPython。\n", encoding="utf-8"
     )
 
     result = chain.regenerate_all_affected(_make_package([{"path": "src/main.py"}]), kb_dir)
 
+    # main.py 触发 overview 核心能力 + techstack 调用链，两个章节都不存在
     assert {
         (s["document"], s["section"], s["reason"])
         for s in result["sections_skipped"]
-    } == {("overview.md", "核心流程", "section_not_found")}
+    } == {
+        ("overview.md", "核心能力", "section_not_found"),
+        ("techstack.md", "调用链", "section_not_found")
+    }
     assert result["sections_regenerated"] == 0
 
 
@@ -300,7 +311,8 @@ def test_regenerate_all_affected_generation_failure_counts(chain, kb_dir, monkey
 
     result = chain.regenerate_all_affected(_make_package([{"path": "src/main.py"}]), kb_dir)
 
-    assert result["sections_failed"] == 1
+    # main.py 触发 2 个章节，都生成失败
+    assert result["sections_failed"] == 2
     assert result["sections_regenerated"] == 0
     assert Path(kb_dir, "overview.md").read_text(encoding="utf-8") == before
 
@@ -318,9 +330,9 @@ def test_regenerate_section_real_llm(chain):
 
     content = chain.regenerate_section(
         document_name="overview.md",
-        section_name="核心流程",
+        section_name="核心能力",
         knowledge_package=package,
-        current_content="旧的核心流程描述：main.py 启动后直接退出。",
+        current_content="旧的核心能力描述：main.py 启动后直接退出。",
     )
 
     # 不能只断言 is not None —— 必须验证内容确实是生成结果
@@ -330,7 +342,7 @@ def test_regenerate_section_real_llm(chain):
     for marker in ERROR_MARKERS:
         assert marker not in content, f"生成内容含报错串: {marker}"
     # 生成结果不应只是把输入原样回吐
-    assert content.strip() != "旧的核心流程描述：main.py 启动后直接退出。"
+    assert content.strip() != "旧的核心能力描述：main.py 启动后直接退出。"
 
 
 @pytest.mark.skipif(ARK_KEY_MISSING, reason=ARK_SKIP_REASON)
@@ -343,7 +355,8 @@ def test_regenerate_all_affected_real_llm_writes_back(chain, kb_dir):
     after = Path(kb_dir, "overview.md").read_text(encoding="utf-8")
 
     assert result["success"] is True
-    assert result["sections_regenerated"] == 1
+    # main.py 变更现在触发 2 个章节：overview 核心能力 + techstack 调用链
+    assert result["sections_regenerated"] == 2
     assert result["sections_skipped"] == []
     assert after != before, "写回未发生，文件内容未变化"
     assert len(after) > 50
@@ -355,7 +368,7 @@ def test_regenerate_section_without_llm_returns_none(chain):
     """LLM 不可用时明确返回 None，不假装成功"""
     chain.llm = None
     assert chain.regenerate_section(
-        "overview.md", "核心流程", _make_package([{"path": "src/main.py"}])
+        "overview.md", "核心能力", _make_package([{"path": "src/main.py"}])
     ) is None
 
 

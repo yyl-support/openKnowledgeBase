@@ -1,0 +1,301 @@
+{
+  "id": "20260808-081610",
+  "generated_at": "2026-08-08T08:16:10.373Z",
+  "language": "zh",
+  "pages": [
+    {
+      "associatedFiles": [
+        "README.md",
+        "main.py"
+      ],
+      "file": "1-project-overview.md",
+      "level": "Beginner",
+      "section": "入门指南",
+      "slug": "1-project-overview",
+      "title": "项目概览：Forum Reply Robot"
+    },
+    {
+      "associatedFiles": [
+        "main.py",
+        "src/utils.py",
+        "config/config.yaml"
+      ],
+      "file": "2-quick-start.md",
+      "level": "Beginner",
+      "section": "入门指南",
+      "slug": "2-quick-start",
+      "title": "快速开始：配置与启动"
+    },
+    {
+      "associatedFiles": [
+        "main.py",
+        "src/ForumBot/monitor.py",
+        "src/utils.py"
+      ],
+      "file": "3-core-architecture.md",
+      "level": "Intermediate",
+      "section": "入门指南",
+      "slug": "3-core-architecture",
+      "title": "核心架构设计：多线程进程模型"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/monitor.py"
+      ],
+      "file": "4-forum-monitor-orchestrator.md",
+      "level": "Advanced",
+      "section": "核心业务引擎",
+      "slug": "4-forum-monitor-orchestrator",
+      "title": "核心编排器：论坛轮询主循环"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/ai_processor.py",
+        "src/ForumBot/forum_client.py",
+        "src/ForumBot/data_processor.py"
+      ],
+      "file": "5-qa-reply-pipeline.md",
+      "level": "Advanced",
+      "section": "核心业务引擎",
+      "slug": "5-qa-reply-pipeline",
+      "title": "智能问答链路：检索增强生成回复"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/SchemaValidation/end_to_end_check.py",
+        "src/ForumBot/SchemaValidation/redfish_review_workflow.py"
+      ],
+      "file": "6-pre-audit-pipeline.md",
+      "level": "Advanced",
+      "section": "核心业务引擎",
+      "slug": "6-pre-audit-pipeline",
+      "title": "AI 预审链路：结构化合规评审"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/SchemaValidation/redfish_schema_validator.py",
+        "src/ForumBot/SchemaValidation/redfish_common.py"
+      ],
+      "file": "7-redfish-schema-validator.md",
+      "group": "Redfish 规则引擎",
+      "level": "Advanced",
+      "section": "合规校验子系统",
+      "slug": "7-redfish-schema-validator",
+      "title": "Redfish Schema 验证：OData 属性校验引擎"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/SchemaValidation/redfish_checker.py",
+        "src/ForumBot/SchemaValidation/redfish_uri_generator.py"
+      ],
+      "file": "8-redfish-compliance-checker.md",
+      "group": "Redfish 规则引擎",
+      "level": "Advanced",
+      "section": "合规校验子系统",
+      "slug": "8-redfish-compliance-checker",
+      "title": "Redfish 合规规则：LLM 批量规则检查器"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/SchemaValidation/extract_reviews.py",
+        "src/ForumBot/SchemaValidation/schema_debug_logger.py"
+      ],
+      "file": "9-review-point-extraction.md",
+      "group": "Redfish 规则引擎",
+      "level": "Intermediate",
+      "section": "合规校验子系统",
+      "slug": "9-review-point-extraction",
+      "title": "评审点提取：多格式结构化解析器"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/MdbValidation/mdb_checker.py"
+      ],
+      "file": "10-mdb-rule-checker.md",
+      "group": "MDB 规则引擎",
+      "level": "Advanced",
+      "section": "合规校验子系统",
+      "slug": "10-mdb-rule-checker",
+      "title": "MDB 合规校验：LLM 驱动规则批处理"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/MdbValidation/mdb_classifier.py"
+      ],
+      "file": "11-mdb-classifier.md",
+      "group": "MDB 规则引擎",
+      "level": "Intermediate",
+      "section": "合规校验子系统",
+      "slug": "11-mdb-classifier",
+      "title": "MDB 内容分类：帖子相关性判断器"
+    },
+    {
+      "associatedFiles": [
+        "src/update_lightrag/full_data_init.py",
+        "src/update_lightrag/forum_data_Fetcher.py",
+        "src/update_lightrag/gitode_full_fetcher.py"
+      ],
+      "file": "12-lightrag-full-init.md",
+      "group": "数据同步管道",
+      "level": "Intermediate",
+      "section": "知识库管理（LightRAG）",
+      "slug": "12-lightrag-full-init",
+      "title": "知识库全量初始化：冷启动数据导入"
+    },
+    {
+      "associatedFiles": [
+        "src/update_lightrag/increment_date_update_timer.py",
+        "src/update_lightrag/gitcode_api_increment_fetcher.py",
+        "src/update_lightrag/update_time.py"
+      ],
+      "file": "13-lightrag-incremental-update.md",
+      "group": "数据同步管道",
+      "level": "Intermediate",
+      "section": "知识库管理（LightRAG）",
+      "slug": "13-lightrag-incremental-update",
+      "title": "知识库增量更新：定时调度器与差量同步"
+    },
+    {
+      "associatedFiles": [
+        "src/update_lightrag/lightrag_client.py",
+        "src/update_lightrag/filter.py"
+      ],
+      "file": "14-lightrag-client.md",
+      "group": "数据同步管道",
+      "level": "Intermediate",
+      "section": "知识库管理（LightRAG）",
+      "slug": "14-lightrag-client",
+      "title": "LightRAG 客户端：文档上传与管道状态管理"
+    },
+    {
+      "associatedFiles": [
+        "src/update_lightrag/image_processor.py",
+        "src/ForumBot/image_processor.py"
+      ],
+      "file": "15-image-processor.md",
+      "group": "内容预处理",
+      "level": "Intermediate",
+      "section": "知识库管理（LightRAG）",
+      "slug": "15-image-processor",
+      "title": "多模态图片处理：文档图片内容增强"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/oidc_client.py",
+        "src/ForumBot/auth_middleware.py"
+      ],
+      "file": "16-oidc-auth.md",
+      "group": "认证授权体系",
+      "level": "Advanced",
+      "section": "API 安全与访问控制",
+      "slug": "16-oidc-auth",
+      "title": "OIDC 身份认证：授权码流程与 Token 校验"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/rbac_middleware.py",
+        "src/ForumBot/rate_limiter.py"
+      ],
+      "file": "17-rbac-rate-limiter.md",
+      "group": "认证授权体系",
+      "level": "Advanced",
+      "section": "API 安全与访问控制",
+      "slug": "17-rbac-rate-limiter",
+      "title": "RBAC 权限控制与 API 限流机制"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/rag_api.py",
+        "src/ForumBot/standalone_api.py"
+      ],
+      "file": "18-rag-api-gateway.md",
+      "group": "对外服务接口",
+      "level": "Intermediate",
+      "section": "API 安全与访问控制",
+      "slug": "18-rag-api-gateway",
+      "title": "RAG 对外 API：检索与文档状态接口"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/token_tracker.py",
+        "src/ForumBot/llm_token_usage.py"
+      ],
+      "file": "19-token-tracking.md",
+      "group": "用量与指标",
+      "level": "Intermediate",
+      "section": "可观测性与监控",
+      "slug": "19-token-tracking",
+      "title": "Token 用量追踪：全链路 LLM 消耗统计"
+    },
+    {
+      "associatedFiles": [
+        "src/ForumBot/prometheus_metrics.py",
+        "src/ForumBot/logging_config.py"
+      ],
+      "file": "20-prometheus-observability.md",
+      "group": "用量与指标",
+      "level": "Intermediate",
+      "section": "可观测性与监控",
+      "slug": "20-prometheus-observability",
+      "title": "Prometheus 指标：健康检查与业务埋点"
+    },
+    {
+      "associatedFiles": [
+        "src/utils.py",
+        "src/ForumBot/data_processor.py"
+      ],
+      "file": "21-db-connection-pool.md",
+      "group": "数据持久化",
+      "level": "Intermediate",
+      "section": "可观测性与监控",
+      "slug": "21-db-connection-pool",
+      "title": "PostgreSQL 连接池：线程安全持久化基础设施"
+    },
+    {
+      "associatedFiles": [
+        "src/evaluation/build_dataset.py",
+        "src/ForumBot/evaluation_hooks.py"
+      ],
+      "file": "22-evaluation-dataset.md",
+      "group": "评估流水线",
+      "level": "Intermediate",
+      "section": "离线评估体系",
+      "slug": "22-evaluation-dataset",
+      "title": "评估数据集构建：相似度去重与样本采集"
+    },
+    {
+      "associatedFiles": [
+        "src/evaluation/run_baseline.py",
+        "src/evaluation/templates.py"
+      ],
+      "file": "23-baseline-evaluation.md",
+      "group": "评估流水线",
+      "level": "Intermediate",
+      "section": "离线评估体系",
+      "slug": "23-baseline-evaluation",
+      "title": "LLM 裁判评估：基线自动打分框架"
+    },
+    {
+      "associatedFiles": [
+        "Dockerfile",
+        ".ai-flow/deploy/"
+      ],
+      "file": "24-k8s-deployment.md",
+      "level": "Intermediate",
+      "section": "部署与运维",
+      "slug": "24-k8s-deployment",
+      "title": "Kubernetes 容器化部署与预览环境编排"
+    },
+    {
+      "associatedFiles": [
+        "tests/conftest.py",
+        "tests/"
+      ],
+      "file": "25-test-infrastructure.md",
+      "level": "Intermediate",
+      "section": "部署与运维",
+      "slug": "25-test-infrastructure",
+      "title": "测试基础设施：Mock 注入与隔离策略"
+    }
+  ]
+}

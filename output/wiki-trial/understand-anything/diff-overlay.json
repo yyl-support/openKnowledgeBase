@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "baseBranch": "HEAD~1",
+  "generatedAt": "2026-08-08T08:32:26.021Z",
+  "changedFiles": [
+    ".coverage",
+    "src/update_lightrag/lightrag_client.py",
+    "tests/test_lightrag_client.py"
+  ],
+  "changedNodeIds": [
+    "file:src/update_lightrag/lightrag_client.py",
+    "class:src/update_lightrag/lightrag_client.py:LightRAGClient"
+  ],
+  "affectedNodeIds": [
+    "file:src/ForumBot/rag_api.py",
+    "file:src/update_lightrag/full_data_init.py",
+    "file:src/update_lightrag/increment_date_update_timer.py",
+    "document:CLAUDE.md",
+    "document:README.md",
+    "file:src/ForumBot/logging_config.py"
+  ]
+}

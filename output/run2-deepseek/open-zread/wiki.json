@@ -1,0 +1,263 @@
+{
+  "id": "20260809-075433",
+  "generated_at": "2026-08-09T07:54:33.468Z",
+  "language": "zh",
+  "pages": [
+    {
+      "slug": "1-project-overview",
+      "title": "项目概览：论坛智能回复机器人",
+      "file": "1-project-overview.md",
+      "section": "入门指南",
+      "level": "Beginner",
+      "associatedFiles": [
+        "README.md",
+        "CLAUDE.md",
+        "main.py"
+      ]
+    },
+    {
+      "slug": "2-quick-start",
+      "title": "快速开始：环境搭建与首启",
+      "file": "2-quick-start.md",
+      "section": "入门指南",
+      "level": "Beginner",
+      "associatedFiles": [
+        "main.py",
+        "config/config.yaml",
+        "requirements.txt"
+      ]
+    },
+    {
+      "slug": "3-core-architecture",
+      "title": "核心架构：双链路进程模型",
+      "file": "3-core-architecture.md",
+      "section": "入门指南",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "main.py",
+        "src/ForumBot/monitor.py",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "slug": "4-monitor-orchestrator",
+      "title": "论坛监控与回复编排引擎",
+      "file": "4-monitor-orchestrator.md",
+      "section": "论坛问答自动化",
+      "level": "Advanced",
+      "associatedFiles": [
+        "src/ForumBot/monitor.py",
+        "src/ForumBot/evaluation_hooks.py"
+      ]
+    },
+    {
+      "slug": "5-forum-platform-client",
+      "title": "论坛平台接入：Discourse API 交互",
+      "file": "5-forum-platform-client.md",
+      "section": "论坛问答自动化",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/ForumBot/forum_client.py"
+      ]
+    },
+    {
+      "slug": "6-ai-answer-pipeline",
+      "title": "AI 智能问答生成管线",
+      "file": "6-ai-answer-pipeline.md",
+      "section": "论坛问答自动化",
+      "level": "Advanced",
+      "associatedFiles": [
+        "src/ForumBot/ai_processor.py",
+        "src/ForumBot/data_processor.py"
+      ]
+    },
+    {
+      "slug": "7-token-cost-tracking",
+      "title": "Token 消耗追踪与成本核算",
+      "file": "7-token-cost-tracking.md",
+      "section": "论坛问答自动化",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/ForumBot/token_tracker.py",
+        "src/ForumBot/llm_token_usage.py"
+      ]
+    },
+    {
+      "slug": "8-redfish-review-engine",
+      "title": "Redfish 结构化评审引擎",
+      "file": "8-redfish-review-engine.md",
+      "section": "AI 预审合规评审",
+      "group": "预审评审引擎",
+      "level": "Advanced",
+      "associatedFiles": [
+        "src/ForumBot/SchemaValidation/"
+      ]
+    },
+    {
+      "slug": "9-mdb-compliance-engine",
+      "title": "MDB 资源协作接口合规校验",
+      "file": "9-mdb-compliance-engine.md",
+      "section": "AI 预审合规评审",
+      "group": "预审评审引擎",
+      "level": "Advanced",
+      "associatedFiles": [
+        "src/ForumBot/MdbValidation/"
+      ]
+    },
+    {
+      "slug": "10-lightrag-lifecycle",
+      "title": "知识库全量初始化与增量更新",
+      "file": "10-lightrag-lifecycle.md",
+      "section": "知识库检索系统",
+      "group": "知识库维护链路",
+      "level": "Advanced",
+      "associatedFiles": [
+        "src/update_lightrag/full_data_init.py",
+        "src/update_lightrag/increment_date_update_timer.py",
+        "src/update_lightrag/update_time.py"
+      ]
+    },
+    {
+      "slug": "11-knowledge-source-pipeline",
+      "title": "知识源采集与过滤管道",
+      "file": "11-knowledge-source-pipeline.md",
+      "section": "知识库检索系统",
+      "group": "知识库维护链路",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/update_lightrag/forum_data_Fetcher.py",
+        "src/update_lightrag/gitcode_client.py",
+        "src/update_lightrag/gitode_full_fetcher.py",
+        "src/update_lightrag/gitcode_api_increment_fetcher.py",
+        "src/update_lightrag/filter.py",
+        "src/update_lightrag/image_processor.py"
+      ]
+    },
+    {
+      "slug": "12-lightrag-service-client",
+      "title": "LightRAG 服务交互层",
+      "file": "12-lightrag-service-client.md",
+      "section": "知识库检索系统",
+      "group": "知识库维护链路",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/update_lightrag/lightrag_client.py"
+      ]
+    },
+    {
+      "slug": "13-postgresql-storage",
+      "title": "PostgreSQL 权威存储与 CSV 落盘",
+      "file": "13-postgresql-storage.md",
+      "section": "数据持久化",
+      "group": "数据层架构",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/ForumBot/data_processor.py",
+        "src/utils.py"
+      ]
+    },
+    {
+      "slug": "14-content-parsing",
+      "title": "论坛内容解析与预审就绪判定",
+      "file": "14-content-parsing.md",
+      "section": "数据持久化",
+      "group": "数据层架构",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/ForumBot/data_processor.py",
+        "src/ForumBot/image_processor.py"
+      ]
+    },
+    {
+      "slug": "15-api-access-security",
+      "title": "API 访问安全：OIDC 认证与 RBAC",
+      "file": "15-api-access-security.md",
+      "section": "安全与访问控制",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/ForumBot/auth_middleware.py",
+        "src/ForumBot/oidc_client.py",
+        "src/ForumBot/rbac_middleware.py",
+        "src/ForumBot/rate_limiter.py"
+      ]
+    },
+    {
+      "slug": "16-ai-content-safety",
+      "title": "AI 内容安全防线：注入检测与校验",
+      "file": "16-ai-content-safety.md",
+      "section": "安全与访问控制",
+      "level": "Advanced",
+      "associatedFiles": [
+        "src/ForumBot/ai_processor.py",
+        "src/ForumBot/SchemaValidation/end_to_end_check.py",
+        "src/utils.py"
+      ]
+    },
+    {
+      "slug": "17-rag-api-gateway",
+      "title": "对外检索 API 网关",
+      "file": "17-rag-api-gateway.md",
+      "section": "安全与访问控制",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/ForumBot/rag_api.py",
+        "src/external_api_app.py"
+      ]
+    },
+    {
+      "slug": "18-observability",
+      "title": "可观测性：指标、日志与健康探针",
+      "file": "18-observability.md",
+      "section": "可观测性与评估",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/ForumBot/prometheus_metrics.py",
+        "src/ForumBot/logging_config.py",
+        "src/ForumBot/evaluation_hooks.py",
+        "main.py"
+      ]
+    },
+    {
+      "slug": "19-offline-evaluation",
+      "title": "离线评估：数据集构建与质量基线",
+      "file": "19-offline-evaluation.md",
+      "section": "可观测性与评估",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "src/evaluation/"
+      ]
+    },
+    {
+      "slug": "20-standalone-debug-api",
+      "title": "独立调试 API 服务",
+      "file": "20-standalone-debug-api.md",
+      "section": "周边工具与部署",
+      "level": "Beginner",
+      "associatedFiles": [
+        "src/ForumBot/standalone_api.py",
+        "src/ForumBot/api_main.py"
+      ]
+    },
+    {
+      "slug": "21-container-deployment",
+      "title": "容器化与预览环境部署",
+      "file": "21-container-deployment.md",
+      "section": "周边工具与部署",
+      "level": "Intermediate",
+      "associatedFiles": [
+        "Dockerfile",
+        ".ai-flow/deploy/"
+      ]
+    }
+  ],
+  "techStackSummary": {
+    "language": "Python 3.9",
+    "webFramework": "Flask + Werkzeug（健康检查/调试 API）",
+    "aiStack": "openai（OpenAI 兼容）+ langchain-openai / langchain-core",
+    "database": "PostgreSQL（psycopg2，权威存储）",
+    "rag": "LightRAG 服务（检索 + 知识灌入）",
+    "observability": "Prometheus client + python-json-logger + RotatingFileHandler",
+    "scheduling": "schedule（每日增量更新）+ 守护线程轮询",
+    "deployment": "Docker（python:3.9-slim，非 root 加固）+ K8s 预览环境"
+  }
+}

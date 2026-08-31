@@ -1,0 +1,585 @@
+{
+  "name": "forum-reply-robot",
+  "description": "自动监控论坛新帖并调用大模型智能回复的机器人服务：轮询论坛发现新帖，经摘要提取、站内搜索与 LightRAG 知识库检索后调用 LLM 生成回答并自动回帖；同时对预审标签帖执行 Redfish Schema 与 MDB 规则的结构化合规校验。",
+  "languages": [
+    "dockerfile",
+    "json",
+    "markdown",
+    "python",
+    "txt",
+    "yaml"
+  ],
+  "frameworks": [
+    "Flask",
+    "LangChain",
+    "OpenAI",
+    "pandas",
+    "psycopg2",
+    "Prometheus",
+    "Authlib",
+    "schedule",
+    "BeautifulSoup",
+    "Docker",
+    "pytest"
+  ],
+  "files": [
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "sizeLines": 158,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "Dockerfile",
+      "language": "dockerfile",
+      "sizeLines": 110,
+      "fileCategory": "infra"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 314,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "config/config.yaml",
+      "language": "yaml",
+      "sizeLines": 5,
+      "fileCategory": "config"
+    },
+    {
+      "path": "main.py",
+      "language": "python",
+      "sizeLines": 411,
+      "fileCategory": "code"
+    },
+    {
+      "path": "pytest.ini",
+      "language": "config",
+      "sizeLines": 6,
+      "fileCategory": "config"
+    },
+    {
+      "path": "requirements-eval.txt",
+      "language": "txt",
+      "sizeLines": 2,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "requirements-test.txt",
+      "language": "txt",
+      "sizeLines": 3,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "requirements.txt",
+      "language": "txt",
+      "sizeLines": 49,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.3.json",
+      "language": "json",
+      "sizeLines": 542,
+      "fileCategory": "config"
+    },
+    {
+      "path": "src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.5.json",
+      "language": "json",
+      "sizeLines": 313,
+      "fileCategory": "config"
+    },
+    {
+      "path": "src/ForumBot/MdbValidation/__init__.py",
+      "language": "python",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/MdbValidation/mdb_checker.py",
+      "language": "python",
+      "sizeLines": 1074,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/MdbValidation/mdb_classifier.py",
+      "language": "python",
+      "sizeLines": 279,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/SchemaFiles/redfish_compliance_rules.json",
+      "language": "json",
+      "sizeLines": 137,
+      "fileCategory": "config"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/end_to_end_check.py",
+      "language": "python",
+      "sizeLines": 1301,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/extract_reviews.py",
+      "language": "python",
+      "sizeLines": 528,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/redfish_checker.py",
+      "language": "python",
+      "sizeLines": 1951,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/redfish_common.py",
+      "language": "python",
+      "sizeLines": 370,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/redfish_review_workflow.py",
+      "language": "python",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/redfish_schema_validator.py",
+      "language": "python",
+      "sizeLines": 1194,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/redfish_uri_generator.py",
+      "language": "python",
+      "sizeLines": 261,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/SchemaValidation/schema_debug_logger.py",
+      "language": "python",
+      "sizeLines": 259,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/__init__.py",
+      "language": "python",
+      "sizeLines": 3,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/ai_processor.py",
+      "language": "python",
+      "sizeLines": 389,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/api_main.py",
+      "language": "python",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/auth_middleware.py",
+      "language": "python",
+      "sizeLines": 84,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/data_processor.py",
+      "language": "python",
+      "sizeLines": 1266,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/evaluation_hooks.py",
+      "language": "python",
+      "sizeLines": 66,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/forum_client.py",
+      "language": "python",
+      "sizeLines": 210,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/image_processor.py",
+      "language": "python",
+      "sizeLines": 147,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/llm_token_usage.py",
+      "language": "python",
+      "sizeLines": 93,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/logging_config.py",
+      "language": "python",
+      "sizeLines": 69,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/monitor.py",
+      "language": "python",
+      "sizeLines": 891,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/oidc_client.py",
+      "language": "python",
+      "sizeLines": 329,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/prometheus_metrics.py",
+      "language": "python",
+      "sizeLines": 69,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/rag_api.py",
+      "language": "python",
+      "sizeLines": 294,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/rate_limiter.py",
+      "language": "python",
+      "sizeLines": 194,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/rbac_middleware.py",
+      "language": "python",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/standalone_api.py",
+      "language": "python",
+      "sizeLines": 150,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/ForumBot/token_tracker.py",
+      "language": "python",
+      "sizeLines": 60,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/__init__.py",
+      "language": "python",
+      "sizeLines": 3,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/evaluation/__init__.py",
+      "language": "python",
+      "sizeLines": 0,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/evaluation/build_dataset.py",
+      "language": "python",
+      "sizeLines": 142,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/evaluation/run_baseline.py",
+      "language": "python",
+      "sizeLines": 234,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/evaluation/templates.py",
+      "language": "python",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/external_api_app.py",
+      "language": "python",
+      "sizeLines": 121,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/__init__.py",
+      "language": "python",
+      "sizeLines": 2,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/filter.py",
+      "language": "python",
+      "sizeLines": 44,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/forum_data_Fetcher.py",
+      "language": "python",
+      "sizeLines": 195,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/full_data_init.py",
+      "language": "python",
+      "sizeLines": 123,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/gitcode_api_increment_fetcher.py",
+      "language": "python",
+      "sizeLines": 223,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/gitcode_client.py",
+      "language": "python",
+      "sizeLines": 173,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/gitode_full_fetcher.py",
+      "language": "python",
+      "sizeLines": 196,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/image_processor.py",
+      "language": "python",
+      "sizeLines": 153,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/increment_date_update_timer.py",
+      "language": "python",
+      "sizeLines": 215,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/lightrag_client.py",
+      "language": "python",
+      "sizeLines": 381,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/update_lightrag/update_time.py",
+      "language": "python",
+      "sizeLines": 39,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/utils.py",
+      "language": "python",
+      "sizeLines": 236,
+      "fileCategory": "code"
+    }
+  ],
+  "totalFiles": 60,
+  "filteredByIgnore": 58,
+  "estimatedComplexity": "moderate",
+  "importMap": {
+    "CLAUDE.md": [],
+    "Dockerfile": [],
+    "README.md": [],
+    "config/config.yaml": [],
+    "main.py": [
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/monitor.py",
+      "src/ForumBot/rag_api.py",
+      "src/ForumBot/rate_limiter.py",
+      "src/update_lightrag/full_data_init.py",
+      "src/update_lightrag/increment_date_update_timer.py"
+    ],
+    "pytest.ini": [],
+    "requirements-eval.txt": [],
+    "requirements-test.txt": [],
+    "requirements.txt": [],
+    "src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.3.json": [],
+    "src/ForumBot/MdbValidation/MdbRuleFiles/mdb_compliance_rules_v6.5.json": [],
+    "src/ForumBot/MdbValidation/__init__.py": [
+      "src/ForumBot/MdbValidation/mdb_checker.py",
+      "src/ForumBot/MdbValidation/mdb_classifier.py"
+    ],
+    "src/ForumBot/MdbValidation/mdb_checker.py": [
+      "src/ForumBot/llm_token_usage.py"
+    ],
+    "src/ForumBot/MdbValidation/mdb_classifier.py": [],
+    "src/ForumBot/SchemaValidation/SchemaFiles/redfish_compliance_rules.json": [],
+    "src/ForumBot/SchemaValidation/__init__.py": [],
+    "src/ForumBot/SchemaValidation/end_to_end_check.py": [
+      "src/ForumBot/SchemaValidation/redfish_common.py",
+      "src/ForumBot/SchemaValidation/redfish_schema_validator.py",
+      "src/ForumBot/SchemaValidation/redfish_uri_generator.py",
+      "src/ForumBot/SchemaValidation/schema_debug_logger.py"
+    ],
+    "src/ForumBot/SchemaValidation/extract_reviews.py": [],
+    "src/ForumBot/SchemaValidation/redfish_checker.py": [
+      "src/ForumBot/SchemaValidation/redfish_common.py",
+      "src/ForumBot/llm_token_usage.py"
+    ],
+    "src/ForumBot/SchemaValidation/redfish_common.py": [],
+    "src/ForumBot/SchemaValidation/redfish_review_workflow.py": [
+      "src/ForumBot/SchemaValidation/redfish_common.py"
+    ],
+    "src/ForumBot/SchemaValidation/redfish_schema_validator.py": [
+      "src/ForumBot/SchemaValidation/redfish_common.py"
+    ],
+    "src/ForumBot/SchemaValidation/redfish_uri_generator.py": [
+      "src/ForumBot/SchemaValidation/redfish_common.py",
+      "src/ForumBot/llm_token_usage.py"
+    ],
+    "src/ForumBot/SchemaValidation/schema_debug_logger.py": [],
+    "src/ForumBot/__init__.py": [],
+    "src/ForumBot/ai_processor.py": [
+      "src/ForumBot/data_processor.py",
+      "src/ForumBot/evaluation_hooks.py",
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/token_tracker.py"
+    ],
+    "src/ForumBot/api_main.py": [
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/standalone_api.py"
+    ],
+    "src/ForumBot/auth_middleware.py": [
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/oidc_client.py"
+    ],
+    "src/ForumBot/data_processor.py": [
+      "src/ForumBot/image_processor.py",
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/ForumBot/evaluation_hooks.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/ForumBot/forum_client.py": [
+      "src/ForumBot/data_processor.py",
+      "src/ForumBot/evaluation_hooks.py",
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/ForumBot/image_processor.py": [
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/token_tracker.py"
+    ],
+    "src/ForumBot/llm_token_usage.py": [
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/token_tracker.py"
+    ],
+    "src/ForumBot/logging_config.py": [
+      "src/utils.py"
+    ],
+    "src/ForumBot/monitor.py": [
+      "src/ForumBot/SchemaValidation/end_to_end_check.py",
+      "src/ForumBot/ai_processor.py",
+      "src/ForumBot/data_processor.py",
+      "src/ForumBot/evaluation_hooks.py",
+      "src/ForumBot/forum_client.py",
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/prometheus_metrics.py",
+      "src/ForumBot/token_tracker.py",
+      "src/utils.py"
+    ],
+    "src/ForumBot/oidc_client.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/ForumBot/prometheus_metrics.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/ForumBot/rag_api.py": [
+      "src/ForumBot/auth_middleware.py",
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/oidc_client.py",
+      "src/ForumBot/rate_limiter.py",
+      "src/update_lightrag/lightrag_client.py"
+    ],
+    "src/ForumBot/rate_limiter.py": [
+      "src/ForumBot/logging_config.py",
+      "src/utils.py"
+    ],
+    "src/ForumBot/rbac_middleware.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/ForumBot/standalone_api.py": [
+      "src/ForumBot/ai_processor.py",
+      "src/ForumBot/data_processor.py",
+      "src/ForumBot/forum_client.py",
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/token_tracker.py",
+      "src/utils.py"
+    ],
+    "src/ForumBot/token_tracker.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/__init__.py": [],
+    "src/evaluation/__init__.py": [],
+    "src/evaluation/build_dataset.py": [],
+    "src/evaluation/run_baseline.py": [
+      "src/evaluation/templates.py",
+      "src/utils.py"
+    ],
+    "src/evaluation/templates.py": [],
+    "src/external_api_app.py": [
+      "src/ForumBot/logging_config.py",
+      "src/ForumBot/rag_api.py",
+      "src/ForumBot/rate_limiter.py",
+      "src/utils.py"
+    ],
+    "src/update_lightrag/__init__.py": [],
+    "src/update_lightrag/filter.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/update_lightrag/forum_data_Fetcher.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/update_lightrag/full_data_init.py": [
+      "src/ForumBot/logging_config.py",
+      "src/update_lightrag/filter.py",
+      "src/update_lightrag/forum_data_Fetcher.py",
+      "src/update_lightrag/gitode_full_fetcher.py",
+      "src/update_lightrag/image_processor.py",
+      "src/update_lightrag/lightrag_client.py",
+      "src/update_lightrag/update_time.py",
+      "src/utils.py"
+    ],
+    "src/update_lightrag/gitcode_api_increment_fetcher.py": [
+      "src/ForumBot/logging_config.py",
+      "src/update_lightrag/gitcode_client.py"
+    ],
+    "src/update_lightrag/gitcode_client.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/update_lightrag/gitode_full_fetcher.py": [
+      "src/ForumBot/logging_config.py",
+      "src/utils.py"
+    ],
+    "src/update_lightrag/image_processor.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/update_lightrag/increment_date_update_timer.py": [
+      "src/ForumBot/logging_config.py",
+      "src/update_lightrag/filter.py",
+      "src/update_lightrag/forum_data_Fetcher.py",
+      "src/update_lightrag/gitcode_api_increment_fetcher.py",
+      "src/update_lightrag/image_processor.py",
+      "src/update_lightrag/lightrag_client.py",
+      "src/update_lightrag/update_time.py",
+      "src/utils.py"
+    ],
+    "src/update_lightrag/lightrag_client.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/update_lightrag/update_time.py": [
+      "src/ForumBot/logging_config.py"
+    ],
+    "src/utils.py": []
+  }
+}
